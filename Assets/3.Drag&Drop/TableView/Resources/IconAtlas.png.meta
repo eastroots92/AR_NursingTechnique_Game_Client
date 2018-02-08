@@ -1,0 +1,323 @@
+fileFormatVersion: 2
+guid: b800c65c54a4d4578867ec03bf5abb54
+TextureImporter:
+  fileIDToRecycleName:
+    21300000: coin
+    21300002: drink1
+    21300004: drink2
+    21300006: drink3
+    21300008: drink4
+    21300010: drink5
+    21300012: fruits1
+    21300014: fruits2
+    21300016: fruits3
+    21300018: fruits4
+    21300020: fruits5
+    21300022: gun1
+    21300024: gun2
+    21300026: gun3
+    21300028: gun4
+    21300030: gun5
+    21300032: level1
+    21300034: level2
+    21300036: level3
+    21300038: level4
+    21300040: level5
+    21300042: fruits6
+    21300044: gun6
+    21300046: drink6
+    21300048: fruit1
+    21300050: fruit2
+    21300052: fruit3
+    21300054: fruit4
+    21300056: fruit5
+    21300058: fruit6
+  serializedVersion: 2
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 1
+    linearTexture: 0
+    correctGamma: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: .25
+    normalMapFilter: 0
+  isReadable: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 0
+  cubemapConvolution: 0
+  cubemapConvolutionSteps: 8
+  cubemapConvolutionExponent: 1.5
+  seamlessCubemap: 0
+  textureFormat: -3
+  maxTextureSize: 4096
+  textureSettings:
+    filterMode: 0
+    aniso: 16
+    mipBias: -1
+    wrapMode: 1
+  nPOTScale: 0
+  lightmap: 0
+  rGBM: 0
+  compressionQuality: 50
+  spriteMode: 2
+  spriteExtrude: 1
+  spriteMeshType: 1
+  alignment: 0
+  spritePivot: {x: .5, y: .5}
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spritePixelsToUnits: 100
+  alphaIsTransparency: 1
+  textureType: 8
+  buildTargetSettings: []
+  spriteSheet:
+    sprites:
+    - name: coin
+      rect:
+        serializedVersion: 2
+        x: 2
+        y: 3
+        width: 20
+        height: 20
+      alignment: 0
+      pivot: {x: .5, y: .5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: drink1
+      rect:
+        serializedVersion: 2
+        x: 25
+        y: 3
+        width: 20
+        height: 20
+      alignment: 0
+      pivot: {x: .5, y: .5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: drink2
+      rect:
+        serializedVersion: 2
+        x: 48
+        y: 3
+        width: 20
+        height: 20
+      alignment: 0
+      pivot: {x: .5, y: .5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: drink3
+      rect:
+        serializedVersion: 2
+        x: 71
+        y: 3
+        width: 20
+        height: 20
+      alignment: 0
+      pivot: {x: .5, y: .5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: drink4
+      rect:
+        serializedVersion: 2
+        x: 94
+        y: 3
+        width: 20
+        height: 20
+      alignment: 0
+      pivot: {x: .5, y: .5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: drink5
+      rect:
+        serializedVersion: 2
+        x: 117
+        y: 3
+        width: 20
+        height: 20
+      alignment: 0
+      pivot: {x: .5, y: .5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: drink6
+      rect:
+        serializedVersion: 2
+        x: 140
+        y: 3
+        width: 20
+        height: 20
+      alignment: 0
+      pivot: {x: .5, y: .5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: fruit1
+      rect:
+        serializedVersion: 2
+        x: 163
+        y: 3
+        width: 20
+        height: 20
+      alignment: 0
+      pivot: {x: .5, y: .5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: fruit2
+      rect:
+        serializedVersion: 2
+        x: 186
+        y: 3
+        width: 20
+        height: 20
+      alignment: 0
+      pivot: {x: .5, y: .5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: fruit3
+      rect:
+        serializedVersion: 2
+        x: 209
+        y: 3
+        width: 20
+        height: 20
+      alignment: 0
+      pivot: {x: .5, y: .5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: fruit4
+      rect:
+        serializedVersion: 2
+        x: 232
+        y: 3
+        width: 20
+        height: 20
+      alignment: 0
+      pivot: {x: .5, y: .5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: fruit5
+      rect:
+        serializedVersion: 2
+        x: 255
+        y: 3
+        width: 20
+        height: 20
+      alignment: 0
+      pivot: {x: .5, y: .5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: fruit6
+      rect:
+        serializedVersion: 2
+        x: 278
+        y: 3
+        width: 20
+        height: 20
+      alignment: 0
+      pivot: {x: .5, y: .5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: gun1
+      rect:
+        serializedVersion: 2
+        x: 301
+        y: 3
+        width: 20
+        height: 20
+      alignment: 0
+      pivot: {x: .5, y: .5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: gun2
+      rect:
+        serializedVersion: 2
+        x: 324
+        y: 3
+        width: 20
+        height: 20
+      alignment: 0
+      pivot: {x: .5, y: .5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: gun3
+      rect:
+        serializedVersion: 2
+        x: 347
+        y: 3
+        width: 20
+        height: 20
+      alignment: 0
+      pivot: {x: .5, y: .5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: gun4
+      rect:
+        serializedVersion: 2
+        x: 370
+        y: 3
+        width: 20
+        height: 20
+      alignment: 0
+      pivot: {x: .5, y: .5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: gun5
+      rect:
+        serializedVersion: 2
+        x: 393
+        y: 3
+        width: 20
+        height: 20
+      alignment: 0
+      pivot: {x: .5, y: .5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: gun6
+      rect:
+        serializedVersion: 2
+        x: 416
+        y: 3
+        width: 20
+        height: 20
+      alignment: 0
+      pivot: {x: .5, y: .5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: level1
+      rect:
+        serializedVersion: 2
+        x: 2
+        y: 26
+        width: 96
+        height: 96
+      alignment: 0
+      pivot: {x: .5, y: .5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: level2
+      rect:
+        serializedVersion: 2
+        x: 101
+        y: 26
+        width: 96
+        height: 96
+      alignment: 0
+      pivot: {x: .5, y: .5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: level3
+      rect:
+        serializedVersion: 2
+        x: 200
+        y: 26
+        width: 96
+        height: 96
+      alignment: 0
+      pivot: {x: .5, y: .5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: level4
+      rect:
+        serializedVersion: 2
+        x: 299
+        y: 26
+        width: 96
+        height: 96
+      alignment: 0
+      pivot: {x: .5, y: .5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: level5
+      rect:
+        serializedVersion: 2
+        x: 398
+        y: 26
+        width: 96
+        height: 96
+      alignment: 0
+      pivot: {x: .5, y: .5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+  spritePackingTag: 
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
