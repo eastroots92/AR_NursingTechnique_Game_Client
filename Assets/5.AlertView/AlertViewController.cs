@@ -42,7 +42,14 @@ public class AlertViewController : ViewController
     //알림 뷰의 내용을 갱신하는 메서드
     public void UpdateContent(string title, string message, AlertViewOptions options = null)
     {
-        titleLabel.text = title;
+        if (title.Equals(""))
+        {
+            titleLabel.transform.gameObject.SetActive(false);
+        }
+        else
+        {
+            titleLabel.text = title;
+        }
         messageLabel.text = message;
 
         if(options != null)
