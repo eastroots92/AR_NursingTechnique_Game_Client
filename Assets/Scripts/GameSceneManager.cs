@@ -36,9 +36,8 @@ public class GameSceneManager : MonoBehaviour {
 	IEnumerator FirstSceneCheck()
     {
         float time = 0;
-        while(pd.state != PlayState.Playing)
+        while(SceneManager.GetActiveScene().buildIndex == 0)
         {
-            Debug.Log("Call");
             time += Time.deltaTime;
 
 #if UNITY_EDITOR
