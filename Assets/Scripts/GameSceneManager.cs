@@ -48,9 +48,9 @@ public class GameSceneManager : MonoBehaviour {
             if (pd.state == PlayState.Playing && Input.touchCount > 0)
                 StartCoroutine(ChangeScene(1));
 #endif
-            if (pd.duration < time)
+            if (10f < time)
             {
-                pd.Stop();
+                pd.Pause();
                 StartCoroutine(ChangeScene(1));
             }
 
