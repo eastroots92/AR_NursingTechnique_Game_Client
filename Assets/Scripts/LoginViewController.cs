@@ -63,9 +63,9 @@ public class LoginViewController : ViewController
 
     private void CheckIDInput(InputField input)
     {
-        if (input.text.Length != 0 && !(input.text.Contains("@") && input.text.Contains(".")))
+        if (input.text.Length != 0 && (input.text.Contains("@") && input.text.Contains(".")))
         {
-            AlertViewController.Show("", "메일 형식을 확인해주세요.");
+            AlertViewController.Show("", "아이디 형식을 확인해주세요.");
             return;
         }
 

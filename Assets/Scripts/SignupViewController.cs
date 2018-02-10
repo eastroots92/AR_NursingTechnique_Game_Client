@@ -21,7 +21,8 @@ public class SignupViewController : ViewController
 	[SerializeField] private InputField rePwInput;
 	[SerializeField] private Button sendBtn;
 	[SerializeField] private GameObject loadingObj;
-
+    [SerializeField] private ToggleGroup jobToggleGroup;
+    [SerializeField] private Button closeBtn;
 	private string errTitle="";
 	private string errMessage="입력하신 정보를 다시 확인해주세요.";
 
@@ -52,11 +53,12 @@ public class SignupViewController : ViewController
         pwInput.onEndEdit.AddListener(delegate { CheckPWInput(pwInput); });
         rePwInput.onEndEdit.AddListener(delegate { CheckRePWInput(rePwInput); });
         sendBtn.onClick.AddListener(delegate { OnPressSend(); });
+        closeBtn.onClick.AddListener(delegate { OnPressClose(); });
     }
 
 	private void CheckIDInput(InputField input)
     {
-        if (input.text.Length != 0 && !(input.text.Contains("@") && input.text.Contains(".")))
+        if (input.text.Length != 0 && (input.text.Contains("@") && input.text.Contains(".")))
         {
 			AlertViewController.Show(errTitle, errMessage );
             return;
@@ -78,7 +80,8 @@ public class SignupViewController : ViewController
     {
 		if(input.text.Length != 0 && input.text.Length < 6)
 		{
-            AlertViewController.Show(errTitle, errMessage );
+            string message = "비밀번호는 최소 6자 이상입니다.";
+            AlertViewController.Show(errTitle, message );
             return; 
 		}
         signUpInform.password = input.text;
@@ -88,7 +91,9 @@ public class SignupViewController : ViewController
     {
 		if(input.text.Length != 0 && !input.text.Equals(pwInput.text))
 		{
-            AlertViewController.Show(errTitle, errMessage );
+            string message = "비밀번호가 서로 일치하지 않습니다.";
+            AlertViewController.Show(errTitle, message );
+            input.text = "";
             return;
 		}
         signUpInform.rePassword = input.text;
@@ -103,6 +108,12 @@ public class SignupViewController : ViewController
 			return;
 		}
 
+        if(!jobToggleGroup.AnyTogglesOn()){
+            string message = "직업을 선택하세요";
+            AlertViewController.Show(errTitle, message);
+            return;
+        }
+
         DataManager.instance.PostSignUp(signUpInform);
 
         if (DataManager.instance.IsLodingStart)
@@ -114,5 +125,9 @@ public class SignupViewController : ViewController
             loadingObj.SetActive(false);
             Destroy(gameObject);
         }
+    }
+
+    private void OnPressClose(){
+        Destroy(gameObject);
     }
 }
