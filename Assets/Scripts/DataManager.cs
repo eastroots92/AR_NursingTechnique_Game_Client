@@ -93,7 +93,7 @@ public class DataManager : MonoBehaviour {
 
     private string postLogInUrl = "http://localhost:3000/api/v1/sessions";
     private string postSignUpUrl = "http://localhost:3000/api/v1/registrations";
-    private string deleteLogOutUrl = "http://localhost:3000/api/v1/sessions?auth_token=";
+    private string deleteLogOutUrl = "http://52.78.158.73/user/signout.json?token=";
 
     public bool IsLodingStart
     {
