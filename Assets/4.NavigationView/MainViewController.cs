@@ -13,7 +13,7 @@ public class MainViewController : ViewController {
     {
         get
         {
-            return "MAIN";
+            return "Home";
         }
     }
 

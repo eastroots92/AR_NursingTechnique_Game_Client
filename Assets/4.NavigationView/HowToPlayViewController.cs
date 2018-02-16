@@ -11,7 +11,7 @@ public class HowToPlayViewController : ViewController {
     {
         get
         {
-            return "How to Play";
+            return "HELP";
         }
     }
 }

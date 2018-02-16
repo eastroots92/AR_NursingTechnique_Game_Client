@@ -72,6 +72,8 @@ public class NavigationViewController : ViewController {
             newViewPos, 0.3f, 0.0f, iTween.EaseType.easeOutSine, () => {
                 // 이동이 끝나면 사용자의 인터랙션을 유효화한다
                 EnableInteraction(true);
+                backButton.gameObject.SetActive(true);
+                navigationBar.SetActive(true);
             });
 
         // 새로운 뷰를 현재의 뷰로서 저장하고 내비게이션 바의 타이틀을 변경한다
@@ -81,8 +83,8 @@ public class NavigationViewController : ViewController {
         // 백 버튼의 레이블을 변경한다
         backButtonLabel.text = lastView.Title;
         // 백 버튼을 유효화한다
-        backButton.gameObject.SetActive(true);
-        navigationBar.SetActive(true);
+        // backButton.gameObject.SetActive(true);
+        // navigationBar.SetActive(true);
     }
 
     // 이전 계층의 뷰로 되돌아가는 처리를 수행하는 메서드

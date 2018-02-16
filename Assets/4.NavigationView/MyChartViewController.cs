@@ -18,7 +18,7 @@ public class MyChartViewController : ViewController {
     {
         get
         {
-            return "My Chart";
+            return "MY PAGE";
         }
     }
 
