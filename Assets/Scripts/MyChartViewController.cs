@@ -1,15 +1,19 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class MyChartViewController : ViewController {
 
     [SerializeField] private NavigationViewController navigationView;
+    [SerializeField] private Sprite[] myCharImageSource;
+    [SerializeField] private Image mycharImage;
+    [SerializeField] private Text nameTxt;
+    [SerializeField] private Text levelTxt;
+    [SerializeField] private Text totalPointTxt;
+    [SerializeField] private Text rankTxt;
+    [SerializeField] private Text successTxt;
 
-    //
-    //[SerializeField] private Image iconImage;       // 아이템의 아이콘을 표시하는 이미지
-    //[SerializeField] private Text nameLabel;        // 아이템 이름을 표시하는 텍스트
-    //[SerializeField] private Text descriptionLabel; // 설명을 표시할 텍스트
 
     //private ShopItemData itemData;					// 아이템 데이터를 저장
     
