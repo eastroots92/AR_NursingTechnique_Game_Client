@@ -20,6 +20,7 @@ public class SignupViewController : ViewController
 	[SerializeField] private InputField pwInput;
 	[SerializeField] private InputField rePwInput;
 	[SerializeField] private Button sendBtn;
+    [SerializeField] private Button closeBtn;
 	[SerializeField] private GameObject loadingObj;
 
 	private string errTitle="";
@@ -52,6 +53,7 @@ public class SignupViewController : ViewController
         pwInput.onEndEdit.AddListener(delegate { CheckPWInput(pwInput); });
         rePwInput.onEndEdit.AddListener(delegate { CheckRePWInput(rePwInput); });
         sendBtn.onClick.AddListener(delegate { OnPressSend(); });
+        closeBtn.onClick.AddListener(delegate { OnPressClose(); });
     }
 
 	private void CheckIDInput(InputField input)
@@ -114,5 +116,10 @@ public class SignupViewController : ViewController
             loadingObj.SetActive(false);
             Destroy(gameObject);
         }
+    }
+
+    private void OnPressClose()
+    {
+        Destroy(gameObject);
     }
 }
