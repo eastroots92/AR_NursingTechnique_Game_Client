@@ -1,10 +1,8 @@
 ﻿using System;
 using System.Collections;
-using System.Collections.Generic;
-using System.Net;
-using System.Text;
 using UnityEngine;
-using UnityEngine.Networking;
+
+//{"signup":{"respon":{"success":"true"},"result":{"uid":"hansam2396","token":"hfkgwdyrcvpuomsneiqt"}}}
 
 [Serializable]
 public class Configuration
@@ -88,25 +86,11 @@ public class UserData
 public class DataManager : MonoBehaviour {
    
     public static DataManager instance = null;
-    private bool isLodingStart = false;
     private Configuration config;
 
     private string postLogInUrl = "http://localhost:3000/api/v1/sessions";
-    private string postSignUpUrl = "http://localhost:3000/api/v1/registrations";
+    private string signUpUrl = "http://52.78.158.73/user/signup.json?";
     private string deleteLogOutUrl = "http://localhost:3000/api/v1/sessions?auth_token=";
-
-    public bool IsLodingStart
-    {
-        get
-        {
-            return isLodingStart;
-        }
-
-        set
-        {
-            isLodingStart = value;
-        }
-    }
 
     private void Awake()
     {
@@ -127,15 +111,10 @@ public class DataManager : MonoBehaviour {
         StartCoroutine(WaitForRequest(www));
     }
 
-    public void PostSignUp(SignUpInform signUpInform)
+    public void SignUp(string id, string pw, string name, string job)
     {
-        WWWForm form = new WWWForm();
-        form.AddField("email", signUpInform.emailAddr);
-        form.AddField("name", signUpInform.name);
-        form.AddField("password", signUpInform.password);
-        form.AddField("password_confirmation", signUpInform.rePassword);
-
-        WWW www = new WWW(postSignUpUrl, form);
+        string url = signUpUrl + "uid=" + id + "&password=" + pw + "&name=" + name + "&age=" + 27;
+        WWW www = new WWW(url);
 
         StartCoroutine(WaitForRequest(www));
     }
@@ -178,8 +157,6 @@ public class DataManager : MonoBehaviour {
 
     IEnumerator WaitForRequest(WWW www)
     {
-        isLodingStart = true;
-
         yield return www;
 
         if (www.error == null)
@@ -190,6 +167,8 @@ public class DataManager : MonoBehaviour {
         else
         {
             Debug.Log("WWW error: " + www.error);   // something wrong!
+            string message = "다시 시도해주세요.";
+            AlertViewController.Show("", message);
         }
     }
 

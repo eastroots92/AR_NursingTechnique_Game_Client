@@ -13,18 +13,18 @@ public struct SignUpInform
     public string rePassword;
 }
 
-public class SignupViewController : ViewController 
+public class SignupViewController : ViewController
 {
-	[SerializeField] private InputField idInput;
-	[SerializeField] private InputField nameInput;
-	[SerializeField] private InputField pwInput;
-	[SerializeField] private InputField rePwInput;
-	[SerializeField] private Button sendBtn;
+    [SerializeField] private InputField idInput;
+    [SerializeField] private InputField nameInput;
+    [SerializeField] private InputField pwInput;
+    [SerializeField] private InputField rePwInput;
+    [SerializeField] private ToggleGroup jobGroup;
+    [SerializeField] private Button sendBtn;
     [SerializeField] private Button closeBtn;
-	[SerializeField] private GameObject loadingObj;
+    [SerializeField] private GameObject loadingObj;
 
-	private string errTitle="";
-	private string errMessage="입력하신 정보를 다시 확인해주세요.";
+    private string errTitle = "";
 
     private static GameObject prefab = null;
     private SignUpInform signUpInform;
@@ -48,7 +48,6 @@ public class SignupViewController : ViewController
         loadingObj.SetActive(false);
         signUpInform = new SignUpInform();
 
-        idInput.onEndEdit.AddListener(delegate { CheckIDInput(idInput); });
         nameInput.onEndEdit.AddListener(delegate { CheckNameInput(nameInput); });
         pwInput.onEndEdit.AddListener(delegate { CheckPWInput(pwInput); });
         rePwInput.onEndEdit.AddListener(delegate { CheckRePWInput(rePwInput); });
@@ -56,66 +55,59 @@ public class SignupViewController : ViewController
         closeBtn.onClick.AddListener(delegate { OnPressClose(); });
     }
 
-	private void CheckIDInput(InputField input)
+    private void CheckNameInput(InputField input)
     {
-        if (input.text.Length != 0 && !(input.text.Contains("@") && input.text.Contains(".")))
+        if (input.text.Length != 0 && (input.text.Length > 10 || input.text.Length < 2))
         {
-			AlertViewController.Show(errTitle, errMessage );
+            string errMessage = "올바른 이름을 입력하세요.";
+            AlertViewController.Show(errTitle, errMessage);
             return;
-		}
-        signUpInform.emailAddr = input.text;
+        }
+        signUpInform.name = input.text;
     }
 
-	private void CheckNameInput(InputField input)
+    private void CheckPWInput(InputField input)
     {
-		if(input.text.Length != 0 && (input.text.Length > 6 || input.text.Length < 2))
-		{
-			AlertViewController.Show(errTitle, errMessage );
+        if (input.text.Length != 0 && input.text.Length < 6)
+        {
+            string errMessage = "비밀번호는 최소 6자 이상입니다.";
+            AlertViewController.Show(errTitle, errMessage);
             return;
-		}
-        signUpInform.name = input.text;
-     }
+        }
 
-	private void CheckPWInput(InputField input)
-    {
-		if(input.text.Length != 0 && input.text.Length < 6)
-		{
-            AlertViewController.Show(errTitle, errMessage );
-            return; 
-		}
         signUpInform.password = input.text;
     }
 
-	private void CheckRePWInput(InputField input)
+    private void CheckRePWInput(InputField input)
     {
-		if(input.text.Length != 0 && !input.text.Equals(pwInput.text))
-		{
-            AlertViewController.Show(errTitle, errMessage );
+        if (input.text.Length != 0 && !input.text.Equals(pwInput.text))
+        {
+            string errMessage = "비밀번호가 일치하지 않습니다.";
+            AlertViewController.Show(errTitle, errMessage);
             return;
-		}
+        }
         signUpInform.rePassword = input.text;
     }
 
-	private void OnPressSend()
-	{
-		if(idInput.text.Length == 0 || pwInput.text.Length == 0 || rePwInput.text.Length == 0 || nameInput.text.Length == 0)
-		{
-			string message = "빈칸을 입력해주세요";
-			AlertViewController.Show(errTitle, message);
-			return;
-		}
-
-        DataManager.instance.PostSignUp(signUpInform);
-
-        if (DataManager.instance.IsLodingStart)
+    private void OnPressSend()
+    {
+        if (idInput.text.Length == 0 || pwInput.text.Length == 0 || rePwInput.text.Length == 0 || nameInput.text.Length == 0 || !jobGroup.AnyTogglesOn())
         {
-            loadingObj.SetActive(true);
+            string message = "빈칸을 입력해주세요";
+            AlertViewController.Show(errTitle, message);
+            return;
         }
-        else
+
+        IEnumerable<Toggle> activeToggles = jobGroup.ActiveToggles();
+        string job = "";
+
+        foreach (Toggle tg in activeToggles)
         {
-            loadingObj.SetActive(false);
-            Destroy(gameObject);
+            job = tg.name;
         }
+
+        Debug.Log("id: " + idInput.text + " pw: " + pwInput.text + " name: " + nameInput.text + " job: " + job);
+        DataManager.instance.SignUp(idInput.text, pwInput.text, nameInput.text, job);
     }
 
     private void OnPressClose()

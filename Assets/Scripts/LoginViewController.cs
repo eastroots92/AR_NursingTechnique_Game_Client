@@ -103,15 +103,6 @@ public class LoginViewController : ViewController
         SaveLoginSettings();
 
         DataManager.instance.PostLogIn(logInInform);
-
-        if (DataManager.instance.IsLodingStart)
-        {
-            loadingObj.SetActive(true);
-        }
-        else
-        {
-            loadingObj.SetActive(false);
-        }
     }
 
     //아이디 저장 

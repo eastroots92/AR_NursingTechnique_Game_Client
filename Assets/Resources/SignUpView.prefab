@@ -1241,6 +1241,7 @@ MonoBehaviour:
   nameInput: {fileID: 114470044285559398}
   pwInput: {fileID: 114625961607038254}
   rePwInput: {fileID: 114724636521476064}
+  jobGroup: {fileID: 114935245755623412}
   sendBtn: {fileID: 114980397105994446}
   closeBtn: {fileID: 114946640264000898}
   loadingObj: {fileID: 1801769798234746}
@@ -2080,7 +2081,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.72518456, y: 0.36600003}
   m_AnchorMax: {x: 0.8021846, y: 0.39553207}
-  m_AnchoredPosition: {x: 1.5999985, y: 0.057495117}
+  m_AnchoredPosition: {x: 1.6000061, y: 0.057495117}
   m_SizeDelta: {x: -3.069992, y: -2.1161003}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!224 &224102286903544864
@@ -2136,7 +2137,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.62363094, y: 0.36600003}
   m_AnchorMax: {x: 0.698, y: 0.39553207}
-  m_AnchoredPosition: {x: -0.70000076, y: 0.057495117}
+  m_AnchoredPosition: {x: -0.69999695, y: 0.057495117}
   m_SizeDelta: {x: -0.069992065, y: -2.1161003}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!224 &224138996525063126
@@ -2519,7 +2520,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.512785, y: 0.36600003}
   m_AnchorMax: {x: 0.588, y: 0.39553207}
-  m_AnchoredPosition: {x: 0.040000916, y: 0.057499886}
+  m_AnchoredPosition: {x: 0.040000916, y: 0.057498932}
   m_SizeDelta: {x: -1.0700002, y: -2.1160998}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!224 &224574651361492230
