@@ -102,7 +102,6 @@ public class LoginViewController : ViewController
         OnAutoSetID();
         SaveLoginSettings();
 
-        DataManager.instance.PostLogIn(logInInform);
     }
 
     //아이디 저장 
