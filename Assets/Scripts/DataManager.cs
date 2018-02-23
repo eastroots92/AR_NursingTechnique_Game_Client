@@ -1,8 +1,11 @@
 ﻿using System.Collections;
 using UnityEngine;
 
-public class DataManager : MonoBehaviour {
-   
+public class DataManager : MonoBehaviour
+{
+    public delegate void LoadingImageHandler(string success);
+    public event LoadingImageHandler OnLoadingImage;
+
     public static DataManager instance = null;
 
     [SerializeField] private string signUpUrl = "http://52.78.158.73/user/signup.json?";
@@ -25,7 +28,7 @@ public class DataManager : MonoBehaviour {
             Destroy(gameObject);
     }
     
-    public void SignUp(string id, string pw, string name, string job)
+    public void SendSignUp(string id, string pw, string name, string job)
     {
         string url = signUpUrl + "uid=" + id + "&password=" + pw + "&name=" + name + "&age=" + 27;
         WWW www = new WWW(url);
@@ -40,7 +43,7 @@ public class DataManager : MonoBehaviour {
         if (www.error == null)
         {
             Debug.Log(www.text);
-            ReceiveData(www.text);
+            StartCoroutine(ReceiveData(www.text));
         }
         else
         {
@@ -50,8 +53,16 @@ public class DataManager : MonoBehaviour {
         }
     }
 
-    private void ReceiveData(string receiveData)
+    private IEnumerator ReceiveData(string receiveData)
     {
-        //config = JsonUtility.FromJson<DataConfiguration>(receiveData);
+        DataConfiguration config = JsonUtility.FromJson<DataConfiguration>(receiveData);
+        
+        if (receiveData.Contains("signup"))
+        {
+            yield return new WaitForSeconds(2f);
+            if (OnLoadingImage != null)
+                OnLoadingImage(config.Signup.Respon.Success);
+        }
     }
 }
+

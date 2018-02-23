@@ -1,6 +1,109 @@
 ﻿using UnityEngine;
 using System;
 
+[Serializable]
+public struct DataConfiguration
+{
+    [SerializeField] private SignUp signup;
+    [SerializeField] private SignIn signin;
+    [SerializeField] private SignOut signout;
+    [SerializeField] private ListClinical list_clinical;
+    [SerializeField] private RandomItem random_item;
+    [SerializeField] private RandomContent random_content;
+    [SerializeField] private GameRecord game_record;
+
+    public SignUp Signup
+    {
+        get
+        {
+            return signup;
+        }
+
+        set
+        {
+            signup = value;
+        }
+    }
+
+    public SignIn Signin
+    {
+        get
+        {
+            return signin;
+        }
+
+        set
+        {
+            signin = value;
+        }
+    }
+
+    public SignOut Signout
+    {
+        get
+        {
+            return signout;
+        }
+
+        set
+        {
+            signout = value;
+        }
+    }
+
+    public ListClinical List_clinical
+    {
+        get
+        {
+            return list_clinical;
+        }
+
+        set
+        {
+            list_clinical = value;
+        }
+    }
+
+    public RandomItem Random_item
+    {
+        get
+        {
+            return random_item;
+        }
+
+        set
+        {
+            random_item = value;
+        }
+    }
+
+    public RandomContent Random_content
+    {
+        get
+        {
+            return random_content;
+        }
+
+        set
+        {
+            random_content = value;
+        }
+    }
+
+    public GameRecord Game_record
+    {
+        get
+        {
+            return game_record;
+        }
+
+        set
+        {
+            game_record = value;
+        }
+    }
+}
+
 //
 // 1.1 회원가입
 //
@@ -12,12 +115,28 @@ public struct SignUp
 
     public Respon Respon
     {
-        get { return respon; }
+        get
+        {
+            return respon;
+        }
+
+        set
+        {
+            respon = value;
+        }
     }
 
     public Result Result
     {
-        get { return result; }
+        get
+        {
+            return result;
+        }
+
+        set
+        {
+            result = value;
+        }
     }
 }
 
@@ -32,12 +151,28 @@ public struct SignIn
 
     public Respon Respon
     {
-        get { return respon; }
+        get
+        {
+            return respon;
+        }
+
+        set
+        {
+            respon = value;
+        }
     }
 
     public Result Result
     {
-        get { return result; }
+        get
+        {
+            return result;
+        }
+
+        set
+        {
+            result = value;
+        }
     }
 }
 
@@ -52,12 +187,28 @@ public struct SignOut
 
     public Respon Respon
     {
-        get { return respon; }
+        get
+        {
+            return respon;
+        }
+
+        set
+        {
+            respon = value;
+        }
     }
 
     public Result Result
     {
-        get { return result; }
+        get
+        {
+            return result;
+        }
+
+        set
+        {
+            result = value;
+        }
     }
 }
 
@@ -68,7 +219,15 @@ public struct Respon
 
     public string Success
     {
-        get { return success; }
+        get
+        {
+            return success;
+        }
+
+        set
+        {
+            success = value;
+        }
     }
 }
 
@@ -82,25 +241,56 @@ public struct Result
 
     public string Uid
     {
-        get { return uid; }
+        get
+        {
+            return uid;
+        }
+
+        set
+        {
+            uid = value;
+        }
     }
 
     public string Token
     {
-        get { return token; } 
+        get
+        {
+            return token;
+        }
+
+        set
+        {
+            token = value;
+        }
     }
 
     public string Code
     {
-        get { return code; }
+        get
+        {
+            return code;
+        }
+
+        set
+        {
+            code = value;
+        }
     }
 
     public string Reason
     {
-        get { return reason; } 
+        get
+        {
+            return reason;
+        }
+
+        set
+        {
+            reason = value;
+        }
     }
 }
-
 
 //
 //2.1 간호술기 목차 보기
@@ -112,14 +302,43 @@ public struct ListClinical
     [SerializeField] private ListClinicalInfo info;
     [SerializeField] private ListClinical_listDetail list;
 
+    public Respon Respon
+    {
+        get
+        {
+            return respon;
+        }
+
+        set
+        {
+            respon = value;
+        }
+    }
+
     public ListClinicalInfo Info
     {
-        get { return info; }
+        get
+        {
+            return info;
+        }
+
+        set
+        {
+            info = value;
+        }
     }
 
     public ListClinical_listDetail List
     {
-        get { return list; }
+        get
+        {
+            return list;
+        }
+
+        set
+        {
+            list = value;
+        }
     }
 }
 
@@ -130,7 +349,15 @@ public struct ListClinicalInfo
 
     public ListSize Listsize
     {
-        get { return listsize; }
+        get
+        {
+            return listsize;
+        }
+
+        set
+        {
+            listsize = value;
+        }
     }
 }
 
@@ -141,7 +368,15 @@ public struct ListSize
 
     public string Listsize
     {
-        get { return listsize; }
+        get
+        {
+            return listsize;
+        }
+
+        set
+        {
+            listsize = value;
+        }
     }
 }
 
@@ -154,17 +389,41 @@ public struct ListClinical_listDetail
 
     public string Id
     {
-        get { return id; }
+        get
+        {
+            return id;
+        }
+
+        set
+        {
+            id = value;
+        }
     }
 
     public string Title
     {
-        get { return title; }
+        get
+        {
+            return title;
+        }
+
+        set
+        {
+            title = value;
+        }
     }
 
     public string Difficulty
     {
-        get { return difficulty; }
+        get
+        {
+            return difficulty;
+        }
+
+        set
+        {
+            difficulty = value;
+        }
     }
 }
 
@@ -178,14 +437,43 @@ public struct RandomContent
     [SerializeField] private Info info;
     [SerializeField] private RandomContentListDetail list;
 
+    public Respon Respon
+    {
+        get
+        {
+            return respon;
+        }
+
+        set
+        {
+            respon = value;
+        }
+    }
+
     public Info Info
     {
-        get { return info; }
+        get
+        {
+            return info;
+        }
+
+        set
+        {
+            info = value;
+        }
     }
 
     public RandomContentListDetail List
     {
-        get { return list; }
+        get
+        {
+            return list;
+        }
+
+        set
+        {
+            list = value;
+        }
     }
 }
 
@@ -197,12 +485,28 @@ public struct RandomContentListDetail
 
     public string Index
     {
-        get { return index; }
+        get
+        {
+            return index;
+        }
+
+        set
+        {
+            index = value;
+        }
     }
 
     public string Content
     {
-        get { return content; }
+        get
+        {
+            return content;
+        }
+
+        set
+        {
+            content = value;
+        }
     }
 }
 
@@ -216,14 +520,43 @@ public struct RandomItem
     [SerializeField] private Info info;
     [SerializeField] private RandomItemListDetail list;
 
+    public Respon Respon
+    {
+        get
+        {
+            return respon;
+        }
+
+        set
+        {
+            respon = value;
+        }
+    }
+
     public Info Info
     {
-        get { return info; }
+        get
+        {
+            return info;
+        }
+
+        set
+        {
+            info = value;
+        }
     }
 
     public RandomItemListDetail List
     {
-        get { return list; }
+        get
+        {
+            return list;
+        }
+
+        set
+        {
+            list = value;
+        }
     }
 }
 
@@ -235,12 +568,28 @@ public struct RandomItemListDetail
 
     public string Name
     {
-        get { return name; }
+        get
+        {
+            return name;
+        }
+
+        set
+        {
+            name = value;
+        }
     }
 
     public string Rating
     {
-        get { return rating; }
+        get
+        {
+            return rating;
+        }
+
+        set
+        {
+            rating = value;
+        }
     }
 }
 
@@ -253,17 +602,41 @@ public struct Info
 
     public string Id
     {
-        get { return id; }
+        get
+        {
+            return id;
+        }
+
+        set
+        {
+            id = value;
+        }
     }
 
     public string Title
     {
-        get { return title; }
+        get
+        {
+            return title;
+        }
+
+        set
+        {
+            title = value;
+        }
     }
 
     public string Difficulty
     {
-        get { return difficulty; }
+        get
+        {
+            return difficulty;
+        }
+
+        set
+        {
+            difficulty = value;
+        }
     }
 }
 
@@ -276,9 +649,30 @@ public struct GameRecord
     [SerializeField] private Respon respon;
     [SerializeField] private GameRecordInfo info;
 
+    public Respon Respon
+    {
+        get
+        {
+            return respon;
+        }
+
+        set
+        {
+            respon = value;
+        }
+    }
+
     public GameRecordInfo Info
     {
-        get { return info; }
+        get
+        {
+            return info;
+        }
+
+        set
+        {
+            info = value;
+        }
     }
 }
 
@@ -290,11 +684,27 @@ public struct GameRecordInfo
 
     public string Name
     {
-        get { return name; }
+        get
+        {
+            return name;
+        }
+
+        set
+        {
+            name = value;
+        }
     }
 
     public string Score
     {
-        get { return score; }
+        get
+        {
+            return score;
+        }
+
+        set
+        {
+            score = value;
+        }
     }
 }

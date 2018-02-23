@@ -4,15 +4,6 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-[Serializable]
-public struct SignUpInform
-{
-    public string emailAddr;
-    public string name;
-    public string password;
-    public string rePassword;
-}
-
 public class SignupViewController : ViewController
 {
     [SerializeField] private InputField idInput;
@@ -27,7 +18,6 @@ public class SignupViewController : ViewController
     private string errTitle = "";
 
     private static GameObject prefab = null;
-    private SignUpInform signUpInform;
 
     public static SignupViewController Show()
     {
@@ -46,7 +36,6 @@ public class SignupViewController : ViewController
     public void SetSignUpView()
     {
         loadingObj.SetActive(false);
-        signUpInform = new SignUpInform();
 
         nameInput.onEndEdit.AddListener(delegate { CheckNameInput(nameInput); });
         pwInput.onEndEdit.AddListener(delegate { CheckPWInput(pwInput); });
@@ -63,7 +52,6 @@ public class SignupViewController : ViewController
             AlertViewController.Show(errTitle, errMessage);
             return;
         }
-        signUpInform.name = input.text;
     }
 
     private void CheckPWInput(InputField input)
@@ -74,8 +62,6 @@ public class SignupViewController : ViewController
             AlertViewController.Show(errTitle, errMessage);
             return;
         }
-
-        signUpInform.password = input.text;
     }
 
     private void CheckRePWInput(InputField input)
@@ -86,7 +72,6 @@ public class SignupViewController : ViewController
             AlertViewController.Show(errTitle, errMessage);
             return;
         }
-        signUpInform.rePassword = input.text;
     }
 
     private void OnPressSend()
@@ -106,12 +91,31 @@ public class SignupViewController : ViewController
             job = tg.name;
         }
 
-        Debug.Log("id: " + idInput.text + " pw: " + pwInput.text + " name: " + nameInput.text + " job: " + job);
-        DataManager.instance.SignUp(idInput.text, pwInput.text, nameInput.text, job);
+        loadingObj.SetActive(true);
+
+        DataManager.instance.OnLoadingImage += onLoadingImage;
+        DataManager.instance.SendSignUp(idInput.text, pwInput.text, nameInput.text, job);
     }
 
     private void OnPressClose()
     {
         Destroy(gameObject);
     }
+
+    private void onLoadingImage(string success)
+    {
+        loadingObj.SetActive(false);
+        if (success.Equals("true"))
+        {
+            string message = "회원가입을 완료했습니다";
+            AlertViewController.Show(errTitle, message);
+            OnPressClose();
+        }
+        else
+        {
+            string message = "아이디가 중복됐습니다. 다시 시도하세요.";
+            AlertViewController.Show(errTitle, message);
+        }
+    }
 }
+              
