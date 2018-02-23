@@ -2,20 +2,6 @@
 using UnityEngine;
 using UnityEngine.UI;
 
-[Serializable]
-public struct LogInInform
-{
-    public string id;
-    public string pw;
-}
-
-[Serializable]
-public struct LogInSettingsOption
-{
-    public bool isAutoLogIn;
-    public bool isSetID;
-}
-
 public class LoginViewController : ViewController
 {
 	[SerializeField] private InputField	idInput;
@@ -39,8 +25,10 @@ public class LoginViewController : ViewController
 
         if (autoSetId.isOn)
         {
-            string loadData = PlayerPrefs.GetString("SavedLoginInform");
-            idInput.text = loadData;
+            string loadLoginData = PlayerPrefs.GetString("SavedLoginInform");
+            LogInInform logInInform = JsonUtility.FromJson<LogInInform>(loadLoginData);
+            idInput.text = logInInform.Id;
+            pwInput.text = logInInform.Pw;
         }
 
         if (autoLogin.isOn)
@@ -69,7 +57,7 @@ public class LoginViewController : ViewController
             return;
         }
 
-        logInInform.id = input.text;
+        logInInform.Id = input.text;
     }
 
     private void CheckPWInput(InputField input)
@@ -80,7 +68,7 @@ public class LoginViewController : ViewController
             return;
         }
 
-        logInInform.pw = input.text;
+        logInInform.Pw = input.text;
     }
     
     //회원가입 버튼 클릭
@@ -99,9 +87,45 @@ public class LoginViewController : ViewController
             return;
         }
 
-        OnAutoSetID();
-        SaveLoginSettings();
+        loadingObj.SetActive(true);
+        DataManager.instance.OnLoadingImage += onLoadingImage;
+        DataManager.instance.SendSignIn(idInput.text, pwInput.text);
+    }
 
+    private void onLoadingImage(string success, Result result = null)
+    {
+        if(success.Equals("true"))
+        {
+            SaveLoginSettings();
+
+            if(autoSetId.isOn)
+            {
+                OnAutoSetID();
+            }
+            string token = result.Token;
+
+        }
+        else if(success.Equals("false"))
+        {
+            if(result.Code.Equals("3"))
+            {
+                string message = "비밀번호가 일치하지 않습니다.";
+                AlertViewController.Show("", message);
+            }
+            else if(result.Code.Equals("4"))
+            {
+                string message = "등록되지 않은 아이디입니다.";
+                AlertViewController.Show("", message);
+            }
+        }
+        else
+        {
+            string message = "네트워크가 불안정합니다. 잠시후 다시 시도해주세요.";
+            AlertViewController.Show("", message);
+        }
+
+        DataManager.instance.OnLoadingImage -= onLoadingImage;
+        loadingObj.SetActive(false);
     }
 
     //아이디 저장 
@@ -109,9 +133,8 @@ public class LoginViewController : ViewController
     {
         if (autoSetId.isOn)
         {
-            string idData = idInput.text;
-
-            PlayerPrefs.SetString("SavedLoginInform", idData);
+            string jsonData = JsonUtility.ToJson(logInInform, true);
+            PlayerPrefs.SetString("SavedLoginInform", jsonData);
         }
         else
         {

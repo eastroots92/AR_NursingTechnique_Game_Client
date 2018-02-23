@@ -102,20 +102,28 @@ public class SignupViewController : ViewController
         Destroy(gameObject);
     }
 
-    private void onLoadingImage(string success)
+    private void onLoadingImage(string success, Result result = null)
     {
         loadingObj.SetActive(false);
+
         if (success.Equals("true"))
         {
             string message = "회원가입을 완료했습니다";
             AlertViewController.Show(errTitle, message);
             OnPressClose();
         }
-        else
+        else if (success.Equals("false"))
         {
             string message = "아이디가 중복됐습니다. 다시 시도하세요.";
             AlertViewController.Show(errTitle, message);
         }
+        else
+        {
+            string message = "네트워크가 불안정합니다. 잠시후 다시 시도해주세요.";
+            AlertViewController.Show("", message);
+        }
+
+        DataManager.instance.OnLoadingImage -= onLoadingImage;
     }
 }
               

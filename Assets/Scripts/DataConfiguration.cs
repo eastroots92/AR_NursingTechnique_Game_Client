@@ -2,7 +2,7 @@
 using System;
 
 [Serializable]
-public struct DataConfiguration
+public class DataConfiguration
 {
     [SerializeField] private SignUp signup;
     [SerializeField] private SignIn signin;
@@ -108,7 +108,7 @@ public struct DataConfiguration
 // 1.1 회원가입
 //
 [Serializable]
-public struct SignUp
+public class SignUp
 {
     [SerializeField] private Respon respon;
     [SerializeField] private Result result;
@@ -144,7 +144,7 @@ public struct SignUp
 // 1.2 로그인
 //
 [Serializable]
-public struct SignIn
+public class SignIn
 {
     [SerializeField] private Respon respon;
     [SerializeField] private Result result;
@@ -180,7 +180,7 @@ public struct SignIn
 // 1.3 로그아웃
 //
 [Serializable]
-public struct SignOut
+public class SignOut
 {
     [SerializeField] private Respon respon;
     [SerializeField] private Result result;
@@ -213,7 +213,7 @@ public struct SignOut
 }
 
 [Serializable]
-public struct Respon
+public class Respon
 {
     [SerializeField] private string success;
 
@@ -232,7 +232,7 @@ public struct Respon
 }
 
 [Serializable]
-public struct Result
+public class Result
 {
     [SerializeField] private string uid;
     [SerializeField] private string token;
@@ -296,7 +296,7 @@ public struct Result
 //2.1 간호술기 목차 보기
 //
 [Serializable]
-public struct ListClinical
+public class ListClinical
 {
     [SerializeField] private Respon respon;
     [SerializeField] private ListClinicalInfo info;
@@ -343,7 +343,7 @@ public struct ListClinical
 }
 
 [Serializable]
-public struct ListClinicalInfo
+public class ListClinicalInfo
 {
     [SerializeField] private ListSize listsize;
 
@@ -362,7 +362,7 @@ public struct ListClinicalInfo
 }
 
 [SerializeField]
-public struct ListSize
+public class ListSize
 {
     [SerializeField] private string listsize;
 
@@ -381,7 +381,7 @@ public struct ListSize
 }
 
 [Serializable]
-public struct ListClinical_listDetail
+public class ListClinical_listDetail
 {
     [SerializeField] private string id;
     [SerializeField] private string title;
@@ -431,7 +431,7 @@ public struct ListClinical_listDetail
 // 2.2 간호술기 순서
 //
 [Serializable]
-public struct RandomContent
+public class RandomContent
 {
     [SerializeField] private Respon respon;
     [SerializeField] private Info info;
@@ -478,7 +478,7 @@ public struct RandomContent
 }
 
 [Serializable]
-public struct RandomContentListDetail
+public class RandomContentListDetail
 {
     [SerializeField] private string index;
     [SerializeField] private string content;
@@ -514,7 +514,7 @@ public struct RandomContentListDetail
 // 2.3 간호술기 아이템
 //
 [Serializable]
-public struct RandomItem
+public class RandomItem
 {
     [SerializeField] private Respon respon;
     [SerializeField] private Info info;
@@ -561,7 +561,7 @@ public struct RandomItem
 }
 
 [Serializable]
-public struct RandomItemListDetail
+public class RandomItemListDetail
 {
     [SerializeField] private string name;
     [SerializeField] private string rating;
@@ -594,7 +594,7 @@ public struct RandomItemListDetail
 }
 
 [Serializable]
-public struct Info
+public class Info
 {
     [SerializeField] private string id;
     [SerializeField] private string title;
@@ -644,7 +644,7 @@ public struct Info
 // 3.1 게임 결과 기록
 //
 [Serializable]
-public struct GameRecord
+public class GameRecord
 {
     [SerializeField] private Respon respon;
     [SerializeField] private GameRecordInfo info;
@@ -677,7 +677,7 @@ public struct GameRecord
 }
 
 [Serializable]
-public struct GameRecordInfo
+public class GameRecordInfo
 {
     [SerializeField] private string name;
     [SerializeField] private string score;
@@ -707,4 +707,50 @@ public struct GameRecordInfo
             score = value;
         }
     }
+}
+
+//
+// 로그인 정보
+//
+[Serializable]
+public struct LogInInform
+{
+    [SerializeField] private string id;
+    [SerializeField] private string pw;
+
+    public string Id
+    {
+        get
+        {
+            return id;
+        }
+
+        set
+        {
+            id = value;
+        }
+    }
+
+    public string Pw
+    {
+        get
+        {
+            return pw;
+        }
+
+        set
+        {
+            pw = value;
+        }
+    }
+}
+
+//
+// Login View Option 정보
+//
+[Serializable]
+public struct LogInSettingsOption
+{
+    public bool isAutoLogIn;
+    public bool isSetID;
 }

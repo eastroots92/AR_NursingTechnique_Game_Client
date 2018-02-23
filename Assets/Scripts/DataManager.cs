@@ -1,9 +1,13 @@
 ﻿using System.Collections;
 using UnityEngine;
 
+/// <summary>
+/// test ID : admin, pw : 123456, token : 
+/// </summary>
+
 public class DataManager : MonoBehaviour
 {
-    public delegate void LoadingImageHandler(string success);
+    public delegate void LoadingImageHandler(string success, Result result = null);
     public event LoadingImageHandler OnLoadingImage;
 
     public static DataManager instance = null;
@@ -36,6 +40,14 @@ public class DataManager : MonoBehaviour
         StartCoroutine(WaitForRequest(www));
     }
 
+    public void SendSignIn(string id, string pw)
+    {
+        string url = signInUrl + "uid=" + id + "&password=" + pw;
+        WWW www = new WWW(url);
+
+        StartCoroutine(WaitForRequest(www));
+    }
+
     IEnumerator WaitForRequest(WWW www)
     {
         yield return www;
@@ -48,8 +60,11 @@ public class DataManager : MonoBehaviour
         else
         {
             Debug.Log("WWW error: " + www.error);   // something wrong!
-            string message = "다시 시도해주세요.";
-            AlertViewController.Show("", message);
+            if (GameObject.Find("LodingLayout").activeSelf)
+            {
+                if (OnLoadingImage != null)
+                    OnLoadingImage(www.error);
+            }
         }
     }
 
@@ -62,6 +77,12 @@ public class DataManager : MonoBehaviour
             yield return new WaitForSeconds(2f);
             if (OnLoadingImage != null)
                 OnLoadingImage(config.Signup.Respon.Success);
+        }
+        else if(receiveData.Contains("signin"))
+        {
+            yield return new WaitForSeconds(2f);
+            if (OnLoadingImage != null)
+                OnLoadingImage(config.Signin.Respon.Success, config.Signin.Result);
         }
     }
 }
