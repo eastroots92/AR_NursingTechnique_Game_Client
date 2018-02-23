@@ -12,6 +12,7 @@ public class DataConfiguration
     [SerializeField] private RandomContent random_content;
     [SerializeField] private GameRecord game_record;
 
+    #region DataConfiguration Property
     public SignUp Signup
     {
         get
@@ -102,6 +103,7 @@ public class DataConfiguration
             game_record = value;
         }
     }
+#endregion
 }
 
 //
@@ -113,6 +115,7 @@ public class SignUp
     [SerializeField] private Respon respon;
     [SerializeField] private Result result;
 
+    #region SignUp Property
     public Respon Respon
     {
         get
@@ -138,6 +141,7 @@ public class SignUp
             result = value;
         }
     }
+#endregion
 }
 
 //
@@ -149,6 +153,7 @@ public class SignIn
     [SerializeField] private Respon respon;
     [SerializeField] private Result result;
 
+    #region SignIn Property
     public Respon Respon
     {
         get
@@ -174,6 +179,7 @@ public class SignIn
             result = value;
         }
     }
+#endregion
 }
 
 //
@@ -185,6 +191,7 @@ public class SignOut
     [SerializeField] private Respon respon;
     [SerializeField] private Result result;
 
+    #region SignOut Property
     public Respon Respon
     {
         get
@@ -210,6 +217,7 @@ public class SignOut
             result = value;
         }
     }
+#endregion
 }
 
 [Serializable]
@@ -217,6 +225,7 @@ public class Respon
 {
     [SerializeField] private string success;
 
+#region Respon Property
     public string Success
     {
         get
@@ -229,6 +238,7 @@ public class Respon
             success = value;
         }
     }
+#endregion
 }
 
 [Serializable]
@@ -239,6 +249,7 @@ public class Result
     [SerializeField] private string code;
     [SerializeField] private string reason;
 
+#region Result Property
     public string Uid
     {
         get
@@ -290,6 +301,7 @@ public class Result
             reason = value;
         }
     }
+#endregion
 }
 
 //
@@ -302,6 +314,7 @@ public class ListClinical
     [SerializeField] private ListClinicalInfo info;
     [SerializeField] private ListClinical_listDetail list;
 
+    #region ListClinical Property
     public Respon Respon
     {
         get
@@ -340,6 +353,7 @@ public class ListClinical
             list = value;
         }
     }
+#endregion
 }
 
 [Serializable]
@@ -347,6 +361,7 @@ public class ListClinicalInfo
 {
     [SerializeField] private ListSize listsize;
 
+    #region ListClinicalInfo Property
     public ListSize Listsize
     {
         get
@@ -359,6 +374,7 @@ public class ListClinicalInfo
             listsize = value;
         }
     }
+#endregion
 }
 
 [SerializeField]
@@ -366,6 +382,7 @@ public class ListSize
 {
     [SerializeField] private string listsize;
 
+    #region ListSize Property
     public string Listsize
     {
         get
@@ -378,6 +395,7 @@ public class ListSize
             listsize = value;
         }
     }
+#endregion
 }
 
 [Serializable]
@@ -387,6 +405,7 @@ public class ListClinical_listDetail
     [SerializeField] private string title;
     [SerializeField] private string difficulty;
 
+    #region ListClinical_listDetail Property
     public string Id
     {
         get
@@ -425,6 +444,7 @@ public class ListClinical_listDetail
             difficulty = value;
         }
     }
+#endregion
 }
 
 //
@@ -437,6 +457,7 @@ public class RandomContent
     [SerializeField] private Info info;
     [SerializeField] private RandomContentListDetail list;
 
+    #region RandomContent Property
     public Respon Respon
     {
         get
@@ -475,6 +496,7 @@ public class RandomContent
             list = value;
         }
     }
+#endregion
 }
 
 [Serializable]
@@ -483,6 +505,7 @@ public class RandomContentListDetail
     [SerializeField] private string index;
     [SerializeField] private string content;
 
+    #region RandomContentListDetail Property
     public string Index
     {
         get
@@ -508,6 +531,7 @@ public class RandomContentListDetail
             content = value;
         }
     }
+#endregion
 }
 
 //
@@ -520,6 +544,7 @@ public class RandomItem
     [SerializeField] private Info info;
     [SerializeField] private RandomItemListDetail list;
 
+    #region RandomItem Property
     public Respon Respon
     {
         get
@@ -558,6 +583,7 @@ public class RandomItem
             list = value;
         }
     }
+#endregion
 }
 
 [Serializable]
@@ -566,6 +592,7 @@ public class RandomItemListDetail
     [SerializeField] private string name;
     [SerializeField] private string rating;
 
+    #region RandomItemListDetail Property
     public string Name
     {
         get
@@ -591,6 +618,7 @@ public class RandomItemListDetail
             rating = value;
         }
     }
+#endregion
 }
 
 [Serializable]
@@ -600,6 +628,7 @@ public class Info
     [SerializeField] private string title;
     [SerializeField] private string difficulty;
 
+    #region Info Property
     public string Id
     {
         get
@@ -638,6 +667,7 @@ public class Info
             difficulty = value;
         }
     }
+#endregion
 }
 
 //
@@ -649,6 +679,7 @@ public class GameRecord
     [SerializeField] private Respon respon;
     [SerializeField] private GameRecordInfo info;
 
+    #region GameRecord Property
     public Respon Respon
     {
         get
@@ -674,6 +705,7 @@ public class GameRecord
             info = value;
         }
     }
+#endregion
 }
 
 [Serializable]
@@ -682,6 +714,7 @@ public class GameRecordInfo
     [SerializeField] private string name;
     [SerializeField] private string score;
 
+    #region GameRecordInfo Property
     public string Name
     {
         get
@@ -707,6 +740,7 @@ public class GameRecordInfo
             score = value;
         }
     }
+    #endregion
 }
 
 //
@@ -718,6 +752,7 @@ public struct LogInInform
     [SerializeField] private string id;
     [SerializeField] private string pw;
 
+    #region LogInInform Property
     public string Id
     {
         get
@@ -743,6 +778,7 @@ public struct LogInInform
             pw = value;
         }
     }
+#endregion
 }
 
 //
@@ -753,4 +789,28 @@ public struct LogInSettingsOption
 {
     public bool isAutoLogIn;
     public bool isSetID;
+}
+
+[Serializable]
+public struct TokenData
+{
+    [SerializeField] private string token;
+
+    public string Token
+    {
+        get
+        {
+            return token;
+        }
+
+        set
+        {
+            token = value;
+        }
+    }
+
+    public TokenData(string token)
+    {
+        this.token = token;
+    }
 }

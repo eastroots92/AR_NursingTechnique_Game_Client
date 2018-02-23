@@ -2,7 +2,7 @@
 using UnityEngine;
 
 /// <summary>
-/// test ID : admin, pw : 123456, token : 
+/// test ID : admin, pw : 123456, token : axfmyziedcvupjtlrqho
 /// </summary>
 
 public class DataManager : MonoBehaviour
@@ -11,7 +11,9 @@ public class DataManager : MonoBehaviour
     public event LoadingImageHandler OnLoadingImage;
 
     public static DataManager instance = null;
+    private string token = "";
 
+    #region ClinicalURL Data & Property
     [SerializeField] private string signUpUrl = "http://52.78.158.73/user/signup.json?";
     [SerializeField] private string signInUrl = "http://52.78.158.73/user/signin.json?";
     [SerializeField] private string signOutUrl = "http://52.78.158.73/user/signout.json?token=";
@@ -24,8 +26,19 @@ public class DataManager : MonoBehaviour
     [SerializeField] private string randomItemUrl = "http://52.78.158.73/game/random_item.json?token";
     [SerializeField] private string gameRecordUrl = "http://52.78.158.73/game/game_record.json?";
 
+    public string Token
+    {
+        set
+        {
+            token = value;
+        }
+    }
+    #endregion
+
     private void Awake()
     {
+        DontDestroyOnLoad(gameObject);
+
         if (instance == null)
             instance = this;
         else if (instance != this)

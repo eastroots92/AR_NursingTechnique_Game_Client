@@ -30,13 +30,6 @@ public class LoginViewController : ViewController
             idInput.text = logInInform.Id;
             pwInput.text = logInInform.Pw;
         }
-
-        if (autoLogin.isOn)
-        {
-            //자동 로그인이 true면 
-            //토큰 유무에 따라
-            //자동 로그인 처리 로직 실행
-        }
     }
 
     private void Start ()
@@ -51,12 +44,6 @@ public class LoginViewController : ViewController
 
     private void CheckIDInput(InputField input)
     {
-        if (input.text.Length != 0 && !(input.text.Contains("@") && input.text.Contains(".")))
-        {
-            AlertViewController.Show("", "메일 형식을 확인해주세요.");
-            return;
-        }
-
         logInInform.Id = input.text;
     }
 
@@ -70,7 +57,7 @@ public class LoginViewController : ViewController
 
         logInInform.Pw = input.text;
     }
-    
+
     //회원가입 버튼 클릭
     private void SignUp()
     {
@@ -94,16 +81,24 @@ public class LoginViewController : ViewController
 
     private void onLoadingImage(string success, Result result = null)
     {
-        if(success.Equals("true"))
+
+        DataManager.instance.OnLoadingImage -= onLoadingImage;
+        loadingObj.SetActive(false);
+
+        if (success.Equals("true"))
         {
             SaveLoginSettings();
+            OnAutoSetID();
 
-            if(autoSetId.isOn)
+            if (autoLogin.isOn)
             {
-                OnAutoSetID();
+                TokenData tokenData = new TokenData(result.Token);
+                string data = JsonUtility.ToJson(tokenData, true);
+                PlayerPrefs.SetString("SavedTokenData", data);
             }
-            string token = result.Token;
 
+            DataManager.instance.Token = result.Token;
+            StartCoroutine(GameSceneManager.instance.ChangeScene(2));
         }
         else if(success.Equals("false"))
         {
@@ -123,9 +118,6 @@ public class LoginViewController : ViewController
             string message = "네트워크가 불안정합니다. 잠시후 다시 시도해주세요.";
             AlertViewController.Show("", message);
         }
-
-        DataManager.instance.OnLoadingImage -= onLoadingImage;
-        loadingObj.SetActive(false);
     }
 
     //아이디 저장 
