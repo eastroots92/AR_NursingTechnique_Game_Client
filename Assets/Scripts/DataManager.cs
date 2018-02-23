@@ -4,7 +4,6 @@ using UnityEngine;
 public class DataManager : MonoBehaviour {
    
     public static DataManager instance = null;
-    DataConfiguration config;
 
     [SerializeField] private string signUpUrl = "http://52.78.158.73/user/signup.json?";
     [SerializeField] private string signInUrl = "http://52.78.158.73/user/signin.json?";
@@ -53,6 +52,6 @@ public class DataManager : MonoBehaviour {
 
     private void ReceiveData(string receiveData)
     {
-        config = JsonUtility.FromJson<DataConfiguration>(receiveData);
+        //config = JsonUtility.FromJson<DataConfiguration>(receiveData);
     }
 }
