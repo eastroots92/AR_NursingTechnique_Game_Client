@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System;
+using System.Collections.Generic;
 
 [Serializable]
 public class DataConfiguration
@@ -311,8 +312,8 @@ public class Result
 public class ListClinical
 {
     [SerializeField] private Respon respon;
-    [SerializeField] private ListClinicalInfo info;
-    [SerializeField] private ListClinical_listDetail list;
+    [SerializeField] private ListSize info;
+    [SerializeField] private List<ListClinical_listDetail> list;
 
     #region ListClinical Property
     public Respon Respon
@@ -328,7 +329,20 @@ public class ListClinical
         }
     }
 
-    public ListClinicalInfo Info
+    public List<ListClinical_listDetail> List
+    {
+        get
+        {
+            return list;
+        }
+
+        set
+        {
+            list = value;
+        }
+    }
+
+    public ListSize Info
     {
         get
         {
@@ -341,72 +355,50 @@ public class ListClinical
         }
     }
 
-    public ListClinical_listDetail List
-    {
-        get
-        {
-            return list;
-        }
-
-        set
-        {
-            list = value;
-        }
-    }
-#endregion
+    #endregion
 }
 
 [Serializable]
-public class ListClinicalInfo
-{
-    [SerializeField] private ListSize listsize;
-
-    #region ListClinicalInfo Property
-    public ListSize Listsize
-    {
-        get
-        {
-            return listsize;
-        }
-
-        set
-        {
-            listsize = value;
-        }
-    }
-#endregion
-}
-
-[SerializeField]
 public class ListSize
 {
-    [SerializeField] private string listsize;
+    [SerializeField] private int listSize;
 
     #region ListSize Property
-    public string Listsize
+    public int Listsize
     {
         get
         {
-            return listsize;
+            return listSize;
         }
 
         set
         {
-            listsize = value;
+            listSize = value;
         }
     }
-#endregion
+    #endregion
 }
+/*
+List<Object> list = null;
 
+if(list == null){
+    list = new List<Object>();
+ }
+    
+    if(Result.list.size() > 0){
+        foreach(List<ListClinical_listDetail> d_list in a.list[0] r_list){
+            
+        }
+    }
+    */
 [Serializable]
 public class ListClinical_listDetail
 {
-    [SerializeField] private string id;
+    [SerializeField] private int id;
     [SerializeField] private string title;
     [SerializeField] private string difficulty;
-
     #region ListClinical_listDetail Property
-    public string Id
+    public int Id
     {
         get
         {
@@ -444,7 +436,7 @@ public class ListClinical_listDetail
             difficulty = value;
         }
     }
-#endregion
+    #endregion
 }
 
 //

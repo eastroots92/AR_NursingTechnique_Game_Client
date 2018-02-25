@@ -61,7 +61,6 @@ public class GameSceneManager : MonoBehaviour
                 pd.Pause();
                 CheckAutoLogin();
             }
-
             yield return null;
         }
     }
@@ -85,6 +84,7 @@ public class GameSceneManager : MonoBehaviour
     private void OnLevelWasLoaded(int level)
     {
         BeginFade(-1);
+
         int index = SceneManager.GetActiveScene().buildIndex;
 
         if (index == 0)
@@ -92,7 +92,10 @@ public class GameSceneManager : MonoBehaviour
         else if (index == 1)
             sceneState = SceneState.Login;
         else if (index == 2)
+        {
             sceneState = SceneState.Menu;
+            DataManager.instance.SendListClinical();
+        }
         else if (index == 3)
             sceneState = SceneState.Game;
     }
@@ -101,11 +104,14 @@ public class GameSceneManager : MonoBehaviour
     {
         BeginFade(1);
         yield return new WaitForSeconds(1f);
+
         SceneManager.LoadScene(index);
     }
 
     private void CheckAutoLogin()
     {
+        StopCoroutine(FirstSceneCheck());
+
         if (!PlayerPrefs.HasKey("SavedTokenData"))
             StartCoroutine(ChangeScene(1));
         else

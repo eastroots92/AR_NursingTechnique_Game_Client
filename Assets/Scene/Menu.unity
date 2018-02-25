@@ -203,6 +203,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 05ab11944f9f8b84d97589c39f244794, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  signUpUrl: http://52.78.158.73/user/signup.json?
+  signInUrl: http://52.78.158.73/user/signin.json?
+  signOutUrl: http://52.78.158.73/user/signout.json?token=
+  listClinicalUrl: http://52.78.158.73/game/list_clinical.json?token=
+  randomContentUrl: http://52.78.158.73/game/random_content.json?token
+  randomItemUrl: http://52.78.158.73/game/random_item.json?token
+  gameRecordUrl: http://52.78.158.73/game/game_record.json?
 --- !u!4 &91686691
 Transform:
   m_ObjectHideFlags: 0
@@ -3636,6 +3643,7 @@ GameObject:
   - component: {fileID: 1913352476}
   - component: {fileID: 1913352475}
   - component: {fileID: 1913352474}
+  - component: {fileID: 1913352478}
   m_Layer: 5
   m_Name: MenuView
   m_TagString: Untagged
@@ -3720,6 +3728,18 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0, y: 0}
+--- !u!114 &1913352478
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1913352473}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: da6904882143d6442bdd6f679c09d9e1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  playBtn: {fileID: 546824335}
 --- !u!1 &1918090138
 GameObject:
   m_ObjectHideFlags: 0

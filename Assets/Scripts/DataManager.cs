@@ -2,8 +2,16 @@
 using UnityEngine;
 
 /// <summary>
-/// test ID : admin, pw : 123456, token : axfmyziedcvupjtlrqho
+/// test ID : admin, pw : 123456, token : dtycveprbgjwhkqsfoal
 /// </summary>
+public enum RequestState
+{
+    None,
+    listClinical,
+    randomContent,
+    randomItem,
+    gameRecord
+}
 
 public class DataManager : MonoBehaviour
 {
@@ -11,7 +19,11 @@ public class DataManager : MonoBehaviour
     public event LoadingImageHandler OnLoadingImage;
 
     public static DataManager instance = null;
-    private string token = "";
+
+    private RequestState requestState;
+    private int requestCount=0;
+
+    private string token = "dtycveprbgjwhkqsfoal";
 
     #region ClinicalURL Data & Property
     [SerializeField] private string signUpUrl = "http://52.78.158.73/user/signup.json?";
@@ -43,6 +55,9 @@ public class DataManager : MonoBehaviour
             instance = this;
         else if (instance != this)
             Destroy(gameObject);
+
+        requestState = RequestState.None;
+       // SendListClinical();
     }
     
     public void SendSignUp(string id, string pw, string name, string job)
@@ -56,6 +71,16 @@ public class DataManager : MonoBehaviour
     public void SendSignIn(string id, string pw)
     {
         string url = signInUrl + "uid=" + id + "&password=" + pw;
+        WWW www = new WWW(url);
+
+        StartCoroutine(WaitForRequest(www));
+    }
+
+    public void SendListClinical()
+    {
+        requestState = RequestState.listClinical;
+
+        string url = listClinicalUrl + token;
         WWW www = new WWW(url);
 
         StartCoroutine(WaitForRequest(www));
@@ -78,13 +103,16 @@ public class DataManager : MonoBehaviour
                 if (OnLoadingImage != null)
                     OnLoadingImage(www.error);
             }
+            else
+                RequestAgain();
         }
     }
 
     private IEnumerator ReceiveData(string receiveData)
     {
-        DataConfiguration config = JsonUtility.FromJson<DataConfiguration>(receiveData);
         
+        DataConfiguration config = JsonUtility.FromJson<DataConfiguration>(receiveData);
+
         if (receiveData.Contains("signup"))
         {
             yield return new WaitForSeconds(2f);
@@ -97,6 +125,37 @@ public class DataManager : MonoBehaviour
             if (OnLoadingImage != null)
                 OnLoadingImage(config.Signin.Respon.Success, config.Signin.Result);
         }
+        else if(receiveData.Contains("list_clinical"))
+        {
+            if(config.List_clinical.Respon.Success.Equals("false"))
+                StartCoroutine(LostToken());
+
+        }
+    }
+
+    private void RequestAgain()
+    {
+        requestCount++;
+
+        if (requestCount > 15)
+        {
+            string message = "서버가 불안정합니다. 잠시후 다시 시도하세요.";
+            AlertViewController.Show("", message);
+            return;
+        }
+
+        if (requestState == RequestState.listClinical)
+            SendListClinical();
+
+    }
+
+    private IEnumerator LostToken()
+    {
+        string message = "계정 정보가 없습니다. 다시 로그인 해주세요.";
+        AlertViewController.Show("", message);
+        yield return new WaitForSeconds(1f);
+        token = "";
+        GameSceneManager.instance.ChangeScene(1);
     }
 }
 
