@@ -8,12 +8,14 @@ using System;
 public class Draggable : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHandler
 {
     [SerializeField] private Vector2 draggingOffset = new Vector2(0.0f, 40.0f); // 드래그 조작 중인 아이콘의 오프셋
-    private GameObject draggingObject; //드래그 조작 중인 아이콘의 게임 오브젝트를 저장
+    [SerializeField] private Font font;
+    private GameObject draggingIamgeObject; //드래그 조작 중인 아이콘의 게임 오브젝트를 저장
+    private GameObject draggingTextObject;
     private RectTransform canvasRectTransform; //캔버스의 Rect Transform을 저장
 
     private void UpdateDraggingObjectPos(PointerEventData pointerEventData)
     {
-        if (draggingObject != null)
+        if (draggingIamgeObject != null)
         {
             //드래그 중인 아이콘의 스크린 좌표를 계산한다.
             Vector3 screenPos = pointerEventData.position + draggingOffset;
@@ -24,40 +26,55 @@ public class Draggable : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDra
             if (RectTransformUtility.ScreenPointToWorldPointInRectangle(canvasRectTransform, screenPos, camera, out newPos))
             {
                 //드래그 중인 아이콘 위치를 월드 좌표로 설정
-                draggingObject.transform.position = newPos;
-                draggingObject.transform.rotation = canvasRectTransform.rotation;
+                draggingIamgeObject.transform.position = newPos;
+                draggingIamgeObject.transform.rotation = canvasRectTransform.rotation;
+                draggingTextObject.transform.position = newPos;
+                draggingTextObject.transform.rotation = canvasRectTransform.rotation;
             }
         }
     }
 
     public void OnBeginDrag(PointerEventData pointerEventData)
     {
-        if(draggingObject != null)
+        if(draggingIamgeObject != null)
         {
-            Destroy(draggingObject);
+            Destroy(draggingIamgeObject);
         }
-
         //본래의 아이콘의 Image 컴포넌트를 가져온다
         Image sourceImage = GetComponent<Image>();
 
         //드래그 조작 중인 아이콘의 게임 오브젝트를 생성한다.
-        draggingObject = new GameObject("Dragging Object");
+        draggingIamgeObject = new GameObject("Dragging Object");
+        draggingTextObject = new GameObject("Dragging Text");
+
         //본래의 아이콘의 캔버스의 자식 요소로 종속시켜 가장 바깥면에 표시
-        draggingObject.transform.SetParent(sourceImage.canvas.transform);
-        draggingObject.transform.SetAsLastSibling(); //자식 오브젝트 중 마지막 위치로 보냄
-        draggingObject.transform.localScale = Vector3.one;
+        draggingIamgeObject.transform.SetParent(sourceImage.canvas.transform);
+        draggingIamgeObject.transform.SetAsLastSibling(); //자식 오브젝트 중 마지막 위치로 보냄
+        draggingIamgeObject.transform.localScale = Vector3.one;
+
+        draggingTextObject.transform.SetParent(sourceImage.canvas.transform);
+        draggingTextObject.transform.SetAsLastSibling(); //자식 오브젝트 중 마지막 위치로 보냄
+        draggingTextObject.transform.localScale = Vector3.one;
 
         //Canvas Group 컴포넌트의 Block Raycasts  속성을 사용해 레이캐스트가 블록되지 않도록 한다.
-        CanvasGroup canvasGroup = draggingObject.AddComponent<CanvasGroup>();
-        canvasGroup.blocksRaycasts = false;
+        CanvasGroup canvasGroup1 = draggingIamgeObject.AddComponent<CanvasGroup>();
+        canvasGroup1.blocksRaycasts = false;
+
+        CanvasGroup canvasGroup2 = draggingTextObject.AddComponent<CanvasGroup>();
+        canvasGroup2.blocksRaycasts = false;
 
         //드래그 조작 중인 아이콘의 게임 오브젝트에 Image 컴포넌트를 추가한다.
-        Image draggingImage = draggingObject.AddComponent<Image>();
+        Image draggingImage = draggingIamgeObject.AddComponent<Image>();
+        Text draggingText = draggingTextObject.AddComponent<Text>();
         //본래의 아이콘과 같은 모습이 되게 설정한다.
         draggingImage.sprite = sourceImage.sprite;
         draggingImage.rectTransform.sizeDelta = sourceImage.rectTransform.sizeDelta;
         draggingImage.color = sourceImage.color;
         draggingImage.material = sourceImage.material;
+
+        draggingText.text = sourceImage.sprite.name;
+        draggingText.font = font;
+        draggingText.resizeTextForBestFit = true;
 
         //캔버스의 Rect Transform을 저장해둔다 
         canvasRectTransform = draggingImage.canvas.transform as RectTransform;
@@ -72,6 +89,7 @@ public class Draggable : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDra
 
     public void OnEndDrag(PointerEventData eventData)
     {
-        Destroy(draggingObject);
+        Destroy(draggingIamgeObject);
+        Destroy(draggingTextObject);
     }
 }
