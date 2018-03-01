@@ -25,9 +25,9 @@ public class DataManager : MonoBehaviour
     private int requestCount=0;
     public bool isPlay = false;
 
-	private string token = "zlnrykcmfqjvxibugphw";
-
-    private List<int> lowDifficulty;
+	private string token = "kdwznmgcshoabijyqevr";
+    
+	private List<int> lowDifficulty;
     private List<int> middleDifficulty;
     private List<int> highDifficulty;
 
@@ -48,13 +48,9 @@ public class DataManager : MonoBehaviour
     [SerializeField] private string randomItemUrl = "http://52.78.120.239/game/random_item.json?token=";
     [SerializeField] private string gameRecordUrl = "http://52.78.120.239/game/game_record.json?";
 
-	public List<string> BaseRating
-	{
-		get
-		{
-			return baseRating;
-		}
-	}
+	public List<string> BaseRating {get{return baseRating;}}
+	public List<string> NecessaryRating {get{return necessaryRating;}}
+	public List<string> ConfusionRating	{get{return confusionRating;}}
 
     public string Token
     {

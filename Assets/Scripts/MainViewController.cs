@@ -26,7 +26,6 @@ public class MainViewController : ViewController {
             navigationView.Push(this);
         }
 
-        playButton.onClick.AddListener(OnPressPlayButton);
     }
 
     //public void OnPressButton(ShopItemTableViewCell cell)
@@ -48,18 +47,17 @@ public class MainViewController : ViewController {
         }
     }
 
-    private void OnPressPlayButton()
+    public void OnPressPlayButton()
     {
         DataManager.instance.SendRandomItem(1);
 
         if (!DataManager.instance.isPlay)
         {
-            DataManager.instance.isPlay = true;
-            
+			StartCoroutine(GameSceneManager.instance.ChangeScene (3));
+			DataManager.instance.isPlay = true;
         }
         else
         {
-
         }
     }
 }
