@@ -52,13 +52,7 @@ public class DataManager : MonoBehaviour
 	public List<string> NecessaryRating {get{return necessaryRating;}}
 	public List<string> ConfusionRating	{get{return confusionRating;}}
 
-    public string Token
-    {
-        set
-        {
-            token = value;
-        }
-    }
+    public string Token { set { token = value; } }
     #endregion
 
     private void Awake()

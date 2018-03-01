@@ -42,6 +42,7 @@ public class Draggable : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDra
         }
         //본래의 아이콘의 Image 컴포넌트를 가져온다
         Image sourceImage = GetComponent<Image>();
+        sourceImage.color = new Color(1,1,1,0);
 
         //드래그 조작 중인 아이콘의 게임 오브젝트를 생성한다.
         draggingIamgeObject = new GameObject("Dragging Object");
@@ -69,8 +70,6 @@ public class Draggable : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDra
         //본래의 아이콘과 같은 모습이 되게 설정한다.
         draggingImage.sprite = sourceImage.sprite;
         draggingImage.rectTransform.sizeDelta = sourceImage.rectTransform.sizeDelta;
-        draggingImage.color = sourceImage.color;
-        draggingImage.material = sourceImage.material;
 
         draggingText.text = sourceImage.sprite.name;
         draggingText.font = font;
@@ -89,6 +88,7 @@ public class Draggable : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDra
 
     public void OnEndDrag(PointerEventData eventData)
     {
+        Debug.Log("OnEndDrag");
         Destroy(draggingIamgeObject);
         Destroy(draggingTextObject);
     }
