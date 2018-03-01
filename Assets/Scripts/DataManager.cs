@@ -25,15 +25,15 @@ public class DataManager : MonoBehaviour
     private int requestCount=0;
     public bool isPlay = false;
 
-    private string token = "kdwznmgcshoabijyqevr";
+	private string token = "zlnrykcmfqjvxibugphw";
 
     private List<int> lowDifficulty;
     private List<int> middleDifficulty;
     private List<int> highDifficulty;
 
-    private List<string> baseRating;
-    private List<string> necessaryRating;
-    private List<string> confusionRating;
+    private List<string> baseRating;       //항시
+    private List<string> necessaryRating;  //필수
+    private List<string> confusionRating;  //헷갈
 
     #region ClinicalURL Data & Property
     [SerializeField] private string signUpUrl = "http://52.78.120.239/user/signup.json?";
@@ -47,6 +47,14 @@ public class DataManager : MonoBehaviour
     //rating : 중요도, 필수-필수로 필요한 아이템, 항시-항시 준비되어 있는 물품, 혼동-헷갈리게 하는 물품
     [SerializeField] private string randomItemUrl = "http://52.78.120.239/game/random_item.json?token=";
     [SerializeField] private string gameRecordUrl = "http://52.78.120.239/game/game_record.json?";
+
+	public List<string> BaseRating
+	{
+		get
+		{
+			return baseRating;
+		}
+	}
 
     public string Token
     {

@@ -21,9 +21,26 @@ public class UI_Fill : MonoBehaviour {
 	[SerializeField]
 	private Text timerText;
 
+	[SerializeField]
+	private List<Image> baseItemImage;
+
+
 	// Use this for initialization
 	void Start () {
 		GameUI.SetActive (true);
+		int i = 0;
+		for (int k = 0; k < DataManager.instance.BaseRating.Count; k++) {
+			GameObject obj = new GameObject ("item");
+			Image img = obj.AddComponent<Image> ();
+			obj.transform.SetParent (GameObject.Find("Item").transform);
+			baseItemImage.Add (img);
+		}
+			
+		foreach (string name in DataManager.instance.BaseRating) {
+			baseItemImage [i].preserveAspect = true;
+			baseItemImage [i].sprite = Resources.Load<Sprite> (name);
+			i++;
+		}
 	}
 	
 	// Update is called once per frame
@@ -31,7 +48,7 @@ public class UI_Fill : MonoBehaviour {
 		if (fillAmount >= 0) {
 			fillAmount = 1 - Time.time / 100;
 			UpdateBar ();
-			Debug.Log (fillAmount);
+			//Debug.Log (fillAmount);
 
 			string minutes = ((int) (fillAmount*100)/60).ToString();
 			string seconds = ((int)(fillAmount*100-60)).ToString();
