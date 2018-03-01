@@ -1,12 +1,14 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class MainViewController : ViewController {
 
     [SerializeField] private NavigationViewController navigationView;
     [SerializeField] private MyChartViewController mychartView;
     [SerializeField] private HowToPlayViewController howtoplayView;
+    [SerializeField] private Button playButton;
 
     //뷰의 타이틀
     public override string Title
@@ -23,6 +25,8 @@ public class MainViewController : ViewController {
         {
             navigationView.Push(this);
         }
+
+        playButton.onClick.AddListener(OnPressPlayButton);
     }
 
     //public void OnPressButton(ShopItemTableViewCell cell)
@@ -41,6 +45,21 @@ public class MainViewController : ViewController {
             {
                 navigationView.Push(howtoplayView); //게임 방법 화면으로 넘어간다.
             }
+        }
+    }
+
+    private void OnPressPlayButton()
+    {
+        DataManager.instance.SendRandomItem(1);
+
+        if (!DataManager.instance.isPlay)
+        {
+            DataManager.instance.isPlay = true;
+            
+        }
+        else
+        {
+
         }
     }
 }

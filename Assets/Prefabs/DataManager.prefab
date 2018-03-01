@@ -51,10 +51,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 05ab11944f9f8b84d97589c39f244794, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  signUpUrl: http://52.78.158.73/user/signup.json?
-  signInUrl: http://52.78.158.73/user/signin.json?
-  signOutUrl: http://52.78.158.73/user/signout.json?token=
-  listClinicalUrl: http://52.78.158.73/game/list_clinical.json?token=
-  randomContentUrl: http://52.78.158.73/game/random_content.json?token
-  randomItemUrl: http://52.78.158.73/game/random_item.json?token
-  gameRecordUrl: http://52.78.158.73/game/game_record.json?
+  isPlay: 0
+  signUpUrl: http://52.78.120.239/user/signup.json?
+  signInUrl: http://52.78.120.239/user/signin.json?
+  signOutUrl: http://52.78.120.239/user/signout.json?token=
+  listClinicalUrl: http://52.78.120.239/game/list_clinical.json?token=
+  randomContentUrl: http://52.78.120.239/game/random_content.json?token
+  randomItemUrl: http://52.78.120.239/game/random_item.json?token
+  gameRecordUrl: http://52.78.120.239/game/game_record.json?

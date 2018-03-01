@@ -522,7 +522,7 @@ public class RandomItem
 {
     [SerializeField] private Respon respon;
     [SerializeField] private Info info;
-    [SerializeField] private RandomItemListDetail list;
+    [SerializeField] private List<RandomItemListDetail> list;
 
     #region RandomItem Property
     public Respon Respon
@@ -551,7 +551,7 @@ public class RandomItem
         }
     }
 
-    public RandomItemListDetail List
+    public List<RandomItemListDetail> List
     {
         get
         {
@@ -563,7 +563,9 @@ public class RandomItem
             list = value;
         }
     }
-#endregion
+
+
+    #endregion
 }
 
 [Serializable]

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 /// <summary>
-/// test ID : admin, pw : 123456, token : vcnhbqljorgdfzwymupk
+/// test ID : admin, pw : 123456, token : kdwznmgcshoabijyqevr
 /// </summary>
 public enum RequestState
 {
@@ -23,12 +23,17 @@ public class DataManager : MonoBehaviour
 
     private RequestState requestState;
     private int requestCount=0;
+    public bool isPlay = false;
 
-    private string token = "vcnhbqljorgdfzwymupk";
+    private string token = "kdwznmgcshoabijyqevr";
 
     private List<int> lowDifficulty;
     private List<int> middleDifficulty;
     private List<int> highDifficulty;
+
+    private List<string> baseRating;
+    private List<string> necessaryRating;
+    private List<string> confusionRating;
 
     #region ClinicalURL Data & Property
     [SerializeField] private string signUpUrl = "http://52.78.120.239/user/signup.json?";
@@ -37,10 +42,10 @@ public class DataManager : MonoBehaviour
     //간호술기 목차 보기 : "info" : {"listSize" : "목차 총 개수"}, "list" {"id": "순서","title":"제목","difficulty":"난이도:"}
     [SerializeField] private string listClinicalUrl = "http://52.78.120.239/game/list_clinical.json?token=";
     //"info" : {"id" : "해당 간호술기 번호(호출 번호)" ,"title" : "간호술기 제목" , "difficulty" : "난이도" } , " list" : { "index" : "순서" , "content" : "내용"}}}
-    [SerializeField] private string randomContentUrl = "http://52.78.120.239/game/random_content.json?token";
+    [SerializeField] private string randomContentUrl = "http://52.78.120.239/game/random_content.json?token=";
     //"info" : {"id" : "해당 간호술기 번호(호출 번호)" ,"title" : "간호술기 제목" , "difficulty" : "난이도" } , " list" : { "name" : "아이템 명" , "rating" : "중요도"}}}
     //rating : 중요도, 필수-필수로 필요한 아이템, 항시-항시 준비되어 있는 물품, 혼동-헷갈리게 하는 물품
-    [SerializeField] private string randomItemUrl = "http://52.78.120.239/game/random_item.json?token";
+    [SerializeField] private string randomItemUrl = "http://52.78.120.239/game/random_item.json?token=";
     [SerializeField] private string gameRecordUrl = "http://52.78.120.239/game/game_record.json?";
 
     public string Token
@@ -90,6 +95,17 @@ public class DataManager : MonoBehaviour
         StartCoroutine(WaitForRequest(www));
     }
 
+    public void SendRandomItem(int num)
+    {
+        requestState = RequestState.randomItem;
+
+        string url = randomItemUrl + token + "&number=" + num;
+        Debug.Log(url);
+        WWW www = new WWW(url);
+
+        StartCoroutine(WaitForRequest(www));
+    }
+
     IEnumerator WaitForRequest(WWW www)
     {
         yield return www;
@@ -122,15 +138,15 @@ public class DataManager : MonoBehaviour
             if (OnLoadingImage != null)
                 OnLoadingImage(config.Signup.Respon.Success);
         }
-        else if(receiveData.Contains("signin"))
+        else if (receiveData.Contains("signin"))
         {
             yield return new WaitForSeconds(2f);
             if (OnLoadingImage != null)
                 OnLoadingImage(config.Signin.Respon.Success, config.Signin.Result);
         }
-        else if(receiveData.Contains("list_clinical"))
+        else if (receiveData.Contains("list_clinical"))
         {
-            if(config.List_clinical.Respon.Success.Equals("false"))
+            if (config.List_clinical.Respon.Success.Equals("false"))
                 StartCoroutine(LostToken());
             else
             {
@@ -138,7 +154,7 @@ public class DataManager : MonoBehaviour
                 middleDifficulty = new List<int>();
                 lowDifficulty = new List<int>();
 
-                foreach(ListClinical_listDetail list in config.List_clinical.List)
+                foreach (ListClinical_listDetail list in config.List_clinical.List)
                 {
                     if (list.Difficulty.Equals("상"))
                         highDifficulty.Add(list.Id);
@@ -146,6 +162,27 @@ public class DataManager : MonoBehaviour
                         middleDifficulty.Add(list.Id);
                     else if (list.Difficulty.Equals("하"))
                         lowDifficulty.Add(list.Id);
+                }
+            }
+        }
+        else if (receiveData.Contains("random_item"))
+        {
+            if (config.Random_item.Respon.Success.Equals("false"))
+                StartCoroutine(LostToken());
+            else
+            {
+                necessaryRating = new List<string>();
+                baseRating = new List<string>();
+                confusionRating = new List<string>();
+
+                foreach (RandomItemListDetail list in config.Random_item.List)
+                {
+                    if (list.Rating.Equals("필수"))
+                        necessaryRating.Add(list.Name);
+                    else if (list.Rating.Equals("항시"))
+                        baseRating.Add(list.Name);
+                    else if (list.Rating.Equals("혼동"))
+                        confusionRating.Add(list.Name);
                 }
             }
         }
