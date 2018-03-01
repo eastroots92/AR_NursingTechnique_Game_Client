@@ -1,8 +1,9 @@
 ﻿using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 
 /// <summary>
-/// test ID : admin, pw : 123456, token : dtycveprbgjwhkqsfoal
+/// test ID : admin, pw : 123456, token : vcnhbqljorgdfzwymupk
 /// </summary>
 public enum RequestState
 {
@@ -23,20 +24,24 @@ public class DataManager : MonoBehaviour
     private RequestState requestState;
     private int requestCount=0;
 
-    private string token = "dtycveprbgjwhkqsfoal";
+    private string token = "vcnhbqljorgdfzwymupk";
+
+    private List<int> lowDifficulty;
+    private List<int> middleDifficulty;
+    private List<int> highDifficulty;
 
     #region ClinicalURL Data & Property
-    [SerializeField] private string signUpUrl = "http://52.78.158.73/user/signup.json?";
-    [SerializeField] private string signInUrl = "http://52.78.158.73/user/signin.json?";
-    [SerializeField] private string signOutUrl = "http://52.78.158.73/user/signout.json?token=";
+    [SerializeField] private string signUpUrl = "http://52.78.120.239/user/signup.json?";
+    [SerializeField] private string signInUrl = "http://52.78.120.239/user/signin.json?";
+    [SerializeField] private string signOutUrl = "http://52.78.120.239/user/signout.json?token=";
     //간호술기 목차 보기 : "info" : {"listSize" : "목차 총 개수"}, "list" {"id": "순서","title":"제목","difficulty":"난이도:"}
-    [SerializeField] private string listClinicalUrl = "http://52.78.158.73/game/list_clinical.json?token=";
+    [SerializeField] private string listClinicalUrl = "http://52.78.120.239/game/list_clinical.json?token=";
     //"info" : {"id" : "해당 간호술기 번호(호출 번호)" ,"title" : "간호술기 제목" , "difficulty" : "난이도" } , " list" : { "index" : "순서" , "content" : "내용"}}}
-    [SerializeField] private string randomContentUrl = "http://52.78.158.73/game/random_content.json?token";
+    [SerializeField] private string randomContentUrl = "http://52.78.120.239/game/random_content.json?token";
     //"info" : {"id" : "해당 간호술기 번호(호출 번호)" ,"title" : "간호술기 제목" , "difficulty" : "난이도" } , " list" : { "name" : "아이템 명" , "rating" : "중요도"}}}
     //rating : 중요도, 필수-필수로 필요한 아이템, 항시-항시 준비되어 있는 물품, 혼동-헷갈리게 하는 물품
-    [SerializeField] private string randomItemUrl = "http://52.78.158.73/game/random_item.json?token";
-    [SerializeField] private string gameRecordUrl = "http://52.78.158.73/game/game_record.json?";
+    [SerializeField] private string randomItemUrl = "http://52.78.120.239/game/random_item.json?token";
+    [SerializeField] private string gameRecordUrl = "http://52.78.120.239/game/game_record.json?";
 
     public string Token
     {
@@ -57,12 +62,11 @@ public class DataManager : MonoBehaviour
             Destroy(gameObject);
 
         requestState = RequestState.None;
-       // SendListClinical();
     }
     
     public void SendSignUp(string id, string pw, string name, string job)
     {
-        string url = signUpUrl + "uid=" + id + "&password=" + pw + "&name=" + name + "&age=" + 27;
+        string url = signUpUrl + "uid=" + id + "&password=" + pw + "&name=" + name + "&job=" + job;
         WWW www = new WWW(url);
 
         StartCoroutine(WaitForRequest(www));
@@ -110,7 +114,6 @@ public class DataManager : MonoBehaviour
 
     private IEnumerator ReceiveData(string receiveData)
     {
-        
         DataConfiguration config = JsonUtility.FromJson<DataConfiguration>(receiveData);
 
         if (receiveData.Contains("signup"))
@@ -129,7 +132,22 @@ public class DataManager : MonoBehaviour
         {
             if(config.List_clinical.Respon.Success.Equals("false"))
                 StartCoroutine(LostToken());
+            else
+            {
+                highDifficulty = new List<int>();
+                middleDifficulty = new List<int>();
+                lowDifficulty = new List<int>();
 
+                foreach(ListClinical_listDetail list in config.List_clinical.List)
+                {
+                    if (list.Difficulty.Equals("상"))
+                        highDifficulty.Add(list.Id);
+                    else if (list.Difficulty.Equals("중"))
+                        middleDifficulty.Add(list.Id);
+                    else if (list.Difficulty.Equals("하"))
+                        lowDifficulty.Add(list.Id);
+                }
+            }
         }
     }
 

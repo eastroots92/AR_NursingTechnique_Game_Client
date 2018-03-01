@@ -378,19 +378,7 @@ public class ListSize
     }
     #endregion
 }
-/*
-List<Object> list = null;
 
-if(list == null){
-    list = new List<Object>();
- }
-    
-    if(Result.list.size() > 0){
-        foreach(List<ListClinical_listDetail> d_list in a.list[0] r_list){
-            
-        }
-    }
-    */
 [Serializable]
 public class ListClinical_listDetail
 {
