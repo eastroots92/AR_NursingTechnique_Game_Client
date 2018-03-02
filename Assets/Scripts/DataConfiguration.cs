@@ -435,7 +435,7 @@ public class RandomContent
 {
     [SerializeField] private Respon respon;
     [SerializeField] private Info info;
-    [SerializeField] private RandomContentListDetail list;
+    [SerializeField] private List<RandomContentListDetail> list;
 
     #region RandomContent Property
     public Respon Respon
@@ -464,7 +464,7 @@ public class RandomContent
         }
     }
 
-    public RandomContentListDetail List
+    public List<RandomContentListDetail> List
     {
         get
         {
@@ -476,29 +476,17 @@ public class RandomContent
             list = value;
         }
     }
-#endregion
+
+    #endregion
 }
 
 [Serializable]
 public class RandomContentListDetail
 {
-    [SerializeField] private string index;
+    [SerializeField] private int index;
     [SerializeField] private string content;
 
     #region RandomContentListDetail Property
-    public string Index
-    {
-        get
-        {
-            return index;
-        }
-
-        set
-        {
-            index = value;
-        }
-    }
-
     public string Content
     {
         get
@@ -511,7 +499,20 @@ public class RandomContentListDetail
             content = value;
         }
     }
-#endregion
+
+    public int Index
+    {
+        get
+        {
+            return index;
+        }
+
+        set
+        {
+            index = value;
+        }
+    }
+    #endregion
 }
 
 //

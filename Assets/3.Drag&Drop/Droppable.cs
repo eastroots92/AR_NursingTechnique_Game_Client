@@ -10,21 +10,48 @@ public class Droppable : MonoBehaviour, IDropHandler, IPointerEnterHandler, IPoi
     public delegate void DropHandler(GameObject obj = null);
     public event DropHandler OnSuccess;
     public event DropHandler OnFaile;
+    public event DropHandler OnNothing;
+    public int index = 1;
+    public int markImageIndex;
 
     public void OnDrop(PointerEventData eventData)
     {
-        //드래그하고 있었던 아이콘의 Image 컴포넌트를 가져온다
-        Image droppedImage = eventData.pointerDrag.GetComponent<Image>();
-        if (DataManager.instance.NecessaryRating.Contains(droppedImage.sprite.name))
+        if (DataManager.instance.RequestState == RequestState.randomItem)
         {
-            Debug.Log("정답");
-            DataManager.instance.NecessaryRating.Remove(droppedImage.sprite.name);
-            OnSuccess(eventData.pointerDrag);
+            DataManager.instance.isPlay = !DataManager.instance.isPlay;
+            //드래그하고 있었던 아이콘의 Image 컴포넌트를 가져온다
+            Image droppedImage = eventData.pointerDrag.GetComponent<Image>();
+            if (DataManager.instance.NecessaryRating.Contains(droppedImage.sprite.name))
+            {
+                Debug.Log("정답");
+                DataManager.instance.NecessaryRating.Remove(droppedImage.sprite.name);
+                OnSuccess(eventData.pointerDrag);
+            }
+            else if (DataManager.instance.ConfusionRating.Contains(droppedImage.sprite.name))
+            {
+                Debug.Log("오답");
+                OnFaile(eventData.pointerDrag);
+            }
+            else
+                OnNothing(eventData.pointerDrag);
         }
-        else if (DataManager.instance.ConfusionRating.Contains(droppedImage.sprite.name))
+        else
         {
-            Debug.Log("오답");
-            OnFaile(eventData.pointerDrag);
+            DataManager.instance.isPlay = !DataManager.instance.isPlay;
+            
+            if (Int32.Parse(eventData.pointerDrag.name) == index)
+            {
+                Debug.Log("정답");
+                markImageIndex = index;
+                index++;
+                OnSuccess(eventData.pointerDrag);
+            }
+            else if (Int32.Parse(eventData.pointerDrag.name) != index)
+            {
+                Debug.Log("오답");
+                OnFaile(eventData.pointerDrag);
+                OnNothing(eventData.pointerDrag);
+            }
         }
     }
 

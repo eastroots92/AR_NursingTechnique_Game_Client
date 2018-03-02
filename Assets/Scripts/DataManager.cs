@@ -23,7 +23,7 @@ public class DataManager : MonoBehaviour
 
     private RequestState requestState;
     private int requestCount=0;
-    public bool isPlay = false;
+    public bool isPlay = true;
 
 	private string token = "kdwznmgcshoabijyqevr";
     
@@ -34,6 +34,9 @@ public class DataManager : MonoBehaviour
     private List<string> baseRating;       //항시
     private List<string> necessaryRating;  //필수
     private List<string> confusionRating;  //헷갈
+
+    private Dictionary<int, string> randomContentList;
+    private List<int> originList;
 
     #region ClinicalURL Data & Property
     [SerializeField] private string signUpUrl = "http://52.78.120.239/user/signup.json?";
@@ -48,11 +51,85 @@ public class DataManager : MonoBehaviour
     [SerializeField] private string randomItemUrl = "http://52.78.120.239/game/random_item.json?token=";
     [SerializeField] private string gameRecordUrl = "http://52.78.120.239/game/game_record.json?";
 
-	public List<string> BaseRating {get{return baseRating;}}
-	public List<string> NecessaryRating {get{return necessaryRating;}}
-	public List<string> ConfusionRating	{get{return confusionRating;}}
-
     public string Token { set { token = value; } }
+
+    public List<string> BaseRating
+    {
+        get
+        {
+            return baseRating;
+        }
+
+        set
+        {
+            baseRating = value;
+        }
+    }
+
+    public List<string> NecessaryRating
+    {
+        get
+        {
+            return necessaryRating;
+        }
+
+        set
+        {
+            necessaryRating = value;
+        }
+    }
+
+    public List<string> ConfusionRating
+    {
+        get
+        {
+            return confusionRating;
+        }
+
+        set
+        {
+            confusionRating = value;
+        }
+    }
+
+    public Dictionary<int, string> RandomContentList
+    {
+        get
+        {
+            return randomContentList;
+        }
+
+        set
+        {
+            randomContentList = value;
+        }
+    }
+
+    public List<int> OriginList
+    {
+        get
+        {
+            return originList;
+        }
+
+        set
+        {
+            originList = value;
+        }
+    }
+
+    public RequestState RequestState
+    {
+        get
+        {
+            return requestState;
+        }
+
+        set
+        {
+            requestState = value;
+        }
+    }
     #endregion
 
     private void Awake()
@@ -64,7 +141,7 @@ public class DataManager : MonoBehaviour
         else if (instance != this)
             Destroy(gameObject);
 
-        requestState = RequestState.None;
+        RequestState = RequestState.None;
     }
     
     public void SendSignUp(string id, string pw, string name, string job)
@@ -85,7 +162,7 @@ public class DataManager : MonoBehaviour
 
     public void SendListClinical()
     {
-        requestState = RequestState.listClinical;
+        RequestState = RequestState.listClinical;
 
         string url = listClinicalUrl + token;
         WWW www = new WWW(url);
@@ -95,10 +172,9 @@ public class DataManager : MonoBehaviour
 
     public void SendRandomItem(int num)
     {
-        requestState = RequestState.randomItem;
+        RequestState = RequestState.randomItem;
 
         string url = randomItemUrl + token + "&number=" + num;
-        Debug.Log(url);
         WWW www = new WWW(url);
 
         StartCoroutine(WaitForRequest(www));
@@ -106,7 +182,7 @@ public class DataManager : MonoBehaviour
 
     public void SendRandomContent(int num)
     {
-        requestState = RequestState.randomContent;
+        RequestState = RequestState.randomContent;
 
         string url = randomContentUrl + token + "&number=" + num;
         Debug.Log(url);
@@ -180,28 +256,35 @@ public class DataManager : MonoBehaviour
                 StartCoroutine(LostToken());
             else
             {
-                necessaryRating = new List<string>();
-                baseRating = new List<string>();
-                confusionRating = new List<string>();
+                NecessaryRating = new List<string>();
+                BaseRating = new List<string>();
+                ConfusionRating = new List<string>();
 
                 foreach (RandomItemListDetail list in config.Random_item.List)
                 {
                     if (list.Rating.Equals("필수"))
-                        necessaryRating.Add(list.Name);
+                        NecessaryRating.Add(list.Name);
                     else if (list.Rating.Equals("항시"))
-                        baseRating.Add(list.Name);
+                        BaseRating.Add(list.Name);
                     else if (list.Rating.Equals("혼동"))
-                        confusionRating.Add(list.Name);
+                        ConfusionRating.Add(list.Name);
                 }
             }
         }
         else if (receiveData.Contains("random_content"))
         {
-            if (config.Random_item.Respon.Success.Equals("false"))
+            if (config.Random_content.Respon.Success.Equals("false"))
                 StartCoroutine(LostToken());
             else
             {
+                RandomContentList = new Dictionary<int, string>();
+                OriginList = new List<int>();
 
+                foreach(RandomContentListDetail list in config.Random_content.List)
+                {
+                    RandomContentList.Add(list.Index, list.Content);
+                    OriginList.Add(list.Index);
+                }
             }
         }
     }
@@ -217,9 +300,8 @@ public class DataManager : MonoBehaviour
             return;
         }
 
-        if (requestState == RequestState.listClinical)
+        if (RequestState == RequestState.listClinical)
             SendListClinical();
-
     }
 
     private IEnumerator LostToken()

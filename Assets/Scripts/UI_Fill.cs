@@ -36,6 +36,7 @@ public class UI_Fill : MonoBehaviour
         GameUI.SetActive(true);
         droppable.OnSuccess += onSuccess;
         droppable.OnFaile += onFaile;
+        droppable.OnNothing += onNothing;
         int i = 0; int j = 0; int l = 0;
 
         for (int k = 0; k < DataManager.instance.BaseRating.Count; k++)
@@ -122,6 +123,12 @@ public class UI_Fill : MonoBehaviour
         life--;
         draggable.Faile();
         SetLife();
+    }
+
+    public void onNothing(GameObject obj)
+    {
+        draggable = obj.GetComponent<Draggable>();
+        draggable.Nothing();
     }
 
     public void SetLife()
