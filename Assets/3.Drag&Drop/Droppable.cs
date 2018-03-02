@@ -18,12 +18,13 @@ public class Droppable : MonoBehaviour, IDropHandler, IPointerEnterHandler, IPoi
         if (DataManager.instance.NecessaryRating.Contains(droppedImage.sprite.name))
         {
             Debug.Log("정답");
+            DataManager.instance.NecessaryRating.Remove(droppedImage.sprite.name);
             OnSuccess(eventData.pointerDrag);
         }
         else if (DataManager.instance.ConfusionRating.Contains(droppedImage.sprite.name))
         {
             Debug.Log("오답");
-            OnFaile();
+            OnFaile(eventData.pointerDrag);
         }
     }
 

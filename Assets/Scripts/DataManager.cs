@@ -104,6 +104,17 @@ public class DataManager : MonoBehaviour
         StartCoroutine(WaitForRequest(www));
     }
 
+    public void SendRandomContent(int num)
+    {
+        requestState = RequestState.randomContent;
+
+        string url = randomContentUrl + token + "&number=" + num;
+        Debug.Log(url);
+        WWW www = new WWW(url);
+
+        StartCoroutine(WaitForRequest(www));
+    }
+
     IEnumerator WaitForRequest(WWW www)
     {
         yield return www;
@@ -182,6 +193,15 @@ public class DataManager : MonoBehaviour
                     else if (list.Rating.Equals("혼동"))
                         confusionRating.Add(list.Name);
                 }
+            }
+        }
+        else if (receiveData.Contains("random_content"))
+        {
+            if (config.Random_item.Respon.Success.Equals("false"))
+                StartCoroutine(LostToken());
+            else
+            {
+
             }
         }
     }

@@ -70,6 +70,7 @@ public class Draggable : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDra
         //본래의 아이콘과 같은 모습이 되게 설정한다.
         draggingImage.sprite = sourceImage.sprite;
         draggingImage.rectTransform.sizeDelta = sourceImage.rectTransform.sizeDelta;
+        draggingImage.preserveAspect = true;
 
         draggingText.text = sourceImage.sprite.name;
         draggingText.font = font;
@@ -88,8 +89,20 @@ public class Draggable : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDra
 
     public void OnEndDrag(PointerEventData eventData)
     {
-        Debug.Log("OnEndDrag");
+    }
+
+    public void Success()
+    {
         Destroy(draggingIamgeObject);
         Destroy(draggingTextObject);
+        Destroy(gameObject);
+    }
+
+    public void Faile()
+    {
+        Destroy(draggingIamgeObject);
+        Destroy(draggingTextObject);
+
+        gameObject.GetComponent<Image>().color = new Color(1, 1, 1, 1);
     }
 }

@@ -24,6 +24,7 @@ public class UI_Fill : MonoBehaviour
     [SerializeField] private Image[] lifeImg;
     [SerializeField] private Sprite[] lifeImgSource;
     private int life = 5;
+    private Draggable draggable;
 
     [SerializeField] private Droppable droppable;
     private List<Image> baseItemImage = new List<Image>();
@@ -107,18 +108,24 @@ public class UI_Fill : MonoBehaviour
 
     public void onSuccess(GameObject obj)
     {
-
+        draggable = obj.GetComponent<Draggable>();
+        draggable.Success();
+        if (DataManager.instance.NecessaryRating.Count == 0 && life > 0)
+        {
+            Debug.Log("성공");
+        }
     }
 
     public void onFaile(GameObject obj = null)
     {
+        draggable = obj.GetComponent<Draggable>();
         life--;
+        draggable.Faile();
         SetLife();
     }
 
     public void SetLife()
     {
-        Debug.Log(life);
         if (life == 4)
         {
             lifeImg[0].sprite = lifeImgSource[1];

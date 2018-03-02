@@ -49,15 +49,17 @@ public class MainViewController : ViewController {
 
     public void OnPressPlayButton()
     {
-        DataManager.instance.SendRandomItem(1);
-
         if (!DataManager.instance.isPlay)
         {
-			StartCoroutine(GameSceneManager.instance.ChangeScene (3));
+            DataManager.instance.SendRandomItem(1);
+            StartCoroutine(GameSceneManager.instance.ChangeScene (3));
 			DataManager.instance.isPlay = true;
         }
         else
         {
+            DataManager.instance.SendRandomItem(1);
+            StartCoroutine(GameSceneManager.instance.ChangeScene(4));
+            DataManager.instance.isPlay = false;
         }
     }
 }
