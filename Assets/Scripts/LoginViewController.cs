@@ -2,20 +2,6 @@
 using UnityEngine;
 using UnityEngine.UI;
 
-[Serializable]
-public struct LogInInform
-{
-    public string id;
-    public string pw;
-}
-
-[Serializable]
-public struct LogInSettingsOption
-{
-    public bool isAutoLogIn;
-    public bool isSetID;
-}
-
 public class LoginViewController : ViewController
 {
 	[SerializeField] private InputField	idInput;
@@ -39,15 +25,10 @@ public class LoginViewController : ViewController
 
         if (autoSetId.isOn)
         {
-            string loadData = PlayerPrefs.GetString("SavedLoginInform");
-            idInput.text = loadData;
-        }
-
-        if (autoLogin.isOn)
-        {
-            //자동 로그인이 true면 
-            //토큰 유무에 따라
-            //자동 로그인 처리 로직 실행
+            string loadLoginData = PlayerPrefs.GetString("SavedLoginInform");
+            LogInInform logInInform = JsonUtility.FromJson<LogInInform>(loadLoginData);
+            idInput.text = logInInform.Id;
+            pwInput.text = logInInform.Pw;
         }
     }
 
@@ -63,13 +44,7 @@ public class LoginViewController : ViewController
 
     private void CheckIDInput(InputField input)
     {
-        if (input.text.Length != 0 && (input.text.Contains("@") && input.text.Contains(".")))
-        {
-            AlertViewController.Show("", "아이디 형식을 확인해주세요.");
-            return;
-        }
-
-        logInInform.id = input.text;
+        logInInform.Id = input.text;
     }
 
     private void CheckPWInput(InputField input)
@@ -80,9 +55,9 @@ public class LoginViewController : ViewController
             return;
         }
 
-        logInInform.pw = input.text;
+        logInInform.Pw = input.text;
     }
-    
+
     //회원가입 버튼 클릭
     private void SignUp()
     {
@@ -99,18 +74,49 @@ public class LoginViewController : ViewController
             return;
         }
 
-        OnAutoSetID();
-        SaveLoginSettings();
+        loadingObj.SetActive(true);
+        DataManager.instance.OnLoadingImage += onLoadingImage;
+        DataManager.instance.SendSignIn(idInput.text, pwInput.text);
+    }
 
-        DataManager.instance.PostLogIn(logInInform);
+    private void onLoadingImage(string success, Result result = null)
+    {
 
-        if (DataManager.instance.IsLodingStart)
+        DataManager.instance.OnLoadingImage -= onLoadingImage;
+        loadingObj.SetActive(false);
+
+        if (success.Equals("true"))
         {
-            loadingObj.SetActive(true);
+            SaveLoginSettings();
+            OnAutoSetID();
+
+            if (autoLogin.isOn)
+            {
+                TokenData tokenData = new TokenData(result.Token);
+                string data = JsonUtility.ToJson(tokenData, true);
+                PlayerPrefs.SetString("SavedTokenData", data);
+            }
+
+            DataManager.instance.Token = result.Token;
+            StartCoroutine(GameSceneManager.instance.ChangeScene(2));
+        }
+        else if(success.Equals("false"))
+        {
+            if(result.Code.Equals("3"))
+            {
+                string message = "비밀번호가 일치하지 않습니다.";
+                AlertViewController.Show("", message);
+            }
+            else if(result.Code.Equals("4"))
+            {
+                string message = "등록되지 않은 아이디입니다.";
+                AlertViewController.Show("", message);
+            }
         }
         else
         {
-            loadingObj.SetActive(false);
+            string message = "네트워크가 불안정합니다. 잠시후 다시 시도해주세요.";
+            AlertViewController.Show("", message);
         }
     }
 
@@ -119,9 +125,8 @@ public class LoginViewController : ViewController
     {
         if (autoSetId.isOn)
         {
-            string idData = idInput.text;
-
-            PlayerPrefs.SetString("SavedLoginInform", idData);
+            string jsonData = JsonUtility.ToJson(logInInform, true);
+            PlayerPrefs.SetString("SavedLoginInform", jsonData);
         }
         else
         {

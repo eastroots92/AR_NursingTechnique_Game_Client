@@ -7,26 +7,52 @@ using UnityEngine.UI;
 
 public class Droppable : MonoBehaviour, IDropHandler, IPointerEnterHandler, IPointerExitHandler
 {
-    //드롭 영역에 들어온 아이콘
-    [SerializeField] private Image iconImage;
-    //드롭 영역에 들어온 아이콘의 하이라이트 색
-    [SerializeField] private Color highlightedColor;
-    //드롭 영역에 들어온 아이콘의 본래 색을 저장
-    private Color normalColor;
-
-    private void Start()
-    {
-        //드롭 영역에 들어온 아이콘의 본래 색을 저장해둔다
-        normalColor = iconImage.color;
-    }
+    public delegate void DropHandler(GameObject obj = null);
+    public event DropHandler OnSuccess;
+    public event DropHandler OnFaile;
+    public event DropHandler OnNothing;
+    public int index = 1;
+    public int markImageIndex;
 
     public void OnDrop(PointerEventData eventData)
     {
-        //드래그하고 있었던 아이콘의 Image 컴포넌트를 가져온다
-        Image droppedImage = eventData.pointerDrag.GetComponent<Image>();
-        //드롭 영역에 들어온 아이콘의 스프라이트를 드롭된 아이콘과 동일한 스프라이트로 변경해 색을 본래의 색으로 되돌린다
-        iconImage.sprite = droppedImage.sprite;
-        iconImage.color = normalColor;
+        if (DataManager.instance.RequestState == RequestState.randomItem)
+        {
+            DataManager.instance.isPlay = !DataManager.instance.isPlay;
+            //드래그하고 있었던 아이콘의 Image 컴포넌트를 가져온다
+            Image droppedImage = eventData.pointerDrag.GetComponent<Image>();
+            if (DataManager.instance.NecessaryRating.Contains(droppedImage.sprite.name))
+            {
+                Debug.Log("정답");
+                DataManager.instance.NecessaryRating.Remove(droppedImage.sprite.name);
+                OnSuccess(eventData.pointerDrag);
+            }
+            else if (DataManager.instance.ConfusionRating.Contains(droppedImage.sprite.name))
+            {
+                Debug.Log("오답");
+                OnFaile(eventData.pointerDrag);
+            }
+            else
+                OnNothing(eventData.pointerDrag);
+        }
+        else
+        {
+            DataManager.instance.isPlay = !DataManager.instance.isPlay;
+            
+            if (Int32.Parse(eventData.pointerDrag.name) == index)
+            {
+                Debug.Log("정답");
+                markImageIndex = index;
+                index++;
+                OnSuccess(eventData.pointerDrag);
+            }
+            else if (Int32.Parse(eventData.pointerDrag.name) != index)
+            {
+                Debug.Log("오답");
+                OnFaile(eventData.pointerDrag);
+                OnNothing(eventData.pointerDrag);
+            }
+        }
     }
 
     //마우스 커서가 영역에 들어왔을 때 호출된다.
@@ -34,8 +60,6 @@ public class Droppable : MonoBehaviour, IDropHandler, IPointerEnterHandler, IPoi
     {
         if (eventData.dragging)
         {
-            //드래그 도중이였다면 드롭 영역에 들어온 아이콘 색을 하이라이트 색으로 변경한다.
-            iconImage.color = highlightedColor;
         }
     }
 
@@ -43,8 +67,6 @@ public class Droppable : MonoBehaviour, IDropHandler, IPointerEnterHandler, IPoi
     {
         if (eventData.dragging)
         {
-            //드래그 도중이라면 드롭 영역에 들어온 아이콘의 색을 본래 색으로 되돌린다.
-            iconImage.color = normalColor;
         }
     }
 }

@@ -12,9 +12,10 @@ public enum SceneState
     Game
 }
 
-public class GameSceneManager : MonoBehaviour {
+public class GameSceneManager : MonoBehaviour
+{
+    public static GameSceneManager instance = null;
 
-   
     [SerializeField] private Texture2D fadeOutTexture;
     [SerializeField] private float fadeSpeed = 0.8f;
 
@@ -22,8 +23,15 @@ public class GameSceneManager : MonoBehaviour {
     private int drawDepth = -1000;
     private float alpha = 1.0f;
     private int fadeDir = -1;
-
     private SceneState sceneState;
+
+    private void Awake()
+    {
+        if (instance == null)
+            instance = this;
+        else if (instance != this)
+            Destroy(gameObject);
+    }
 
     void Start ()
     {
@@ -42,18 +50,17 @@ public class GameSceneManager : MonoBehaviour {
 
 #if UNITY_EDITOR
             if (pd.state == PlayState.Playing && Input.anyKeyDown)
-                StartCoroutine(ChangeScene(1));
+                CheckAutoLogin();
 #endif
 #if !UNITY_EDITOR
             if (pd.state == PlayState.Playing && Input.touchCount > 0)
-                StartCoroutine(ChangeScene(1));
+                CheckAutoLogin();
 #endif
             if (10f < time)
             {
                 pd.Pause();
-                StartCoroutine(ChangeScene(1));
+                CheckAutoLogin();
             }
-
             yield return null;
         }
     }
@@ -77,6 +84,7 @@ public class GameSceneManager : MonoBehaviour {
     private void OnLevelWasLoaded(int level)
     {
         BeginFade(-1);
+
         int index = SceneManager.GetActiveScene().buildIndex;
 
         if (index == 0)
@@ -84,15 +92,39 @@ public class GameSceneManager : MonoBehaviour {
         else if (index == 1)
             sceneState = SceneState.Login;
         else if (index == 2)
+        {
             sceneState = SceneState.Menu;
+            DataManager.instance.SendListClinical();
+        }
         else if (index == 3)
             sceneState = SceneState.Game;
     }
 
-    private IEnumerator ChangeScene(int index)
+    public IEnumerator ChangeScene(int index)
     {
         BeginFade(1);
         yield return new WaitForSeconds(1f);
+
         SceneManager.LoadScene(index);
+    }
+
+    private void CheckAutoLogin()
+    {
+        StopCoroutine(FirstSceneCheck());
+
+        if (!PlayerPrefs.HasKey("SavedTokenData"))
+            StartCoroutine(ChangeScene(1));
+        else
+        {
+            string loadData = PlayerPrefs.GetString("SavedTokenData");
+            TokenData tokenData = JsonUtility.FromJson<TokenData>(loadData);
+            if (tokenData.Token != "")
+            {
+                DataManager.instance.Token = tokenData.Token;
+                StartCoroutine(ChangeScene(2));
+            }
+            else
+                StartCoroutine(ChangeScene(1));
+        }
     }
 }
