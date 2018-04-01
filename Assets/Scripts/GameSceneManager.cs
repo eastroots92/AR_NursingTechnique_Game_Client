@@ -95,6 +95,7 @@ public class GameSceneManager : MonoBehaviour
         {
             sceneState = SceneState.Menu;
             DataManager.instance.SendListClinical();
+            DataManager.instance.SendUserInfo();
         }
         else if (index == 3)
             sceneState = SceneState.Game;

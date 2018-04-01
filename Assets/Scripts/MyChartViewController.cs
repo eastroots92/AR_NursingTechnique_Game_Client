@@ -26,6 +26,34 @@ public class MyChartViewController : ViewController {
         }
     }
 
+    private void OnEnable()
+    {
+        nameTxt.text = DataManager.instance.UserName + " 간호사";
+
+        if(DataManager.instance.Score < 100)
+        {
+            levelTxt.text = "실습";
+            mycharImage.sprite = myCharImageSource[0]; 
+        }
+        else if (DataManager.instance.Score < 200)
+        {
+            levelTxt.text = "신입";
+            mycharImage.sprite = myCharImageSource[1];
+        }
+        else if (DataManager.instance.Score < 300)
+        {
+            levelTxt.text = "수";
+            mycharImage.sprite = myCharImageSource[2];
+        }
+        else
+        {
+            levelTxt.text = "책임";
+            mycharImage.sprite = myCharImageSource[3];
+        }
+
+        totalPointTxt.text = DataManager.instance.Score.ToString(); 
+    }
+
     //// 아이템 상세 화면의 내용을 갱신하는 메서드
     //public void UpdateContent(ShopItemData itemData)
     //{

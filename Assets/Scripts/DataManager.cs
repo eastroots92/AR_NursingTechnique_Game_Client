@@ -11,7 +11,8 @@ public enum RequestState
     listClinical,
     randomContent,
     randomItem,
-    gameRecord
+    gameRecord,
+    userInfo,
 }
 
 public class DataManager : MonoBehaviour
@@ -38,6 +39,10 @@ public class DataManager : MonoBehaviour
     private Dictionary<int, string> randomContentList;
     private List<int> originList;
 
+    private string userName;
+    private int score;
+    private int success;
+
     #region ClinicalURL Data & Property
     [SerializeField] private string signUpUrl = "http://52.78.120.239/user/signup.json?";
     [SerializeField] private string signInUrl = "http://52.78.120.239/user/signin.json?";
@@ -50,6 +55,7 @@ public class DataManager : MonoBehaviour
     //rating : 중요도, 필수-필수로 필요한 아이템, 항시-항시 준비되어 있는 물품, 혼동-헷갈리게 하는 물품
     [SerializeField] private string randomItemUrl = "http://52.78.120.239/game/random_item.json?token=";
     [SerializeField] private string gameRecordUrl = "http://52.78.120.239/game/game_record.json?";
+    [SerializeField] private string userInfoUrl = "http://52.78.120.239/user/user_info.json?token=";
 
     public string Token { set { token = value; } }
 
@@ -130,6 +136,45 @@ public class DataManager : MonoBehaviour
             requestState = value;
         }
     }
+
+    public string UserName
+    {
+        get
+        {
+            return userName;
+        }
+
+        set
+        {
+            userName = value;
+        }
+    }
+
+    public int Success
+    {
+        get
+        {
+            return success;
+        }
+
+        set
+        {
+            success = value;
+        }
+    }
+
+    public int Score
+    {
+        get
+        {
+            return score;
+        }
+
+        set
+        {
+            score = value;
+        }
+    }
     #endregion
 
     private void Awake()
@@ -185,7 +230,16 @@ public class DataManager : MonoBehaviour
         RequestState = RequestState.randomContent;
 
         string url = randomContentUrl + token + "&number=" + num;
-        Debug.Log(url);
+        WWW www = new WWW(url);
+
+        StartCoroutine(WaitForRequest(www));
+    }
+
+    public void SendUserInfo()
+    {
+        RequestState = RequestState.userInfo;
+
+        string url = userInfoUrl + token;
         WWW www = new WWW(url);
 
         StartCoroutine(WaitForRequest(www));
@@ -219,13 +273,13 @@ public class DataManager : MonoBehaviour
 
         if (receiveData.Contains("signup"))
         {
-            yield return new WaitForSeconds(2f);
+            yield return new WaitForSeconds(1f);
             if (OnLoadingImage != null)
                 OnLoadingImage(config.Signup.Respon.Success);
         }
         else if (receiveData.Contains("signin"))
         {
-            yield return new WaitForSeconds(2f);
+            yield return new WaitForSeconds(1f);
             if (OnLoadingImage != null)
                 OnLoadingImage(config.Signin.Respon.Success, config.Signin.Result);
         }
@@ -286,6 +340,11 @@ public class DataManager : MonoBehaviour
                     OriginList.Add(list.Index);
                 }
             }
+        }
+        else if (receiveData.Contains("user_info"))
+        {
+            UserName = config.User_info.Info.Name;
+            Score = config.User_info.List.Score;
         }
     }
 
