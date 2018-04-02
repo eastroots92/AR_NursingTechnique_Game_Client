@@ -225,7 +225,6 @@ public class UI_Content : MonoBehaviour
             inputList[i] = inputList[r];
             inputList[r] = tmp;
         }
-
         return inputList;
     }
 }
