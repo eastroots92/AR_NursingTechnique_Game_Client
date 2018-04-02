@@ -18,7 +18,6 @@ public class Droppable : MonoBehaviour, IDropHandler, IPointerEnterHandler, IPoi
     {
         if (DataManager.instance.RequestState == RequestState.randomItem)
         {
-            DataManager.instance.isPlay = !DataManager.instance.isPlay;
             //드래그하고 있었던 아이콘의 Image 컴포넌트를 가져온다
             Image droppedImage = eventData.pointerDrag.GetComponent<Image>();
             if (DataManager.instance.NecessaryRating.Contains(droppedImage.sprite.name))
@@ -37,7 +36,6 @@ public class Droppable : MonoBehaviour, IDropHandler, IPointerEnterHandler, IPoi
         }
         else
         {
-            DataManager.instance.isPlay = !DataManager.instance.isPlay;
             
             if (Int32.Parse(eventData.pointerDrag.name) == index)
             {

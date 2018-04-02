@@ -26,6 +26,7 @@ public class GameManager : MonoBehaviour
     [SerializeField] private GameObject supplyDroppable;
     [SerializeField] private GameObject supplyTextObj;
     [SerializeField] private GameObject settingUI;
+    [SerializeField] private GameObject pauseUI;
 
     private int life = 5;
     private bool isStart = false;
@@ -54,6 +55,8 @@ public class GameManager : MonoBehaviour
 
     void Start()
     {
+        fillAmount = 1;
+
         gameUI.SetActive(false);
         gameInfoUI.SetActive(true);
         menuUI.SetActive(false);
@@ -61,13 +64,12 @@ public class GameManager : MonoBehaviour
         supplyDroppable.SetActive(false);
         supplyTextObj.SetActive(false);
         settingUI.SetActive(false);
+        pauseUI.SetActive(false);
 
         if (DataManager.instance.RequestState == RequestState.randomItem)
             currentGame = GameState.OrderGame;
         else
             currentGame = GameState.SupplyGame;
-
-       
     }
 
     void Update()
@@ -301,5 +303,11 @@ public class GameManager : MonoBehaviour
     {
         IsStart = false;
         settingUI.SetActive(!settingUI.activeSelf);
+    }
+
+    public void OnClickPauseBtn()
+    {
+        IsStart = false;
+        pauseUI.SetActive(!pauseUI.activeSelf);
     }
 }

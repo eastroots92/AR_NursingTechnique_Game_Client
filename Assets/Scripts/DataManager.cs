@@ -24,7 +24,6 @@ public class DataManager : MonoBehaviour
 
     private RequestState requestState;
     private int requestCount=0;
-    public bool isPlay = true;
 
 	private string token = "kdwznmgcshoabijyqevr";
     
