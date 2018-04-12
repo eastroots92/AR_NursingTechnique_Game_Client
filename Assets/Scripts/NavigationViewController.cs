@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
@@ -13,6 +14,10 @@ public class NavigationViewController : ViewController {
     [SerializeField] private Text titleLabel;           // 내비게이션 바의 타이틀을 표시하는 텍스트
     [SerializeField] private Button backButton;         // 내비게이션 바의 백 버튼
     [SerializeField] private Text backButtonLabel;      // 백 버튼의 텍스트
+    [SerializeField] private GameObject loadingObj;
+
+    [SerializeField] private ViewController lastView;
+    [SerializeField] private ViewController newView;
 
     // 인스턴스를 로드할 때 호출된다
     void Awake()
@@ -38,8 +43,9 @@ public class NavigationViewController : ViewController {
     }
 
     // 다음 계층의 뷰로 옮겨가는 처리를 수행하는 메서드
-    public void Push(ViewController newView)
+    public void Push(ViewController new_view)
     {
+        newView = new_view;
         if (currentView == null)
         {
             // 첫 뷰는 애니메이션 없이 표시한다
@@ -51,8 +57,38 @@ public class NavigationViewController : ViewController {
         // 애니메이션 도중에는 사용자의 인터랙션을 무효화한다
         EnableInteraction(false);
 
+        lastView = currentView;
+        leftHideView();
+
+        if (newView.Title == "MY PAGE"){
+            leftGetUserData();
+            Invoke("leftShowView",1);
+        }else{
+            leftShowView();
+        }
+
+    }
+
+    // 이전 계층의 뷰로 되돌아가는 처리를 수행하는 메서드
+    public void Pop()
+    {
+        if (stackedViews.Count < 1)
+        {
+            // 이전 계층의 뷰가 없으므로 아무것도 없는 상태다
+            return;
+        }
+
+        // 애니메이션 도중에는 사용자의 인터랙션을 무효화한다
+        EnableInteraction(false);
+        lastView = currentView;
+
+        rightHideView();
+        rightShowView();
+        
+    }
+
+    public void leftHideView(){
         // 현재 표시된 뷰를 화면 왼쪽 밖으로 이동시킨다
-        ViewController lastView = currentView;
         stackedViews.Push(lastView);
         Vector2 lastViewPos = lastView.CachedRectTransform.anchoredPosition;
         lastViewPos.x = -this.CachedRectTransform.rect.width;
@@ -60,8 +96,16 @@ public class NavigationViewController : ViewController {
             lastViewPos, 0.3f, 0.0f, iTween.EaseType.easeOutSine, () => {
                 // 이동이 끝나면 뷰를 비활성화한다
                 lastView.gameObject.SetActive(false);
-            });
+            }); 
+    }
 
+    public void leftGetUserData(){
+        loadingObj.SetActive(true);
+        DataManager.instance.SendUserInfo();
+    }
+
+    public void leftShowView(){
+        loadingObj.SetActive(false);
         // 새로운 뷰를 화면 왼쪽 밖으로부터 중앙으로 이동시킨다
         newView.gameObject.SetActive(true);
         Vector2 newViewPos = newView.CachedRectTransform.anchoredPosition;
@@ -87,20 +131,8 @@ public class NavigationViewController : ViewController {
         // navigationBar.SetActive(true);
     }
 
-    // 이전 계층의 뷰로 되돌아가는 처리를 수행하는 메서드
-    public void Pop()
-    {
-        if (stackedViews.Count < 1)
-        {
-            // 이전 계층의 뷰가 없으므로 아무것도 없는 상태다
-            return;
-        }
-
-        // 애니메이션 도중에는 사용자의 인터랙션을 무효화한다
-        EnableInteraction(false);
-
+    public void rightHideView(){
         // 현재 표시된 뷰를 화면 오른쪽 밖으로 이동시킨다
-        ViewController lastView = currentView;
         Vector2 lastViewPos = lastView.CachedRectTransform.anchoredPosition;
         lastViewPos.x = this.CachedRectTransform.rect.width;
         lastView.CachedRectTransform.MoveTo(
@@ -108,7 +140,9 @@ public class NavigationViewController : ViewController {
                 // 이동이 끝나면 뷰를 비활성화한다
                 lastView.gameObject.SetActive(false);
             });
+    }
 
+    public void rightShowView(){
         // 이전 계층의 뷰를 스택으로부터 다시 가져오고 화면 왼쪽 밖으로부터 중앙으로 이동시킨다
         ViewController poppedView = stackedViews.Pop();
         poppedView.gameObject.SetActive(true);
@@ -137,5 +171,6 @@ public class NavigationViewController : ViewController {
             navigationBar.SetActive(false);
         }
     }
+
 }
 
