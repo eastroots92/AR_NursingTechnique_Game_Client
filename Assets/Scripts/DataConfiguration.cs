@@ -856,9 +856,13 @@ public class UserInfoInfo
 [Serializable]
 public class UserInfoList
 {
+
     [SerializeField] private int score;
     [SerializeField] private int content;
     [SerializeField] private int item;
+
+    [SerializeField] private int wins;
+    [SerializeField] private int count;
 
     #region UserInfoList Property
     public int Score
@@ -871,6 +875,32 @@ public class UserInfoList
         set
         {
             score = value;
+        }
+    }
+
+    public int Wins
+    {
+        get
+        {
+            return wins;
+        }
+
+        set
+        {
+            wins = value;
+        }
+    }
+
+    public int Count
+    {
+        get
+        {
+            return count;
+        }
+
+        set
+        {
+            count = value;
         }
     }
 
@@ -899,7 +929,8 @@ public class UserInfoList
             item = value;
         }
     }
-# endregion
+
+    #endregion
 }
 
 //

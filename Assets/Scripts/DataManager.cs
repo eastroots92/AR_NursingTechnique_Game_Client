@@ -41,6 +41,8 @@ public class DataManager : MonoBehaviour
     private string userName;
     private int score;
     private int success;
+    private int wins;
+    private int count;
 
     #region ClinicalURL Data & Property
     [SerializeField] private string signUpUrl = "http://52.78.120.239/user/signup.json?";
@@ -174,6 +176,25 @@ public class DataManager : MonoBehaviour
             score = value;
         }
     }
+
+    public int Wins{
+        get{
+            return wins;
+        }
+        set{
+            wins = value;
+        }
+    }
+
+    public int Count {
+        get{
+            return count;
+        }
+        set {
+            count = value;
+        }
+    }
+
     #endregion
 
     private void Awake()
@@ -344,6 +365,8 @@ public class DataManager : MonoBehaviour
         {
             UserName = config.User_info.Info.Name;
             Score = config.User_info.List.Score;
+            Wins = config.User_info.List.Wins;
+            Count = config.User_info.List.Count;
         }
     }
 
