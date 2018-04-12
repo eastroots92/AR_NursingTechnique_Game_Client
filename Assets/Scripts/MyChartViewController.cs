@@ -28,19 +28,20 @@ public class MyChartViewController : ViewController {
 
     private void OnEnable()
     {
+                
         nameTxt.text = DataManager.instance.UserName + " 간호사";
 
-        if(DataManager.instance.Score < 100)
+        if(DataManager.instance.Score < 3000)
         {
             levelTxt.text = "실습";
             mycharImage.sprite = myCharImageSource[0]; 
         }
-        else if (DataManager.instance.Score < 200)
+        else if (DataManager.instance.Score < 9000)
         {
             levelTxt.text = "신입";
             mycharImage.sprite = myCharImageSource[1];
         }
-        else if (DataManager.instance.Score < 300)
+        else if (DataManager.instance.Score < 15000)
         {
             levelTxt.text = "수";
             mycharImage.sprite = myCharImageSource[2];
@@ -52,6 +53,24 @@ public class MyChartViewController : ViewController {
         }
 
         totalPointTxt.text = DataManager.instance.Score.ToString(); 
+
+        successTxt.text = setSuccessText(DataManager.instance.Wins, DataManager.instance.Count);
+
+    }
+
+    private string setSuccessText(int Wins, int Count){
+        string result = "";
+        
+        double percent = 0;
+
+        if( Count != 0 ){
+            percent = (double) Wins/ (double) Count;
+            percent = percent*100;
+        }
+
+        result = Wins.ToString() + "/" + Count.ToString() +" ( " + percent.ToString("#.##")  +"% ) ";
+        
+        return result;
     }
 
     //// 아이템 상세 화면의 내용을 갱신하는 메서드
