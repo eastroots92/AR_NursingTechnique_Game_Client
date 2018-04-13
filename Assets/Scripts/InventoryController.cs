@@ -11,14 +11,17 @@ public class InventoryController : MonoBehaviour
 
     private GameObject prefab;
     private List<GameObject> slotObjs;
+    private GameManager gm;
 
     private void Awake()
     {
         int j = 0;
         slotObjs = new List<GameObject>();
         prefab = Resources.Load("Slot") as GameObject;
+        gm = FindObjectOfType<GameManager>();
 
         int slotCount = DataManager.instance.BaseRating.Count + DataManager.instance.NecessaryRating.Count;
+
         for (int i = 0; i < slotCount; i++)
         {
             GameObject slot = Instantiate(prefab);
@@ -33,7 +36,7 @@ public class InventoryController : MonoBehaviour
             slotObjs[j].GetComponent<Image>().color = new Color(1, 1, 1, 1);
             slotObjs[j].AddComponent<Button>();
             Button btn = slotObjs[j].GetComponent<Button>();
-            btn.onClick.AddListener( delegate{ OnClickSlot(name); });
+            btn.onClick.AddListener( delegate{ OnClickSlot(name + "(항시)"); });
             j++;
         }
 
@@ -49,6 +52,17 @@ public class InventoryController : MonoBehaviour
 
     private void SetSlotImage()
     {
+        int count = DataManager.instance.BaseRating.Count;
+
+        for (int i = 0; i< gm.SuccessList.Count; i++)
+        {
+            slotObjs[i + count].GetComponent<Image>().preserveAspect = true;
+            slotObjs[i + count].GetComponent<Image>().sprite = Resources.Load<Sprite>(gm.SuccessList[i]);
+            slotObjs[i + count].GetComponent<Image>().color = new Color(1, 1, 1, 1);
+            slotObjs[i + count].AddComponent<Button>();
+            Button btn = slotObjs[i + count].GetComponent<Button>();
+            btn.onClick.AddListener(delegate { OnClickSlot(gm.SuccessList[i]); });
+        }
     }
 
     private void OnClickSlot(string name)

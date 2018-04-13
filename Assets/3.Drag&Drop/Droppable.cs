@@ -13,16 +13,23 @@ public class Droppable : MonoBehaviour, IDropHandler, IPointerEnterHandler, IPoi
     public event DropHandler OnNothing;
     public int index = 1;
     public int markImageIndex;
+    private GameManager gm;
+
+    private void Start()
+    {
+        gm = FindObjectOfType<GameManager>();
+    }
 
     public void OnDrop(PointerEventData eventData)
     {
-        if (DataManager.instance.RequestState == RequestState.randomItem)
+        if (gm.currentGame == GameManager.GameState.OrderGame)
         {
             //드래그하고 있었던 아이콘의 Image 컴포넌트를 가져온다
             Image droppedImage = eventData.pointerDrag.GetComponent<Image>();
             if (DataManager.instance.NecessaryRating.Contains(droppedImage.sprite.name))
             {
                 Debug.Log("정답");
+                gm.SuccessList.Add(droppedImage.sprite.name);
                 OnSuccess(eventData.pointerDrag);
             }
             else if (DataManager.instance.ConfusionRating.Contains(droppedImage.sprite.name))

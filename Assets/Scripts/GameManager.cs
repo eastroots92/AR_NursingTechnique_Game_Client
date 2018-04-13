@@ -31,10 +31,11 @@ public class GameManager : MonoBehaviour
     private bool isStart = false;
     private Draggable draggable;
     private Droppable droppable;
-    private GameState currentGame;
+    public GameState currentGame;
     private Image[] checkImg;
     private float fillAmount = 1;
 
+    private List<string> successList = new List<string>();
     //준비물 게임 
     private List<Image> baseItemImage = new List<Image>();
     private List<Image> necessaryItemImage = new List<Image>();
@@ -50,6 +51,19 @@ public class GameManager : MonoBehaviour
         set
         {
             isStart = value;
+        }
+    }
+
+    public List<string> SuccessList
+    {
+        get
+        {
+            return successList;
+        }
+
+        set
+        {
+            successList = value;
         }
     }
 
@@ -117,7 +131,7 @@ public class GameManager : MonoBehaviour
         
         if (currentGame == GameState.OrderGame)
         {
-            if (DataManager.instance.NecessaryRating.Count == 0 && life > 0)
+            if (DataManager.instance.NecessaryRating.Count == SuccessList.Count && life > 0)
             {
                 Debug.Log("성공");
             }
@@ -278,7 +292,7 @@ public class GameManager : MonoBehaviour
             necessaryItemImage.Add(img);
             necessaryItemImage[o].preserveAspect = true;
             necessaryItemImage[o].sprite = Resources.Load<Sprite>(DataManager.instance.NecessaryRating[o]);
-            originItemTransform[o].gameObject.AddComponent<FollowCamera>();
+            //originItemTransform[o].gameObject.AddComponent<FollowCamera>();
         }
         for (int p = 0; p < DataManager.instance.ConfusionRating.Count; p++)
         {
@@ -287,7 +301,7 @@ public class GameManager : MonoBehaviour
             confusionItemImage.Add(img);
             confusionItemImage[p].preserveAspect = true;
             confusionItemImage[p].sprite = Resources.Load<Sprite>(DataManager.instance.ConfusionRating[p]);
-            originItemTransform[p + necessCount].gameObject.AddComponent<FollowCamera>();
+            //originItemTransform[p + necessCount].gameObject.AddComponent<FollowCamera>();
         }
     }
 
