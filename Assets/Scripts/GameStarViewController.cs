@@ -25,6 +25,9 @@ public class GameStarViewController : MonoBehaviour
             foreach(GameObject obj in orderGroup)
                 obj.SetActive(true);
 
+            foreach (GameObject obj in supplyGroup)
+                obj.SetActive(false);
+
             title.sprite=titleImg[0];
             orderText.text = "이제 시작할 게임은 " + "<color=#ff0000>" + clinicalTitle + "</color>" + "의 준비물 게임입니다.";
         }
@@ -33,6 +36,10 @@ public class GameStarViewController : MonoBehaviour
             foreach (GameObject obj in supplyGroup)
                 obj.SetActive(true);
 
+            foreach (GameObject obj in orderGroup)
+                obj.SetActive(false);
+
+            supplyText.text = "이제 시작할 게임은 " + "<color=#ff0000>" + clinicalTitle + "</color>" + "의 순서 게임입니다.";
             title.sprite = titleImg[1];
         }
     }
