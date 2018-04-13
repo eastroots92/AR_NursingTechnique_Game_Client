@@ -36,6 +36,8 @@ public class GameManager : MonoBehaviour
     private float fillAmount = 1;
 
     private string game_type;
+    private bool isTimeOver = false;
+    private int game_num =  0;
 
     //준비물 게임 
     private List<Image> baseItemImage = new List<Image>();
@@ -67,8 +69,10 @@ public class GameManager : MonoBehaviour
         settingUI.SetActive(false);
         pauseUI.SetActive(false);
 
-        ShuffleList(originItemTransform);
+        game_num =  DataManager.instance.GameNumber;
 
+        ShuffleList(originItemTransform);
+        
         if (DataManager.instance.RequestState == RequestState.randomItem)
             currentGame = GameState.OrderGame;
         else
@@ -89,6 +93,10 @@ public class GameManager : MonoBehaviour
             string seconds = ((int)(fillAmount * 100 - 60)).ToString();
 
             timerText.text = "00:0" + minutes + ":" + seconds;
+        }else{
+            if (!isTimeOver){
+                setGameRecord_timeOver();
+            }
         }
     }
 
@@ -122,6 +130,9 @@ public class GameManager : MonoBehaviour
             if (DataManager.instance.NecessaryRating.Count == 0 && life > 0)
             {
                 Debug.Log("성공");
+                // TODO Life 매개변수
+                game_type = "순서";
+                isFinishGame(game_num,life,game_type);
             }
         }
         else
@@ -130,6 +141,10 @@ public class GameManager : MonoBehaviour
             if (droppable.index == DataManager.instance.RandomContentList.Count)
             {
                 Debug.Log("성공");
+
+                // TODO Life 매개변수
+                game_type="아이템";
+                // isFinishGame(1,life,game_type);
             }
         }
         draggable.Success();
@@ -219,6 +234,7 @@ public class GameManager : MonoBehaviour
     //순서게임
     private void SetSupplyGame()
     {
+        
         supplyDroppable.SetActive(true);
         droppable = FindObjectOfType<Droppable>();
         supplyTextObj.SetActive(true);
@@ -264,6 +280,7 @@ public class GameManager : MonoBehaviour
     //준비물게임
     private void SetOrderGame()
     {
+
         orderDroppable.SetActive(true);
         droppable = FindObjectOfType<Droppable>();
 
@@ -310,22 +327,40 @@ public class GameManager : MonoBehaviour
         inventoryUI.SetActive(!inventoryUI.activeSelf);
     }
 
-    public void isFinishGame(int clinical_id, int life, string game_type){
+    public void setGameRecord_timeOver(){
+        isTimeOver= true;
+        int life = 0;
+        // TODO Timeover
 
+        if(currentGame == GameState.OrderGame){
+            game_type = "순서";
+        }else{
+            game_type= "아이템";
+        }
+
+        isFinishGame(game_num,life, game_type);
+    }
+
+    public void isFinishGame(int clinical_id, int life, string game_type){
+        Debug.Log("시작");
         bool isCurrent = true;
         if(clinical_id <= 0 || clinical_id >18){
             isCurrent = false;
+            Debug.Log("아이디 걸러짐");
         }
 
         if(life < 0 || life >5 ){
             isCurrent = false;
+            Debug.Log("라이프 걸러짐");
         }
 
         if( game_type != "순서" && game_type != "아이템"){
             isCurrent = false;
+            Debug.Log("순서 아이템 걸러짐");
         }
 
         if (isCurrent){
+            Debug.Log("d이건 도는건가?");
             DataManager.instance.SendGameRecord(clinical_id.ToString(),life.ToString(),game_type);
         }
     }

@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System;
 
 /// <summary>
 /// test ID : admin, pw : 123456, token : kdwznmgcshoabijyqevr
@@ -46,6 +47,8 @@ public class DataManager : MonoBehaviour
     private int count;
     private int myrank;
     private int totalUser;
+    private int gameNumber;
+
 
     #region ClinicalURL Data & Property
     [SerializeField] private string signUpUrl = "http://52.78.120.239/user/signup.json?";
@@ -217,6 +220,15 @@ public class DataManager : MonoBehaviour
         }
     }
 
+    public int GameNumber{
+        get{
+            return gameNumber;
+        }
+        set{
+            gameNumber = value;
+        }
+    }
+
     #endregion
 
     private void Awake()
@@ -368,6 +380,7 @@ public class DataManager : MonoBehaviour
                 StartCoroutine(LostToken());
             else
             {
+                GameNumber = Convert.ToInt32(config.Random_item.Info.Id);
                 NecessaryRating = new List<string>();
                 BaseRating = new List<string>();
                 ConfusionRating = new List<string>();
@@ -389,6 +402,7 @@ public class DataManager : MonoBehaviour
                 StartCoroutine(LostToken());
             else
             {
+                GameNumber = Convert.ToInt32(config.Random_content.Info.Id);
                 RandomContentList = new Dictionary<int, string>();
                 OriginList = new List<int>();
 
@@ -411,7 +425,7 @@ public class DataManager : MonoBehaviour
             TotalUser = config.User_rank.Result.TotalUser;
         }else if (receiveData.Contains("game_record")){
             // TODO : 값 전달이 실패 시 어떻게 처리 할 것인지??
-            Debug.Log("HELLO");
+
         }
     }
 
