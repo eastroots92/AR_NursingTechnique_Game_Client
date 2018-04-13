@@ -41,6 +41,7 @@ public class GameManager : MonoBehaviour
     private string game_type;
     private bool isTimeOver = false;
     private int game_num =  0;
+    private bool isClear;
 
     //준비물 게임 
     private List<Image> baseItemImage = new List<Image>();
@@ -86,10 +87,24 @@ public class GameManager : MonoBehaviour
         }
     }
 
+    public bool IsClear
+    {
+        get
+        {
+            return isClear;
+        }
+
+        set
+        {
+            isClear = value;
+        }
+    }
+
     void Start()
     {
         fillAmount = 1;
         fill.fillAmount = 1;
+        IsClear = false;
 
         gameInfoUI.SetActive(true);
         orderDroppable.SetActive(false);
@@ -161,6 +176,7 @@ public class GameManager : MonoBehaviour
             {
                 Debug.Log("성공");
                 // TODO Life 매개변수
+                IsClear = true;
                 game_type = "순서";
                 isFinishGame(game_num,life,game_type);
             }
@@ -171,9 +187,9 @@ public class GameManager : MonoBehaviour
             if (droppable.index == DataManager.instance.RandomContentList.Count)
             {
                 Debug.Log("성공");
-
+                IsClear = true;
                 // TODO Life 매개변수
-                game_type="아이템";
+                game_type ="아이템";
                 // isFinishGame(1,life,game_type);
             }
         }
