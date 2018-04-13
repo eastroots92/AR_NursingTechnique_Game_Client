@@ -54,6 +54,9 @@ public class MyChartViewController : ViewController {
 
         totalPointTxt.text = DataManager.instance.Score.ToString(); 
 
+        string rank = DataManager.instance.MyRank.ToString() +" / " + DataManager.instance.TotalUser.ToString();
+        rankTxt.text = rank;
+
         successTxt.text = setSuccessText(DataManager.instance.Wins, DataManager.instance.Count);
 
     }

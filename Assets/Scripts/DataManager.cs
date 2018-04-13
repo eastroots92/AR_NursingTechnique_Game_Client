@@ -13,6 +13,7 @@ public enum RequestState
     randomItem,
     gameRecord,
     userInfo,
+    userRank
 }
 
 public class DataManager : MonoBehaviour
@@ -43,6 +44,8 @@ public class DataManager : MonoBehaviour
     private int success;
     private int wins;
     private int count;
+    private int myrank;
+    private int totalUser;
 
     #region ClinicalURL Data & Property
     [SerializeField] private string signUpUrl = "http://52.78.120.239/user/signup.json?";
@@ -57,6 +60,7 @@ public class DataManager : MonoBehaviour
     [SerializeField] private string randomItemUrl = "http://52.78.120.239/game/random_item.json?token=";
     [SerializeField] private string gameRecordUrl = "http://52.78.120.239/game/game_record.json?";
     [SerializeField] private string userInfoUrl = "http://52.78.120.239/user/user_info.json?token=";
+    [SerializeField] private string userRankUrl = "http://52.78.120.239/user/user_rank.json?token=";
 
     public string Token { set { token = value; } }
 
@@ -195,6 +199,24 @@ public class DataManager : MonoBehaviour
         }
     }
 
+    public int MyRank{
+        get{
+            return myrank;
+        }
+        set {
+            myrank = value;
+        }
+    }
+
+    public int TotalUser{
+        get{
+            return totalUser;
+        }
+        set{
+            totalUser = value;
+        }
+    }
+
     #endregion
 
     private void Awake()
@@ -260,6 +282,15 @@ public class DataManager : MonoBehaviour
         RequestState = RequestState.userInfo;
 
         string url = userInfoUrl + token;
+        WWW www = new WWW(url);
+
+        StartCoroutine(WaitForRequest(www));
+    }
+
+    public void SendUserRank(){
+        RequestState = RequestState.userRank;
+
+        string url = userRankUrl + token;
         WWW www = new WWW(url);
 
         StartCoroutine(WaitForRequest(www));
@@ -367,6 +398,10 @@ public class DataManager : MonoBehaviour
             Score = config.User_info.List.Score;
             Wins = config.User_info.List.Wins;
             Count = config.User_info.List.Count;
+        }
+        else if (receiveData.Contains("user_rank")){
+            MyRank = config.User_rank.Result.MyRank;
+            TotalUser = config.User_rank.Result.TotalUser;
         }
     }
 
