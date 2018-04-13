@@ -37,10 +37,10 @@ public class GameManager : MonoBehaviour
 
     private List<string> successList = new List<string>();
 
+    private string clinicalTitle;
     private string game_type;
     private bool isTimeOver = false;
     private int game_num =  0;
-
 
     //준비물 게임 
     private List<Image> baseItemImage = new List<Image>();
@@ -73,6 +73,19 @@ public class GameManager : MonoBehaviour
         }
     }
 
+    public string ClinicalTitle
+    {
+        get
+        {
+            return clinicalTitle;
+        }
+
+        set
+        {
+            clinicalTitle = value;
+        }
+    }
+
     void Start()
     {
         fillAmount = 1;
@@ -85,6 +98,7 @@ public class GameManager : MonoBehaviour
         settingUI.SetActive(false);
         pauseUI.SetActive(false);
 
+        ClinicalTitle = DataManager.instance.ClinicalTitle;
         game_num =  DataManager.instance.GameNumber;
 
         ShuffleList(originItemTransform);
@@ -349,9 +363,9 @@ public class GameManager : MonoBehaviour
         // TODO Timeover
 
         if(currentGame == GameState.OrderGame){
-            game_type = "순서";
+            game_type = "준비";
         }else{
-            game_type= "아이템";
+            game_type= "순서";
         }
 
         isFinishGame(game_num,life, game_type);

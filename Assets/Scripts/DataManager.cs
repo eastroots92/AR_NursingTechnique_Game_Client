@@ -4,7 +4,7 @@ using UnityEngine;
 using System;
 
 /// <summary>
-/// test ID : admin, pw : 123456, token : kdwznmgcshoabijyqevr
+/// test ID : admin, pw : 123456
 /// </summary>
 public enum RequestState
 {
@@ -48,6 +48,7 @@ public class DataManager : MonoBehaviour
     private int myrank;
     private int totalUser;
     private int gameNumber;
+    private string clinicalTitle;
 
 
     #region ClinicalURL Data & Property
@@ -229,6 +230,19 @@ public class DataManager : MonoBehaviour
         }
     }
 
+    public string ClinicalTitle
+    {
+        get
+        {
+            return clinicalTitle;
+        }
+
+        set
+        {
+            clinicalTitle = value;
+        }
+    }
+
     #endregion
 
     private void Awake()
@@ -384,6 +398,7 @@ public class DataManager : MonoBehaviour
                 NecessaryRating = new List<string>();
                 BaseRating = new List<string>();
                 ConfusionRating = new List<string>();
+                ClinicalTitle = config.Random_item.Info.Title;
 
                 foreach (RandomItemListDetail list in config.Random_item.List)
                 {

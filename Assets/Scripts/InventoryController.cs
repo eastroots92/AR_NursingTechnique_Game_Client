@@ -31,9 +31,10 @@ public class InventoryController : MonoBehaviour
 
         foreach (string name in DataManager.instance.BaseRating)
         {
-            slotObjs[j].GetComponent<Image>().preserveAspect = true;
-            slotObjs[j].GetComponent<Image>().sprite = Resources.Load<Sprite>(name);
-            slotObjs[j].GetComponent<Image>().color = new Color(1, 1, 1, 1);
+            Transform obj = slotObjs[j].transform.Find("Image");
+            obj.GetComponent<Image>().preserveAspect = true;
+            obj.GetComponent<Image>().sprite = Resources.Load<Sprite>(name);
+            obj.GetComponent<Image>().color = new Color(1, 1, 1, 1);
             slotObjs[j].AddComponent<Button>();
             Button btn = slotObjs[j].GetComponent<Button>();
             btn.onClick.AddListener( delegate{ OnClickSlot(name + "(항시)"); });
@@ -56,12 +57,15 @@ public class InventoryController : MonoBehaviour
 
         for (int i = 0; i< gm.SuccessList.Count; i++)
         {
-            slotObjs[i + count].GetComponent<Image>().preserveAspect = true;
-            slotObjs[i + count].GetComponent<Image>().sprite = Resources.Load<Sprite>(gm.SuccessList[i]);
-            slotObjs[i + count].GetComponent<Image>().color = new Color(1, 1, 1, 1);
+            Transform obj = slotObjs[i + count].transform.Find("Image");
+            string name = gm.SuccessList[i];
+
+            obj.GetComponent<Image>().preserveAspect = true;
+            obj.GetComponent<Image>().sprite = Resources.Load<Sprite>(name);
+            obj.GetComponent<Image>().color = new Color(1, 1, 1, 1);
             slotObjs[i + count].AddComponent<Button>();
             Button btn = slotObjs[i + count].GetComponent<Button>();
-            btn.onClick.AddListener(delegate { OnClickSlot(gm.SuccessList[i]); });
+            btn.onClick.AddListener(delegate { OnClickSlot(name + "(필수)"); });
         }
     }
 
