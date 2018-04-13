@@ -113,7 +113,7 @@ public class GameSceneManager : MonoBehaviour
     private void CheckAutoLogin()
     {
         StopCoroutine(FirstSceneCheck());
-
+// TODO : 여기 아래에 ! 붙여야함
         if (!PlayerPrefs.HasKey("SavedTokenData"))
             StartCoroutine(ChangeScene(1));
         else
