@@ -322,7 +322,7 @@ public class DataManager : MonoBehaviour
             }
             else
                 RequestAgain();
-        }
+        } 
     }
 
     private IEnumerator ReceiveData(string receiveData)
@@ -411,6 +411,7 @@ public class DataManager : MonoBehaviour
             TotalUser = config.User_rank.Result.TotalUser;
         }else if (receiveData.Contains("game_record")){
             // TODO : 값 전달이 실패 시 어떻게 처리 할 것인지??
+            Debug.Log("HELLO");
         }
     }
 

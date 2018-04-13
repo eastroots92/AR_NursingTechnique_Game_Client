@@ -35,6 +35,8 @@ public class GameManager : MonoBehaviour
     private Image[] checkImg;
     private float fillAmount = 1;
 
+    private string game_type;
+
     //준비물 게임 
     private List<Image> baseItemImage = new List<Image>();
     private List<Image> necessaryItemImage = new List<Image>();
@@ -306,5 +308,25 @@ public class GameManager : MonoBehaviour
     public void OnClickInventory()
     {
         inventoryUI.SetActive(!inventoryUI.activeSelf);
+    }
+
+    public void isFinishGame(int clinical_id, int life, string game_type){
+
+        bool isCurrent = true;
+        if(clinical_id <= 0 || clinical_id >18){
+            isCurrent = false;
+        }
+
+        if(life < 0 || life >5 ){
+            isCurrent = false;
+        }
+
+        if( game_type != "순서" && game_type != "아이템"){
+            isCurrent = false;
+        }
+
+        if (isCurrent){
+            DataManager.instance.SendGameRecord(clinical_id.ToString(),life.ToString(),game_type);
+        }
     }
 }
