@@ -102,6 +102,7 @@ public class NavigationViewController : ViewController {
     public void leftGetUserData(){
         loadingObj.SetActive(true);
         DataManager.instance.SendUserInfo();
+        DataManager.instance.SendUserRank();
     }
 
     public void leftShowView(){

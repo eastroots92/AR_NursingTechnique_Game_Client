@@ -13,6 +13,7 @@ public class DataConfiguration
     [SerializeField] private RandomContent random_content;
     [SerializeField] private GameRecord game_record;
     [SerializeField] private UserInfo user_info;
+    [SerializeField] private UserRank user_rank;
 
     #region DataConfiguration Property
     public SignUp Signup
@@ -116,6 +117,15 @@ public class DataConfiguration
         set
         {
             user_info = value;
+        }
+    }
+
+    public UserRank User_rank{
+        get{
+            return user_rank;
+        }
+        set{
+            user_rank = value;
         }
     }
 
@@ -264,6 +274,8 @@ public class Result
     [SerializeField] private string token;
     [SerializeField] private string code;
     [SerializeField] private string reason;
+    [SerializeField] private int myrank;
+    [SerializeField] private int totalUser;
 
 #region Result Property
     public string Uid
@@ -315,6 +327,24 @@ public class Result
         set
         {
             reason = value;
+        }
+    }
+
+    public int MyRank{
+        get{
+            return myrank;
+        }
+        set{
+            myrank = value;
+        }
+    }
+
+    public int TotalUser{
+        get{
+            return totalUser;
+        }
+        set{
+            totalUser = value;
         }
     }
 #endregion
@@ -788,6 +818,42 @@ public class UserInfo
         }
     }
 #endregion
+}
+
+[Serializable]
+public class UserRank{
+    [SerializeField] private Respon respon;
+    [SerializeField] private Result result;
+
+    #region UserRank Property
+
+        public Respon Respon
+        {
+            get
+            {
+                return respon;
+            }
+
+            set
+            {
+                respon = value;
+            }
+        }
+
+        public Result Result
+        {
+            get
+            {
+                return result;
+            }
+
+            set
+            {
+                result = value;
+            }
+        }
+
+    #endregion
 }
 
 [Serializable]
