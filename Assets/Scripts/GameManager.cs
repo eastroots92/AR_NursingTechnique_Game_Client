@@ -7,26 +7,25 @@ public class GameManager : MonoBehaviour
 {
     public enum GameState
     {
-        OrderGame,
-        SupplyGame,
+        OrderGame, //준비물게임
+        SupplyGame, //순서게임
     }
 
     [SerializeField] private Image fill;
-    [SerializeField] private float fillAmount = 1;
     [SerializeField] private GameObject gamePlayBtn;
     [SerializeField] private GameObject gameInfoUI;
-    [SerializeField] private GameObject gameUI;
+    [SerializeField] private GameObject inventoryUI;
     [SerializeField] private Text timerText;
     [SerializeField] private Image[] lifeImg;
     [SerializeField] private Sprite[] lifeImgSource;
     [SerializeField] private Sprite[] checkImageSource;
     [SerializeField] private Sprite contentImage;
-    [SerializeField] private GameObject menuUI;
     [SerializeField] private GameObject orderDroppable;
     [SerializeField] private GameObject supplyDroppable;
     [SerializeField] private GameObject supplyTextObj;
     [SerializeField] private GameObject settingUI;
     [SerializeField] private GameObject pauseUI;
+    [SerializeField] private List<Transform> originItemTransform;
 
     private int life = 5;
     private bool isStart = false;
@@ -34,6 +33,7 @@ public class GameManager : MonoBehaviour
     private Droppable droppable;
     private GameState currentGame;
     private Image[] checkImg;
+    private float fillAmount = 1;
 
     //준비물 게임 
     private List<Image> baseItemImage = new List<Image>();
@@ -56,15 +56,16 @@ public class GameManager : MonoBehaviour
     void Start()
     {
         fillAmount = 1;
+        fill.fillAmount = 1;
 
-        gameUI.SetActive(false);
         gameInfoUI.SetActive(true);
-        menuUI.SetActive(false);
         orderDroppable.SetActive(false);
         supplyDroppable.SetActive(false);
         supplyTextObj.SetActive(false);
         settingUI.SetActive(false);
         pauseUI.SetActive(false);
+
+        ShuffleList(originItemTransform);
 
         if (DataManager.instance.RequestState == RequestState.randomItem)
             currentGame = GameState.OrderGame;
@@ -91,9 +92,7 @@ public class GameManager : MonoBehaviour
 
     public void OnClickStartBtn()
     {
-        gameUI.SetActive(true);
         gameInfoUI.SetActive(false);
-        menuUI.SetActive(true);
         IsStart = true;
         GameInitialize();
     }
@@ -115,7 +114,7 @@ public class GameManager : MonoBehaviour
     public void onSuccess(GameObject obj)
     {
         draggable = obj.GetComponent<Draggable>();
-        draggable.Success();
+        
         if (currentGame == GameState.OrderGame)
         {
             if (DataManager.instance.NecessaryRating.Count == 0 && life > 0)
@@ -131,6 +130,7 @@ public class GameManager : MonoBehaviour
                 Debug.Log("성공");
             }
         }
+        draggable.Success();
     }
 
     public void onFaile(GameObject obj = null)
@@ -200,6 +200,21 @@ public class GameManager : MonoBehaviour
         return inputList;
     }
 
+    private List<Transform> ShuffleList(List<Transform> inputList)
+    {
+        var count = inputList.Count;
+        var last = count - 1;
+        for (var i = 0; i < last; ++i)
+        {
+            var r = UnityEngine.Random.Range(i, count);
+            var tmp = inputList[i];
+            inputList[i] = inputList[r];
+            inputList[r] = tmp;
+        }
+        return inputList;
+    }
+
+    //순서게임
     private void SetSupplyGame()
     {
         supplyDroppable.SetActive(true);
@@ -244,6 +259,7 @@ public class GameManager : MonoBehaviour
         }
     }
 
+    //준비물게임
     private void SetOrderGame()
     {
         orderDroppable.SetActive(true);
@@ -253,49 +269,25 @@ public class GameManager : MonoBehaviour
         droppable.OnFaile += onFaile;
         droppable.OnNothing += onNothing;
 
-        int i = 0; int j = 0; int l = 0;
+        int necessCount = DataManager.instance.NecessaryRating.Count;
 
-        for (int k = 0; k < DataManager.instance.BaseRating.Count; k++)
+        for (int o = 0; o < necessCount; o++)
         {
-            GameObject obj = new GameObject("item");
-            Image img = obj.AddComponent<Image>();
-            obj.transform.SetParent(GameObject.Find("Item").transform);
-            baseItemImage.Add(img);
-        }
-        for (int o = 0; o < DataManager.instance.NecessaryRating.Count; o++)
-        {
-            GameObject obj = new GameObject("items");
-            Image img = obj.AddComponent<Image>();
-            obj.AddComponent<Draggable>();
-            obj.transform.SetParent(GameObject.Find("Items").transform);
+            Image img = originItemTransform[o].gameObject.AddComponent<Image>();
+            originItemTransform[o].gameObject.AddComponent<Draggable>();
             necessaryItemImage.Add(img);
+            necessaryItemImage[o].preserveAspect = true;
+            necessaryItemImage[o].sprite = Resources.Load<Sprite>(DataManager.instance.NecessaryRating[o]);
+            originItemTransform[o].gameObject.AddComponent<FollowCamera>();
         }
         for (int p = 0; p < DataManager.instance.ConfusionRating.Count; p++)
         {
-            GameObject obj = new GameObject("itemss");
-            Image img = obj.AddComponent<Image>();
-            obj.AddComponent<Draggable>();
-            obj.transform.SetParent(GameObject.Find("Itemss").transform);
+            Image img = originItemTransform[p + necessCount].gameObject.AddComponent<Image>();
+            originItemTransform[p + necessCount].gameObject.AddComponent<Draggable>();
             confusionItemImage.Add(img);
-        }
-
-        foreach (string name in DataManager.instance.BaseRating)
-        {
-            baseItemImage[i].preserveAspect = true;
-            baseItemImage[i].sprite = Resources.Load<Sprite>(name);
-            i++;
-        }
-        foreach (string name in DataManager.instance.NecessaryRating)
-        {
-            necessaryItemImage[j].preserveAspect = true;
-            necessaryItemImage[j].sprite = Resources.Load<Sprite>(name);
-            j++;
-        }
-        foreach (string name in DataManager.instance.ConfusionRating)
-        {
-            confusionItemImage[l].preserveAspect = true;
-            confusionItemImage[l].sprite = Resources.Load<Sprite>(name);
-            l++;
+            confusionItemImage[p].preserveAspect = true;
+            confusionItemImage[p].sprite = Resources.Load<Sprite>(DataManager.instance.ConfusionRating[p]);
+            originItemTransform[p + necessCount].gameObject.AddComponent<FollowCamera>();
         }
     }
 
@@ -309,5 +301,10 @@ public class GameManager : MonoBehaviour
     {
         IsStart = false;
         pauseUI.SetActive(!pauseUI.activeSelf);
+    }
+
+    public void OnClickInventory()
+    {
+        inventoryUI.SetActive(!inventoryUI.activeSelf);
     }
 }
