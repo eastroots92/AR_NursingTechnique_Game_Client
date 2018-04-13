@@ -26,6 +26,7 @@ public class GameManager : MonoBehaviour
     [SerializeField] private GameObject settingUI;
     [SerializeField] private GameObject pauseUI;
     [SerializeField] private List<Transform> originItemTransform;
+    [SerializeField] private GameObject gameClear;
 
     private int life = 5;
     private bool isStart = false;
@@ -112,6 +113,7 @@ public class GameManager : MonoBehaviour
         supplyTextObj.SetActive(false);
         settingUI.SetActive(false);
         pauseUI.SetActive(false);
+        gameClear.SetActive(false);
 
         ClinicalTitle = DataManager.instance.ClinicalTitle;
         game_num =  DataManager.instance.GameNumber;
@@ -179,6 +181,7 @@ public class GameManager : MonoBehaviour
                 IsClear = true;
                 game_type = "순서";
                 isFinishGame(game_num,life,game_type);
+                gameClear.SetActive(true);
             }
         }
         else
@@ -236,8 +239,9 @@ public class GameManager : MonoBehaviour
         }
         else if (life == 0)
         {
+            IsClear = false;
             lifeImg[4].sprite = lifeImgSource[1];
-            StartCoroutine(GameSceneManager.instance.ChangeScene(2));
+            gameClear.SetActive(true);
         }
 
         StartCoroutine(DelLifeUI(imgIndex));
