@@ -7,14 +7,12 @@ using System;
 [Serializable]
 public class SettingsOption
 {
-    public bool arToggleValue;
     public bool soundToggleValue;
     public int qualityValue;
     public float volumeValue;
     
-    public SettingsOption(bool arToggleValue, bool soundToggleValue, int qualityValue, float volumeValue)
+    public SettingsOption(bool soundToggleValue, int qualityValue, float volumeValue)
     {
-        this.arToggleValue = arToggleValue;
         this.soundToggleValue = soundToggleValue;
         this.qualityValue = qualityValue;
         this.volumeValue = volumeValue;
@@ -30,7 +28,6 @@ public class SettingMenuController : ViewController
 {
     [SerializeField] private GameObject settingMenu;        //setting menu 게임오브젝트
     [SerializeField] private AudioMixer audioMixer;         //앱 내부의 AudioMixer
-    [SerializeField] private Toggle arToggle;               //AR Toggle UI
     [SerializeField] private Toggle soundToggle;            //Sound Toggle UI
     [SerializeField] private Dropdown qualityDropdown;      //QualitySettings을 조절하는 Dropdown UI
     [SerializeField] private Slider volumeSlider;           //AudioMixer 값을 조절하는 Slider
@@ -38,16 +35,16 @@ public class SettingMenuController : ViewController
     private SettingsOption loadSettingsOption = null;
     private SettingsOption settingsOption = null;
     private SettingsOption curSettingsOption = null;
-    private bool isOnAR = true;                            //AR 기능의 On/Off 여부
+    private GameManager gm;
     private bool isOnSound = true;
     private bool isApplyButton = false;
 
     private void Awake()
     {
+        gm = FindObjectOfType<GameManager>();
         //저장된 SettingsOption이 있을 때 Game Setting
         if (LoadSettings())
         {
-            isOnAR = loadSettingsOption.arToggleValue;
             isOnSound = loadSettingsOption.soundToggleValue;
 
             QualitySettings.SetQualityLevel(loadSettingsOption.qualityValue);
@@ -60,7 +57,6 @@ public class SettingMenuController : ViewController
         //저장된 SettingsOption이 없을 때 Game Setting
         else
         {
-            isOnAR = true;
             isOnSound = true;
             QualitySettings.SetQualityLevel(2);
             audioMixer.SetFloat("volume", 20);
@@ -69,7 +65,7 @@ public class SettingMenuController : ViewController
         float value;
         audioMixer.GetFloat("volume", out value);
         //현재 Game Setting을 담을 객체 생성
-        curSettingsOption = new SettingsOption(isOnAR, isOnSound, QualitySettings.GetQualityLevel(), value);
+        curSettingsOption = new SettingsOption(isOnSound, QualitySettings.GetQualityLevel(), value);
     }
 
     //UI 출력시 UI 내용 변경
@@ -78,7 +74,7 @@ public class SettingMenuController : ViewController
         float value;
         audioMixer.GetFloat("volume", out value);
         //변경 사항을 담을 객체 생성
-        settingsOption = new SettingsOption(isOnAR, isOnSound, QualitySettings.GetQualityLevel(), value);
+        settingsOption = new SettingsOption(isOnSound, QualitySettings.GetQualityLevel(), value);
 
         UpdateContent(curSettingsOption);
     }
@@ -86,7 +82,6 @@ public class SettingMenuController : ViewController
     //Settings View 내용을 갱신
     public void UpdateContent(SettingsOption option)
     {
-        arToggle.isOn = curSettingsOption.arToggleValue;
         soundToggle.isOn = curSettingsOption.soundToggleValue;
         qualityDropdown.value = curSettingsOption.qualityValue;
         volumeSlider.value = curSettingsOption.volumeValue;
@@ -102,12 +97,6 @@ public class SettingMenuController : ViewController
     {
         QualitySettings.SetQualityLevel(qualityIndex);
         settingsOption.qualityValue = qualityIndex;
-    }
-
-    public void SetAR(bool isSetAR)
-    {
-        settingsOption.arToggleValue = isSetAR;
-        isOnAR = isSetAR;
     }
 
     public void SetSound(bool isSetSound)
@@ -129,7 +118,6 @@ public class SettingMenuController : ViewController
 
     public void OnPressResetButton()
     {
-        settingsOption.arToggleValue = arToggle.isOn = true;
         settingsOption.soundToggleValue = soundToggle.isOn = true;
         settingsOption.qualityValue = qualityDropdown.value = 2;
         settingsOption.volumeValue = volumeSlider.value = 20;
@@ -148,19 +136,18 @@ public class SettingMenuController : ViewController
     {
         if(!isApplyButton)
         {
-            isOnAR = curSettingsOption.arToggleValue;
             isOnSound = curSettingsOption.soundToggleValue;
             QualitySettings.SetQualityLevel(curSettingsOption.qualityValue);
             audioMixer.SetFloat("volume", curSettingsOption.volumeValue);
         }
         else
         {
-            curSettingsOption.arToggleValue = settingsOption.arToggleValue;
             curSettingsOption.soundToggleValue = settingsOption.soundToggleValue;
             curSettingsOption.qualityValue = settingsOption.qualityValue;
             curSettingsOption.volumeValue = settingsOption.volumeValue;
         }
 
+        gm.IsStart = true;
         settingMenu.SetActive(false);
     }
 

@@ -1,9 +1,10 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System;
 
 /// <summary>
-/// test ID : admin, pw : 123456, token : kdwznmgcshoabijyqevr
+/// test ID : admin, pw : 123456
 /// </summary>
 public enum RequestState
 {
@@ -11,7 +12,9 @@ public enum RequestState
     listClinical,
     randomContent,
     randomItem,
-    gameRecord
+    gameRecord,
+    userInfo,
+    userRank
 }
 
 public class DataManager : MonoBehaviour
@@ -23,7 +26,6 @@ public class DataManager : MonoBehaviour
 
     private RequestState requestState;
     private int requestCount=0;
-    public bool isPlay = true;
 
 	private string token = "kdwznmgcshoabijyqevr";
     
@@ -38,6 +40,17 @@ public class DataManager : MonoBehaviour
     private Dictionary<int, string> randomContentList;
     private List<int> originList;
 
+    private string userName;
+    private int score;
+    private int success;
+    private int wins;
+    private int count;
+    private int myrank;
+    private int totalUser;
+    private int gameNumber;
+    private string clinicalTitle;
+
+
     #region ClinicalURL Data & Property
     [SerializeField] private string signUpUrl = "http://52.78.120.239/user/signup.json?";
     [SerializeField] private string signInUrl = "http://52.78.120.239/user/signin.json?";
@@ -49,7 +62,9 @@ public class DataManager : MonoBehaviour
     //"info" : {"id" : "해당 간호술기 번호(호출 번호)" ,"title" : "간호술기 제목" , "difficulty" : "난이도" } , " list" : { "name" : "아이템 명" , "rating" : "중요도"}}}
     //rating : 중요도, 필수-필수로 필요한 아이템, 항시-항시 준비되어 있는 물품, 혼동-헷갈리게 하는 물품
     [SerializeField] private string randomItemUrl = "http://52.78.120.239/game/random_item.json?token=";
-    [SerializeField] private string gameRecordUrl = "http://52.78.120.239/game/game_record.json?";
+    [SerializeField] private string gameRecordUrl = "http://52.78.120.239/game/game_record.json?token=";
+    [SerializeField] private string userInfoUrl = "http://52.78.120.239/user/user_info.json?token=";
+    [SerializeField] private string userRankUrl = "http://52.78.120.239/user/user_rank.json?token=";
 
     public string Token { set { token = value; } }
 
@@ -130,6 +145,104 @@ public class DataManager : MonoBehaviour
             requestState = value;
         }
     }
+
+    public string UserName
+    {
+        get
+        {
+            return userName;
+        }
+
+        set
+        {
+            userName = value;
+        }
+    }
+
+    public int Success
+    {
+        get
+        {
+            return success;
+        }
+
+        set
+        {
+            success = value;
+        }
+    }
+
+    public int Score
+    {
+        get
+        {
+            return score;
+        }
+
+        set
+        {
+            score = value;
+        }
+    }
+
+    public int Wins{
+        get{
+            return wins;
+        }
+        set{
+            wins = value;
+        }
+    }
+
+    public int Count {
+        get{
+            return count;
+        }
+        set {
+            count = value;
+        }
+    }
+
+    public int MyRank{
+        get{
+            return myrank;
+        }
+        set {
+            myrank = value;
+        }
+    }
+
+    public int TotalUser{
+        get{
+            return totalUser;
+        }
+        set{
+            totalUser = value;
+        }
+    }
+
+    public int GameNumber{
+        get{
+            return gameNumber;
+        }
+        set{
+            gameNumber = value;
+        }
+    }
+
+    public string ClinicalTitle
+    {
+        get
+        {
+            return clinicalTitle;
+        }
+
+        set
+        {
+            clinicalTitle = value;
+        }
+    }
+
     #endregion
 
     private void Awake()
@@ -142,6 +255,13 @@ public class DataManager : MonoBehaviour
             Destroy(gameObject);
 
         RequestState = RequestState.None;
+    }
+
+    public void SendGameRecord(string clinical_id, string life, string game_type){
+        string url = gameRecordUrl + token + "&clinical_id=" + clinical_id + "&life=" + life + "&game_type=" + game_type ;
+        WWW www = new WWW(url);
+
+        StartCoroutine(WaitForRequest(www));
     }
     
     public void SendSignUp(string id, string pw, string name, string job)
@@ -185,7 +305,25 @@ public class DataManager : MonoBehaviour
         RequestState = RequestState.randomContent;
 
         string url = randomContentUrl + token + "&number=" + num;
-        Debug.Log(url);
+        WWW www = new WWW(url);
+
+        StartCoroutine(WaitForRequest(www));
+    }
+
+    public void SendUserInfo()
+    {
+        RequestState = RequestState.userInfo;
+
+        string url = userInfoUrl + token;
+        WWW www = new WWW(url);
+
+        StartCoroutine(WaitForRequest(www));
+    }
+
+    public void SendUserRank(){
+        RequestState = RequestState.userRank;
+
+        string url = userRankUrl + token;
         WWW www = new WWW(url);
 
         StartCoroutine(WaitForRequest(www));
@@ -210,7 +348,7 @@ public class DataManager : MonoBehaviour
             }
             else
                 RequestAgain();
-        }
+        } 
     }
 
     private IEnumerator ReceiveData(string receiveData)
@@ -219,13 +357,13 @@ public class DataManager : MonoBehaviour
 
         if (receiveData.Contains("signup"))
         {
-            yield return new WaitForSeconds(2f);
+            yield return new WaitForSeconds(1f);
             if (OnLoadingImage != null)
                 OnLoadingImage(config.Signup.Respon.Success);
         }
         else if (receiveData.Contains("signin"))
         {
-            yield return new WaitForSeconds(2f);
+            yield return new WaitForSeconds(1f);
             if (OnLoadingImage != null)
                 OnLoadingImage(config.Signin.Respon.Success, config.Signin.Result);
         }
@@ -256,9 +394,11 @@ public class DataManager : MonoBehaviour
                 StartCoroutine(LostToken());
             else
             {
+                GameNumber = Convert.ToInt32(config.Random_item.Info.Id);
                 NecessaryRating = new List<string>();
                 BaseRating = new List<string>();
                 ConfusionRating = new List<string>();
+                ClinicalTitle = config.Random_item.Info.Title;
 
                 foreach (RandomItemListDetail list in config.Random_item.List)
                 {
@@ -277,6 +417,7 @@ public class DataManager : MonoBehaviour
                 StartCoroutine(LostToken());
             else
             {
+                GameNumber = Convert.ToInt32(config.Random_content.Info.Id);
                 RandomContentList = new Dictionary<int, string>();
                 OriginList = new List<int>();
 
@@ -286,6 +427,20 @@ public class DataManager : MonoBehaviour
                     OriginList.Add(list.Index);
                 }
             }
+        }
+        else if (receiveData.Contains("user_info"))
+        {
+            UserName = config.User_info.Info.Name;
+            Score = config.User_info.List.Score;
+            Wins = config.User_info.List.Wins;
+            Count = config.User_info.List.Count;
+        }
+        else if (receiveData.Contains("user_rank")){
+            MyRank = config.User_rank.Result.MyRank;
+            TotalUser = config.User_rank.Result.TotalUser;
+        }else if (receiveData.Contains("game_record")){
+            // TODO : 값 전달이 실패 시 어떻게 처리 할 것인지??
+
         }
     }
 

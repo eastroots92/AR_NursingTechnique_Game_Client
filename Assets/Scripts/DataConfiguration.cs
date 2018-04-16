@@ -12,6 +12,8 @@ public class DataConfiguration
     [SerializeField] private RandomItem random_item;
     [SerializeField] private RandomContent random_content;
     [SerializeField] private GameRecord game_record;
+    [SerializeField] private UserInfo user_info;
+    [SerializeField] private UserRank user_rank;
 
     #region DataConfiguration Property
     public SignUp Signup
@@ -104,7 +106,30 @@ public class DataConfiguration
             game_record = value;
         }
     }
-#endregion
+
+    public UserInfo User_info
+    {
+        get
+        {
+            return user_info;
+        }
+
+        set
+        {
+            user_info = value;
+        }
+    }
+
+    public UserRank User_rank{
+        get{
+            return user_rank;
+        }
+        set{
+            user_rank = value;
+        }
+    }
+
+    #endregion
 }
 
 //
@@ -249,6 +274,8 @@ public class Result
     [SerializeField] private string token;
     [SerializeField] private string code;
     [SerializeField] private string reason;
+    [SerializeField] private int myrank;
+    [SerializeField] private int totalUser;
 
 #region Result Property
     public string Uid
@@ -300,6 +327,24 @@ public class Result
         set
         {
             reason = value;
+        }
+    }
+
+    public int MyRank{
+        get{
+            return myrank;
+        }
+        set{
+            myrank = value;
+        }
+    }
+
+    public int TotalUser{
+        get{
+            return totalUser;
+        }
+        set{
+            totalUser = value;
         }
     }
 #endregion
@@ -723,6 +768,234 @@ public class GameRecordInfo
             score = value;
         }
     }
+    #endregion
+}
+
+[Serializable]
+public class UserInfo
+{
+    [SerializeField] private Respon respon;
+    [SerializeField] private UserInfoInfo info;
+    [SerializeField] private UserInfoList list;
+
+    #region UserInfo Property
+    public Respon Respon
+    {
+        get
+        {
+            return respon;
+        }
+
+        set
+        {
+            respon = value;
+        }
+    }
+
+    public UserInfoInfo Info
+    {
+        get
+        {
+            return info;
+        }
+
+        set
+        {
+            info = value;
+        }
+    }
+
+    public UserInfoList List
+    {
+        get
+        {
+            return list;
+        }
+
+        set
+        {
+            list = value;
+        }
+    }
+#endregion
+}
+
+[Serializable]
+public class UserRank{
+    [SerializeField] private Respon respon;
+    [SerializeField] private Result result;
+
+    #region UserRank Property
+
+        public Respon Respon
+        {
+            get
+            {
+                return respon;
+            }
+
+            set
+            {
+                respon = value;
+            }
+        }
+
+        public Result Result
+        {
+            get
+            {
+                return result;
+            }
+
+            set
+            {
+                result = value;
+            }
+        }
+
+    #endregion
+}
+
+[Serializable]
+public class UserInfoInfo
+{
+    [SerializeField] private int uid;
+    [SerializeField] private string name;
+    [SerializeField] private string age;
+    [SerializeField] private string job;
+
+    #region UserInfoInfo Property
+    public int Uid
+    {
+        get
+        {
+            return uid;
+        }
+
+        set
+        {
+            uid = value;
+        }
+    }
+
+    public string Name
+    {
+        get
+        {
+            return name;
+        }
+
+        set
+        {
+            name = value;
+        }
+    }
+
+    public string Job
+    {
+        get
+        {
+            return job;
+        }
+
+        set
+        {
+            job = value;
+        }
+    }
+
+    public string Age
+    {
+        get
+        {
+            return age;
+        }
+
+        set
+        {
+            age = value;
+        }
+    }
+    #endregion
+}
+
+[Serializable]
+public class UserInfoList
+{
+
+    [SerializeField] private int score;
+    [SerializeField] private int content;
+    [SerializeField] private int item;
+
+    [SerializeField] private int wins;
+    [SerializeField] private int count;
+
+    #region UserInfoList Property
+    public int Score
+    {
+        get
+        {
+            return score;
+        }
+
+        set
+        {
+            score = value;
+        }
+    }
+
+    public int Wins
+    {
+        get
+        {
+            return wins;
+        }
+
+        set
+        {
+            wins = value;
+        }
+    }
+
+    public int Count
+    {
+        get
+        {
+            return count;
+        }
+
+        set
+        {
+            count = value;
+        }
+    }
+
+    public int Content
+    {
+        get
+        {
+            return content;
+        }
+
+        set
+        {
+            content = value;
+        }
+    }
+
+    public int Item
+    {
+        get
+        {
+            return item;
+        }
+
+        set
+        {
+            item = value;
+        }
+    }
+
     #endregion
 }
 
