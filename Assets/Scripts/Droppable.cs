@@ -14,10 +14,13 @@ public class Droppable : MonoBehaviour, IDropHandler, IPointerEnterHandler, IPoi
     public int index = 1;
     public int markImageIndex;
     private GameManager gm;
+    public Image defaultImage;
 
     private void Start()
     {
         gm = FindObjectOfType<GameManager>();
+        defaultImage.color = new Color(1, 1, 1, 0);
+        defaultImage.preserveAspect = true;
     }
 
     public void OnDrop(PointerEventData eventData)
@@ -56,13 +59,17 @@ public class Droppable : MonoBehaviour, IDropHandler, IPointerEnterHandler, IPoi
                 OnNothing(eventData.pointerDrag);
             }
         }
+
+        defaultImage.color = new Color(1, 1, 1, 0);
     }
 
-    //마우스 커서가 영역에 들어왔을 때 호출된다.
     public void OnPointerEnter(PointerEventData eventData)
     {
         if (eventData.dragging)
         {
+            Image draggingImage = eventData.pointerDrag.GetComponent<Image>();
+            defaultImage.sprite = draggingImage.sprite;
+            defaultImage.color = new Color(1, 1, 1, 50);
         }
     }
 
@@ -70,6 +77,7 @@ public class Droppable : MonoBehaviour, IDropHandler, IPointerEnterHandler, IPoi
     {
         if (eventData.dragging)
         {
+            defaultImage.color = new Color(1, 1, 1, 0);
         }
     }
 }

@@ -147,6 +147,8 @@ public class Draggable : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDra
 
     public void OnEndDrag(PointerEventData eventData)
     {
+        Destroy(draggingIamgeObject);
+        GetComponent<Image>().color = new Color(1, 1, 1, 1);
     }
 
     public void Success()
