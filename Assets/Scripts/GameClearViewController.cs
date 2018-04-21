@@ -1,11 +1,13 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class GameClearViewController : MonoBehaviour
 {
     [SerializeField] private GameObject success;
     [SerializeField] private GameObject gameover;
+    [SerializeField] private Text scoreText;
 
     private GameManager gm;
 
@@ -16,6 +18,8 @@ public class GameClearViewController : MonoBehaviour
         {
             success.SetActive(true);
             gameover.SetActive(false);
+            int score = gm.Life * 100;
+            scoreText.text = "Score : " + score.ToString();
         }
         else
         {
