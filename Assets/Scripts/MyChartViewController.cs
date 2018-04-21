@@ -75,17 +75,4 @@ public class MyChartViewController : ViewController {
         
         return result;
     }
-
-    //// 아이템 상세 화면의 내용을 갱신하는 메서드
-    //public void UpdateContent(ShopItemData itemData)
-    //{
-    //    // 아이템의 데이터를 저장해둔다
-    //    this.itemData = itemData;
-
-    //    iconImage.sprite =
-    //        SpriteSheetManager.GetSpriteByName("IconAtlas", itemData.iconName);
-    //    nameLabel.text = itemData.name;
-    //    priceLabel.text = itemData.price.ToString();
-    //    descriptionLabel.text = itemData.description;
-    //}
 }

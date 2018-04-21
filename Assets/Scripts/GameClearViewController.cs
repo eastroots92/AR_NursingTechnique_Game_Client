@@ -19,7 +19,7 @@ public class GameClearViewController : MonoBehaviour
             success.SetActive(true);
             gameover.SetActive(false);
             int score = gm.Life * 100;
-            scoreText.text = "Score : " + score.ToString();
+            scoreText.text = "+" + score.ToString();
         }
         else
         {

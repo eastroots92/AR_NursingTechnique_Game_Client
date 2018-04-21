@@ -9,6 +9,7 @@ public class MainViewController : ViewController
     [SerializeField] private NavigationViewController navigationView;
     [SerializeField] private MyChartViewController mychartView;
     [SerializeField] private HowToPlayViewController howtoplayView;
+    [SerializeField] private StageSelectController stageSelectView;
     [SerializeField] private Button playButton;
 
     //뷰의 타이틀
@@ -45,13 +46,10 @@ public class MainViewController : ViewController
             {
                 navigationView.Push(howtoplayView); //게임 방법 화면으로 넘어간다.
             }
+            else if (pageName.Equals("StageSelect"))
+            {
+                navigationView.Push(stageSelectView); //게임 방법 화면으로 넘어간다.
+            }
         }
-    }
-
-    public void OnPressPlayButton()
-    {
-
-        DataManager.instance.SendRandomItem(1);
-        StartCoroutine(GameSceneManager.instance.ChangeScene(3));
     }
 }
