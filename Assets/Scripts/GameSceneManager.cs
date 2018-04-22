@@ -95,8 +95,9 @@ public class GameSceneManager : MonoBehaviour
         {
             sceneState = SceneState.Menu;
             DataManager.instance.SendListClinical();
-            DataManager.instance.SendUserInfo();
-            DataManager.instance.SendUserRank();
+            DataManager.instance.SendClearGameResult();
+            //DataManager.instance.SendUserInfo();
+            //DataManager.instance.SendUserRank();
         }
         else if (index == 3)
             sceneState = SceneState.Game;

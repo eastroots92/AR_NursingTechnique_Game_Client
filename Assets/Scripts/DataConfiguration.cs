@@ -14,6 +14,7 @@ public class DataConfiguration
     [SerializeField] private GameRecord game_record;
     [SerializeField] private UserInfo user_info;
     [SerializeField] private UserRank user_rank;
+    [SerializeField] private ClearGame clear_game;
 
     #region DataConfiguration Property
     public SignUp Signup
@@ -126,6 +127,19 @@ public class DataConfiguration
         }
         set{
             user_rank = value;
+        }
+    }
+
+    public ClearGame Clear_game
+    {
+        get
+        {
+            return clear_game;
+        }
+
+        set
+        {
+            clear_game = value;
         }
     }
 
@@ -997,6 +1011,160 @@ public class UserInfoList
     }
 
     #endregion
+}
+
+//clear Game 정보
+[Serializable]
+public class ClearGame
+{
+    [SerializeField] private Respon respon;
+    [SerializeField] private List<ClearResult> result;
+
+    #region ClearGameProperty
+    public Respon Respon
+    {
+        get
+        {
+            return respon;
+        }
+
+        set
+        {
+            respon = value;
+        }
+    }
+
+    public List<ClearResult> Result
+    {
+        get
+        {
+            return result;
+        }
+
+        set
+        {
+            result = value;
+        }
+    }
+    #endregion
+}
+
+[Serializable]
+public class ClearResult
+{
+    [SerializeField] private int id;
+    [SerializeField] private int clinical_id;
+    [SerializeField] private string game_type;
+    [SerializeField] private int life;
+
+    #region ClearResultProperty
+    public int Id
+    {
+        get
+        {
+            return id;
+        }
+
+        set
+        {
+            id = value;
+        }
+    }
+
+    public int Clinical_id
+    {
+        get
+        {
+            return clinical_id;
+        }
+
+        set
+        {
+            clinical_id = value;
+        }
+    }
+
+    public string Game_type
+    {
+        get
+        {
+            return game_type;
+        }
+
+        set
+        {
+            game_type = value;
+        }
+    }
+
+    public int Life
+    {
+        get
+        {
+            return life;
+        }
+
+        set
+        {
+            life = value;
+        }
+    }
+    #endregion
+}
+
+public class Level
+{
+    private int clinical_id;
+    private string game_type;
+    private int life;
+
+    public Level(int clinical_id, string game_type, int life)
+    {
+        this.Clinical_id = clinical_id;
+        this.Game_type = game_type;
+        this.Life = life;
+    }
+
+    #region LevelProperty
+    public int Clinical_id
+    {
+        get
+        {
+            return clinical_id;
+        }
+
+        set
+        {
+            clinical_id = value;
+        }
+    }
+
+    public string Game_type
+    {
+        get
+        {
+            return game_type;
+        }
+
+        set
+        {
+            game_type = value;
+        }
+    }
+
+    public int Life
+    {
+        get
+        {
+            return life;
+        }
+
+        set
+        {
+            life = value;
+        }
+    }
+#endregion
 }
 
 //
