@@ -396,9 +396,9 @@ public class GameManager : MonoBehaviour
         // TODO Timeover
 
         if(currentGame == GameState.OrderGame){
-            game_type = "준비";
+            game_type = "순서";
         }else{
-            game_type= "순서";
+            game_type= "준비";
         }
 
         isFinishGame(game_num,life, game_type);

@@ -37,7 +37,7 @@ public class DataManager : MonoBehaviour
     private List<string> necessaryRating;  //필수
     private List<string> confusionRating;  //헷갈
 
-    private List<Level> level = new List<Level>();
+    private List<Level> levels = new List<Level>();
 
     private Dictionary<int, string> randomContentList;
     private List<int> originList;
@@ -246,16 +246,16 @@ public class DataManager : MonoBehaviour
         }
     }
 
-    public List<Level> Level
+    public List<Level> Levels
     {
         get
         {
-            return level;
+            return levels;
         }
 
         set
         {
-            level = value;
+            levels = value;
         }
     }
 
@@ -509,7 +509,7 @@ public class DataManager : MonoBehaviour
         {
             foreach (ClearResult i in config.Clear_game.Result) {
                 Level gameLevel = new Level(i.Clinical_id, i.Game_type, i.Life);
-                Level.Add(gameLevel);
+                Levels.Add(gameLevel);
             }
         }
     }

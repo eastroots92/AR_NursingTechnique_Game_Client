@@ -1112,11 +1112,12 @@ public class ClearResult
     #endregion
 }
 
+[Serializable]
 public class Level
 {
-    private int clinical_id;
-    private string game_type;
-    private int life;
+    [SerializeField] private int clinical_id;
+    [SerializeField] private string game_type;
+    [SerializeField] private int life;
 
     public Level(int clinical_id, string game_type, int life)
     {
