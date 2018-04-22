@@ -43,7 +43,7 @@ public class GameManager : MonoBehaviour
     private bool isTimeOver = false;
     private int game_num =  0;
     private bool isClear;
-
+    private float time = 0;
     //준비물 게임 
     private List<Image> baseItemImage = new List<Image>();
     private List<Image> necessaryItemImage = new List<Image>();
@@ -146,7 +146,8 @@ public class GameManager : MonoBehaviour
 
         if (fillAmount >= 0)
         {
-            fillAmount = 1 - Time.time / 100;
+            time += Time.deltaTime;
+            fillAmount = 1 - time / 100;
             UpdateBar();
 
             string minutes = ((int)(fillAmount * 100) / 60).ToString();
@@ -193,7 +194,7 @@ public class GameManager : MonoBehaviour
                 Debug.Log("성공");
                 // TODO Life 매개변수
                 IsClear = true;
-                game_type = "순서";
+                game_type = "아이템";
                 isFinishGame(game_num,Life,game_type);
             }
         }
@@ -205,7 +206,7 @@ public class GameManager : MonoBehaviour
                 Debug.Log("성공");
                 IsClear = true;
                 // TODO Life 매개변수
-                game_type ="아이템";
+                game_type ="순서";
                 // isFinishGame(1,life,game_type);
             }
         }
@@ -396,9 +397,9 @@ public class GameManager : MonoBehaviour
         // TODO Timeover
 
         if(currentGame == GameState.OrderGame){
-            game_type = "순서";
+            game_type = "아이템";
         }else{
-            game_type= "준비";
+            game_type= "순서";
         }
 
         isFinishGame(game_num,life, game_type);

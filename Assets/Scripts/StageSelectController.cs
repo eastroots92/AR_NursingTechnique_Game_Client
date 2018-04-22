@@ -113,24 +113,24 @@ public class StageSelectController : ViewController
     {
         foreach (int i in DataManager.instance.LowDifficulty)
         {
-            levelList.Add(new LevelInfo(i, "준비"));
+            levelList.Add(new LevelInfo(i, "아이템"));
             levelList.Add(new LevelInfo(i, "순서"));
         }
         foreach (int i in DataManager.instance.MiddleDifficulty)
         {
-            levelList.Add(new LevelInfo(i, "준비"));
+            levelList.Add(new LevelInfo(i, "아이템"));
             levelList.Add(new LevelInfo(i, "순서"));
         }
         foreach (int i in DataManager.instance.HighDifficulty)
         {
-            levelList.Add(new LevelInfo(i, "준비"));
+            levelList.Add(new LevelInfo(i, "아이템"));
             levelList.Add(new LevelInfo(i, "순서"));
         }
     }
 
     private void LoadLevel(int id, string game_type)
     {
-        if(game_type.Equals("준비"))
+        if(game_type.Equals("아이템"))
         {
             DataManager.instance.SendRandomItem(id);
         }
@@ -139,6 +139,6 @@ public class StageSelectController : ViewController
             DataManager.instance.SendRandomContent(id);
         }
 
-        GameSceneManager.instance.ChangeScene(4);
+        StartCoroutine(GameSceneManager.instance.ChangeScene(3));
     }
 }
