@@ -49,6 +49,7 @@ public class GameManager : MonoBehaviour
     private List<Image> necessaryItemImage = new List<Image>();
     private List<Image> confusionItemImage = new List<Image>();
 
+    #region GameManagerProperty
     public bool IsStart
     {
         get
@@ -113,8 +114,9 @@ public class GameManager : MonoBehaviour
             life = value;
         }
     }
+    #endregion
 
-    void Start()
+    void Awake()
     {
         fillAmount = 1;
         fill.fillAmount = 1;
@@ -308,6 +310,7 @@ public class GameManager : MonoBehaviour
         droppable.OnNothing += onNothing;
 
         checkImg = new Image[DataManager.instance.OriginList.Count];
+
         for (int i = 0; i < DataManager.instance.OriginList.Count; i++)
         {
             GameObject obj = new GameObject("marker");

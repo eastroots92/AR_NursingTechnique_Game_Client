@@ -483,8 +483,9 @@ public class DataManager : MonoBehaviour
                 GameNumber = Convert.ToInt32(config.Random_content.Info.Id);
                 RandomContentList = new Dictionary<int, string>();
                 OriginList = new List<int>();
+                ClinicalTitle = config.Random_content.Info.Title;
 
-                foreach(RandomContentListDetail list in config.Random_content.List)
+                foreach (RandomContentListDetail list in config.Random_content.List)
                 {
                     RandomContentList.Add(list.Index, list.Content);
                     OriginList.Add(list.Index);

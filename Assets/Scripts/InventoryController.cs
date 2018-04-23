@@ -20,25 +20,28 @@ public class InventoryController : MonoBehaviour
         prefab = Resources.Load("Slot") as GameObject;
         gm = FindObjectOfType<GameManager>();
 
-        int slotCount = DataManager.instance.BaseRating.Count + DataManager.instance.NecessaryRating.Count;
-
-        for (int i = 0; i < slotCount; i++)
+        if (gm.currentGame == GameManager.GameState.OrderGame)
         {
-            GameObject slot = Instantiate(prefab);
-            slot.transform.SetParent(slotPanel.transform);
-            slotObjs.Add(slot);
-        }
+            int slotCount = DataManager.instance.BaseRating.Count + DataManager.instance.NecessaryRating.Count;
 
-        foreach (string name in DataManager.instance.BaseRating)
-        {
-            Transform obj = slotObjs[j].transform.Find("Image");
-            obj.GetComponent<Image>().preserveAspect = true;
-            obj.GetComponent<Image>().sprite = Resources.Load<Sprite>(name);
-            obj.GetComponent<Image>().color = new Color(1, 1, 1, 1);
-            slotObjs[j].AddComponent<Button>();
-            Button btn = slotObjs[j].GetComponent<Button>();
-            btn.onClick.AddListener( delegate{ OnClickSlot(name + "(항시)"); });
-            j++;
+            for (int i = 0; i < slotCount; i++)
+            {
+                GameObject slot = Instantiate(prefab);
+                slot.transform.SetParent(slotPanel.transform);
+                slotObjs.Add(slot);
+            }
+
+            foreach (string name in DataManager.instance.BaseRating)
+            {
+                Transform obj = slotObjs[j].transform.Find("Image");
+                obj.GetComponent<Image>().preserveAspect = true;
+                obj.GetComponent<Image>().sprite = Resources.Load<Sprite>(name);
+                obj.GetComponent<Image>().color = new Color(1, 1, 1, 1);
+                slotObjs[j].AddComponent<Button>();
+                Button btn = slotObjs[j].GetComponent<Button>();
+                btn.onClick.AddListener(delegate { OnClickSlot(name + "(항시)"); });
+                j++;
+            }
         }
 
         gameObject.SetActive(false);
@@ -48,7 +51,8 @@ public class InventoryController : MonoBehaviour
     {
         description.SetActive(false);
 
-        SetSlotImage();
+        if (gm.currentGame == GameManager.GameState.OrderGame)
+            SetSlotImage();
     }
 
     private void SetSlotImage()
