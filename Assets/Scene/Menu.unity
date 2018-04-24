@@ -1912,6 +1912,12 @@ Prefab:
       propertyPath: m_Pivot.y
       value: 0.5
       objectReference: {fileID: 0}
+    - target: {fileID: 114007502305469224, guid: f2afe6d8ae5d44f11bf281fd2576b683,
+        type: 2}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: 21300000, guid: e6997a70b0a29f04882b9b15b4eb10aa,
+        type: 3}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: f2afe6d8ae5d44f11bf281fd2576b683, type: 2}
   m_IsPrefabParent: 0
@@ -3247,6 +3253,7 @@ MonoBehaviour:
   levelImage:
   - {fileID: 21300000, guid: 1717d95e9fbdccd4bbf4651b2ac5117d, type: 3}
   - {fileID: 21300000, guid: 4d39e67dd72c7694a9104a562dccc30d, type: 3}
+  levelObj: []
   levelList: []
 --- !u!1 &1638439735
 GameObject:

@@ -61,7 +61,7 @@ public class Draggable : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDra
 
             //드래그 조작 중인 아이콘의 게임 오브젝트를 생성한다.
             draggingIamgeObject = new GameObject("Dragging Object");
-            textObj = GameObject.Find("Text");
+            textObj = GameObject.Find("descriptionText");
 
             //본래의 아이콘의 캔버스의 자식 요소로 종속시켜 가장 바깥면에 표시
             draggingIamgeObject.transform.SetParent(sourceImage.canvas.transform);
