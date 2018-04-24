@@ -37,6 +37,8 @@ public class DataManager : MonoBehaviour
     private List<string> necessaryRating;  //필수
     private List<string> confusionRating;  //헷갈
 
+    private List<Level> levels = new List<Level>();
+
     private Dictionary<int, string> randomContentList;
     private List<int> originList;
 
@@ -65,6 +67,7 @@ public class DataManager : MonoBehaviour
     [SerializeField] private string gameRecordUrl = "http://52.78.120.239/game/game_record.json?token=";
     [SerializeField] private string userInfoUrl = "http://52.78.120.239/user/user_info.json?token=";
     [SerializeField] private string userRankUrl = "http://52.78.120.239/user/user_rank.json?token=";
+    [SerializeField] private string clearGameResult = "http://52.78.120.239/game/clear_game.json?token=";
 
     public string Token { set { token = value; } }
 
@@ -243,6 +246,58 @@ public class DataManager : MonoBehaviour
         }
     }
 
+    public List<Level> Levels
+    {
+        get
+        {
+            return levels;
+        }
+
+        set
+        {
+            levels = value;
+        }
+    }
+
+    public List<int> LowDifficulty
+    {
+        get
+        {
+            return lowDifficulty;
+        }
+
+        set
+        {
+            lowDifficulty = value;
+        }
+    }
+
+    public List<int> MiddleDifficulty
+    {
+        get
+        {
+            return middleDifficulty;
+        }
+
+        set
+        {
+            middleDifficulty = value;
+        }
+    }
+
+    public List<int> HighDifficulty
+    {
+        get
+        {
+            return highDifficulty;
+        }
+
+        set
+        {
+            highDifficulty = value;
+        }
+    }
+
     #endregion
 
     private void Awake()
@@ -329,6 +384,14 @@ public class DataManager : MonoBehaviour
         StartCoroutine(WaitForRequest(www));
     }
 
+    public void SendClearGameResult()
+    {
+        string url = clearGameResult + token;
+        WWW www = new WWW(url);
+
+        StartCoroutine(WaitForRequest(www));
+    }
+
     IEnumerator WaitForRequest(WWW www)
     {
         yield return www;
@@ -373,18 +436,18 @@ public class DataManager : MonoBehaviour
                 StartCoroutine(LostToken());
             else
             {
-                highDifficulty = new List<int>();
-                middleDifficulty = new List<int>();
-                lowDifficulty = new List<int>();
+                HighDifficulty = new List<int>();
+                MiddleDifficulty = new List<int>();
+                LowDifficulty = new List<int>();
 
                 foreach (ListClinical_listDetail list in config.List_clinical.List)
                 {
                     if (list.Difficulty.Equals("상"))
-                        highDifficulty.Add(list.Id);
+                        HighDifficulty.Add(list.Id);
                     else if (list.Difficulty.Equals("중"))
-                        middleDifficulty.Add(list.Id);
+                        MiddleDifficulty.Add(list.Id);
                     else if (list.Difficulty.Equals("하"))
-                        lowDifficulty.Add(list.Id);
+                        LowDifficulty.Add(list.Id);
                 }
             }
         }
@@ -420,8 +483,9 @@ public class DataManager : MonoBehaviour
                 GameNumber = Convert.ToInt32(config.Random_content.Info.Id);
                 RandomContentList = new Dictionary<int, string>();
                 OriginList = new List<int>();
+                ClinicalTitle = config.Random_content.Info.Title;
 
-                foreach(RandomContentListDetail list in config.Random_content.List)
+                foreach (RandomContentListDetail list in config.Random_content.List)
                 {
                     RandomContentList.Add(list.Index, list.Content);
                     OriginList.Add(list.Index);
@@ -441,6 +505,13 @@ public class DataManager : MonoBehaviour
         }else if (receiveData.Contains("game_record")){
             // TODO : 값 전달이 실패 시 어떻게 처리 할 것인지??
 
+        }
+        else if (receiveData.Contains("clear_game"))
+        {
+            foreach (ClearResult i in config.Clear_game.Result) {
+                Level gameLevel = new Level(i.Clinical_id, i.Game_type, i.Life);
+                Levels.Add(gameLevel);
+            }
         }
     }
 

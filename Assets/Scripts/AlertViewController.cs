@@ -68,7 +68,6 @@ public class AlertViewController : ViewController
         {
             cancelButton.gameObject.SetActive(false);
             okButton.gameObject.SetActive(true);
-            okButtonLabel.text = "OK";
         }
     }
 	

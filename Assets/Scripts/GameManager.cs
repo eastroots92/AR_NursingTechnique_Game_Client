@@ -43,12 +43,13 @@ public class GameManager : MonoBehaviour
     private bool isTimeOver = false;
     private int game_num =  0;
     private bool isClear;
-
+    private float time = 0;
     //준비물 게임 
     private List<Image> baseItemImage = new List<Image>();
     private List<Image> necessaryItemImage = new List<Image>();
     private List<Image> confusionItemImage = new List<Image>();
 
+    #region GameManagerProperty
     public bool IsStart
     {
         get
@@ -101,7 +102,21 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    void Start()
+    public int Life
+    {
+        get
+        {
+            return life;
+        }
+
+        set
+        {
+            life = value;
+        }
+    }
+    #endregion
+
+    void Awake()
     {
         fillAmount = 1;
         fill.fillAmount = 1;
@@ -133,7 +148,8 @@ public class GameManager : MonoBehaviour
 
         if (fillAmount >= 0)
         {
-            fillAmount = 1 - Time.time / 100;
+            time += Time.deltaTime;
+            fillAmount = 1 - time / 100;
             UpdateBar();
 
             string minutes = ((int)(fillAmount * 100) / 60).ToString();
@@ -142,6 +158,7 @@ public class GameManager : MonoBehaviour
             timerText.text = "00:0" + minutes + ":" + seconds;
         }else{
             if (!isTimeOver){
+                IsClear = false;
                 setGameRecord_timeOver();
             }
         }
@@ -174,14 +191,13 @@ public class GameManager : MonoBehaviour
         
         if (currentGame == GameState.OrderGame)
         {
-            if (DataManager.instance.NecessaryRating.Count == SuccessList.Count && life > 0)
+            if (DataManager.instance.NecessaryRating.Count == SuccessList.Count && Life > 0)
             {
                 Debug.Log("성공");
                 // TODO Life 매개변수
                 IsClear = true;
-                game_type = "순서";
-                isFinishGame(game_num,life,game_type);
-                gameClear.SetActive(true);
+                game_type = "아이템";
+                isFinishGame(game_num,Life,game_type);
             }
         }
         else
@@ -192,7 +208,7 @@ public class GameManager : MonoBehaviour
                 Debug.Log("성공");
                 IsClear = true;
                 // TODO Life 매개변수
-                game_type ="아이템";
+                game_type ="순서";
                 // isFinishGame(1,life,game_type);
             }
         }
@@ -202,7 +218,7 @@ public class GameManager : MonoBehaviour
     public void onFaile(GameObject obj = null)
     {
         draggable = obj.GetComponent<Draggable>();
-        life--;
+        Life--;
         draggable.Faile();
         SetLife();
     }
@@ -217,31 +233,31 @@ public class GameManager : MonoBehaviour
     {
         int imgIndex=0;
 
-        if (life == 4)
+        if (Life == 4)
         {
             lifeImg[0].sprite = lifeImgSource[1];
             imgIndex = 0;
         }
-        else if (life == 3)
+        else if (Life == 3)
         {
             lifeImg[1].sprite = lifeImgSource[1];
             imgIndex = 1;
         }
-        else if (life == 2)
+        else if (Life == 2)
         {
             lifeImg[2].sprite = lifeImgSource[1];
             imgIndex = 2;
         }
-        else if (life == 1)
+        else if (Life == 1)
         {
             lifeImg[3].sprite = lifeImgSource[1];
             imgIndex = 3;
         }
-        else if (life == 0)
+        else if (Life == 0)
         {
             IsClear = false;
             lifeImg[4].sprite = lifeImgSource[1];
-            gameClear.SetActive(true);
+            isFinishGame(game_num, Life, game_type);
         }
 
         StartCoroutine(DelLifeUI(imgIndex));
@@ -294,6 +310,7 @@ public class GameManager : MonoBehaviour
         droppable.OnNothing += onNothing;
 
         checkImg = new Image[DataManager.instance.OriginList.Count];
+
         for (int i = 0; i < DataManager.instance.OriginList.Count; i++)
         {
             GameObject obj = new GameObject("marker");
@@ -383,7 +400,7 @@ public class GameManager : MonoBehaviour
         // TODO Timeover
 
         if(currentGame == GameState.OrderGame){
-            game_type = "준비";
+            game_type = "아이템";
         }else{
             game_type= "순서";
         }
@@ -413,5 +430,6 @@ public class GameManager : MonoBehaviour
             Debug.Log("d이건 도는건가?");
             DataManager.instance.SendGameRecord(clinical_id.ToString(),life.ToString(),game_type);
         }
+        gameClear.SetActive(true);
     }
 }
