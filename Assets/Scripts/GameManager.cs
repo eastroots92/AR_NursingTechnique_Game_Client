@@ -15,6 +15,7 @@ public class GameManager : MonoBehaviour
     [SerializeField] private GameObject gamePlayBtn;
     [SerializeField] private GameObject gameInfoUI;
     [SerializeField] private GameObject inventoryUI;
+    [SerializeField] private GameObject inventoryBtn;
     [SerializeField] private Text timerText;
     [SerializeField] private Image[] lifeImg;
     [SerializeField] private Sprite[] lifeImgSource;
@@ -123,6 +124,7 @@ public class GameManager : MonoBehaviour
         fill.fillAmount = 1;
         IsClear = false;
 
+        inventoryBtn.SetActive(false);
         gameInfoUI.SetActive(true);
         orderDroppable.SetActive(false);
         supplyDroppable.SetActive(false);
@@ -339,7 +341,7 @@ public class GameManager : MonoBehaviour
     //준비물게임
     private void SetOrderGame()
     {
-
+        inventoryBtn.SetActive(true);
         orderDroppable.SetActive(true);
         droppable = FindObjectOfType<Droppable>();
 
