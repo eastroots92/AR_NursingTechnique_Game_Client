@@ -16,7 +16,6 @@ public class GameManager : MonoBehaviour
     [SerializeField] private GameObject gameInfoUI;
     [SerializeField] private GameObject inventoryUI;
     [SerializeField] private GameObject inventoryBtn;
-    [SerializeField] private Text timerText;
     [SerializeField] private Image[] lifeImg;
     [SerializeField] private Sprite[] lifeImgSource;
     [SerializeField] private Sprite[] checkImageSource;
@@ -158,7 +157,6 @@ public class GameManager : MonoBehaviour
             string minutes = ((int)(fillAmount * 100) / 60).ToString();
             string seconds = ((int)(fillAmount * 100 - 60)).ToString();
 
-            timerText.text = "00:0" + minutes + ":" + seconds;
         }else{
             if (!isTimeOver){
                 IsClear = false;
