@@ -15,7 +15,7 @@ public class GameManager : MonoBehaviour
     [SerializeField] private GameObject gamePlayBtn;
     [SerializeField] private GameObject gameInfoUI;
     [SerializeField] private GameObject inventoryUI;
-    [SerializeField] private Text timerText;
+    [SerializeField] private GameObject inventoryBtn;
     [SerializeField] private Image[] lifeImg;
     [SerializeField] private Sprite[] lifeImgSource;
     [SerializeField] private Sprite[] checkImageSource;
@@ -35,6 +35,7 @@ public class GameManager : MonoBehaviour
     public GameState currentGame;
     private Image[] checkImg;
     private float fillAmount = 1;
+    private Text draggingText;
 
     private List<string> successList = new List<string>();
 
@@ -122,6 +123,7 @@ public class GameManager : MonoBehaviour
         fill.fillAmount = 1;
         IsClear = false;
 
+        inventoryBtn.SetActive(false);
         gameInfoUI.SetActive(true);
         orderDroppable.SetActive(false);
         supplyDroppable.SetActive(false);
@@ -155,7 +157,6 @@ public class GameManager : MonoBehaviour
             string minutes = ((int)(fillAmount * 100) / 60).ToString();
             string seconds = ((int)(fillAmount * 100 - 60)).ToString();
 
-            timerText.text = "00:0" + minutes + ":" + seconds;
         }else{
             if (!isTimeOver){
                 IsClear = false;
@@ -203,6 +204,7 @@ public class GameManager : MonoBehaviour
         else
         {
             checkImg[droppable.markImageIndex - 1].sprite = checkImageSource[1];
+            checkImg[droppable.markImageIndex - 1].gameObject.GetComponent<Button>().interactable = true;
             if (droppable.index == DataManager.instance.RandomContentList.Count)
             {
                 Debug.Log("성공");
@@ -304,6 +306,7 @@ public class GameManager : MonoBehaviour
         supplyDroppable.SetActive(true);
         droppable = FindObjectOfType<Droppable>();
         supplyTextObj.SetActive(true);
+        draggingText = GameObject.Find("descriptionText").GetComponent<Text>();
 
         droppable.OnSuccess += onSuccess;
         droppable.OnFaile += onFaile;
@@ -313,41 +316,30 @@ public class GameManager : MonoBehaviour
 
         for (int i = 0; i < DataManager.instance.OriginList.Count; i++)
         {
-            GameObject obj = new GameObject("marker");
-            Image img = obj.AddComponent<Image>();
-            obj.transform.SetParent(GameObject.Find("Item").transform);
-            img.sprite = checkImageSource[0];
-            checkImg[i] = img;
+            Image img = originItemTransform[i].gameObject.AddComponent<Image>();
+            originItemTransform[i].gameObject.AddComponent<Draggable>();
+            originItemTransform[i].gameObject.name = (i + 1).ToString();
+            //img.preserveAspect = true;
+            img.sprite = contentImage;
         }
 
-        foreach (int index in ShuffleList(DataManager.instance.OriginList))
+        for (int i = 0; i < DataManager.instance.OriginList.Count; i++)
         {
-            var r = UnityEngine.Random.Range(0, 2);
-            if (r == 0)
-            {
-                GameObject obj = new GameObject(index.ToString());
-                Image img = obj.AddComponent<Image>();
-                img.preserveAspect = true;
-                obj.AddComponent<Draggable>();
-                obj.transform.SetParent(GameObject.Find("Items").transform);
-                img.sprite = contentImage;
-            }
-            else
-            {
-                GameObject obj = new GameObject(index.ToString());
-                Image img = obj.AddComponent<Image>();
-                img.preserveAspect = true;
-                obj.AddComponent<Draggable>();
-                obj.transform.SetParent(GameObject.Find("Itemss").transform);
-                img.sprite = contentImage;
-            }
+            GameObject obj = new GameObject((i+1).ToString());
+            Image img = obj.AddComponent<Image>();
+            Button btn = obj.AddComponent<Button>();
+            btn.onClick.AddListener(delegate { OnClickMarker(obj.name); });
+            btn.interactable = false;
+            obj.transform.SetParent(GameObject.Find("CheckList").transform);
+            img.sprite = checkImageSource[0];
+            checkImg[i] = img;
         }
     }
 
     //준비물게임
     private void SetOrderGame()
     {
-
+        inventoryBtn.SetActive(true);
         orderDroppable.SetActive(true);
         droppable = FindObjectOfType<Droppable>();
 
@@ -431,5 +423,14 @@ public class GameManager : MonoBehaviour
             DataManager.instance.SendGameRecord(clinical_id.ToString(),life.ToString(),game_type);
         }
         gameClear.SetActive(true);
+    }
+
+    public void OnClickMarker(string name)
+    {
+        int index = System.Int32.Parse(name);
+        if (DataManager.instance.RandomContentList.ContainsKey(index))
+        {
+            draggingText.text = DataManager.instance.RandomContentList[index];
+        }
     }
 }

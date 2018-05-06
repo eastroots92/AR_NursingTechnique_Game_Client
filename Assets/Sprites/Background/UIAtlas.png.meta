@@ -1,0 +1,383 @@
+fileFormatVersion: 2
+guid: 2a5126941f4f64aed93e1abe9c56759b
+TextureImporter:
+  fileIDToRecycleName:
+    21300000: bg
+    21300002: bg_slant
+    21300004: face
+    21300006: navbar_bg
+    21300008: tabbar_bg
+    21300010: tabbar_icon1
+    21300012: tabbar_icon1_on
+    21300014: tabbar_icon2
+    21300016: tabbar_icon2_on
+    21300018: tabbar_icon3
+    21300020: tabbar_icon3_on
+    21300022: tabbar_icon4
+    21300024: tabbar_icon4_on
+    21300026: tabbar_icon5
+    21300028: tabbar_icon5_on
+    21300030: title_bg
+    21300032: window_bg
+    21300034: level_base
+    21300036: level_block
+    21300038: level1
+    21300040: level2
+    21300042: level3
+    21300044: level4
+    21300046: level5
+    21300048: group_bg
+    21300050: back
+    21300052: cell_bg
+    21300054: next
+    21300056: button_bg
+    21300058: slider_bar
+    21300060: page
+    21300062: page_on
+    21300064: button_disabled
+    21300066: button_highlighted
+    21300068: button_normal
+    21300070: button_pressed
+    21300072: small_face
+    21300074: checkmark
+    21300076: tiled_window_bg
+    21300078: loading
+  serializedVersion: 2
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 0
+    linearTexture: 0
+    correctGamma: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: .25
+    normalMapFilter: 0
+  isReadable: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 0
+  cubemapConvolution: 0
+  cubemapConvolutionSteps: 8
+  cubemapConvolutionExponent: 1.5
+  seamlessCubemap: 0
+  textureFormat: -3
+  maxTextureSize: 4096
+  textureSettings:
+    filterMode: 1
+    aniso: 16
+    mipBias: -1
+    wrapMode: 1
+  nPOTScale: 0
+  lightmap: 0
+  rGBM: 0
+  compressionQuality: 50
+  spriteMode: 2
+  spriteExtrude: 1
+  spriteMeshType: 1
+  alignment: 0
+  spritePivot: {x: .5, y: .5}
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spritePixelsToUnits: 100
+  alphaIsTransparency: 1
+  textureType: 8
+  buildTargetSettings: []
+  spriteSheet:
+    sprites:
+    - name: back
+      rect:
+        serializedVersion: 2
+        x: 250
+        y: 256
+        width: 48
+        height: 48
+      alignment: 0
+      pivot: {x: .5, y: .5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: bg_slant
+      rect:
+        serializedVersion: 2
+        x: 67
+        y: 244
+        width: 60
+        height: 60
+      alignment: 0
+      pivot: {x: .5, y: .5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: button_bg
+      rect:
+        serializedVersion: 2
+        x: 226
+        y: 72
+        width: 74
+        height: 74
+      alignment: 0
+      pivot: {x: .5, y: .5}
+      border: {x: 25, y: 27, z: 25, w: 27}
+    - name: button_disabled
+      rect:
+        serializedVersion: 2
+        x: 2
+        y: 410
+        width: 200
+        height: 100
+      alignment: 0
+      pivot: {x: .5, y: .5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: button_highlighted
+      rect:
+        serializedVersion: 2
+        x: 205
+        y: 410
+        width: 200
+        height: 100
+      alignment: 0
+      pivot: {x: .5, y: .5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: button_normal
+      rect:
+        serializedVersion: 2
+        x: 2
+        y: 307
+        width: 200
+        height: 100
+      alignment: 0
+      pivot: {x: .5, y: .5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: button_pressed
+      rect:
+        serializedVersion: 2
+        x: 205
+        y: 307
+        width: 200
+        height: 100
+      alignment: 0
+      pivot: {x: .5, y: .5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: cell_bg
+      rect:
+        serializedVersion: 2
+        x: 2
+        y: 242
+        width: 62
+        height: 62
+      alignment: 0
+      pivot: {x: .5, y: .5}
+      border: {x: 21, y: 21, z: 21, w: 21}
+    - name: checkmark
+      rect:
+        serializedVersion: 2
+        x: 303
+        y: 88
+        width: 34
+        height: 34
+      alignment: 0
+      pivot: {x: .5, y: .5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: group_bg
+      rect:
+        serializedVersion: 2
+        x: 193
+        y: 250
+        width: 54
+        height: 54
+      alignment: 0
+      pivot: {x: .5, y: .5}
+      border: {x: 18, y: 18, z: 18, w: 18}
+    - name: loading
+      rect:
+        serializedVersion: 2
+        x: 277
+        y: 29
+        width: 40
+        height: 40
+      alignment: 0
+      pivot: {x: .5, y: .5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: navbar_bg
+      rect:
+        serializedVersion: 2
+        x: 21
+        y: 22
+        width: 20
+        height: 92
+      alignment: 0
+      pivot: {x: .5, y: .5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: next
+      rect:
+        serializedVersion: 2
+        x: 226
+        y: 21
+        width: 48
+        height: 48
+      alignment: 0
+      pivot: {x: .5, y: .5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: page
+      rect:
+        serializedVersion: 2
+        x: 135
+        y: 2
+        width: 22
+        height: 22
+      alignment: 0
+      pivot: {x: .5, y: .5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: page_on
+      rect:
+        serializedVersion: 2
+        x: 160
+        y: 2
+        width: 22
+        height: 22
+      alignment: 0
+      pivot: {x: .5, y: .5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: slider_bar
+      rect:
+        serializedVersion: 2
+        x: 125
+        y: 118
+        width: 52
+        height: 28
+      alignment: 0
+      pivot: {x: .5, y: .5}
+      border: {x: 16, y: 13, z: 16, w: 13}
+    - name: small_face
+      rect:
+        serializedVersion: 2
+        x: 130
+        y: 244
+        width: 60
+        height: 60
+      alignment: 0
+      pivot: {x: .5, y: .5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: tabbar_bg
+      rect:
+        serializedVersion: 2
+        x: 2
+        y: 2
+        width: 16
+        height: 112
+      alignment: 0
+      pivot: {x: .5, y: .5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: tabbar_icon1
+      rect:
+        serializedVersion: 2
+        x: 408
+        y: 422
+        width: 88
+        height: 88
+      alignment: 0
+      pivot: {x: .5, y: .5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: tabbar_icon1_on
+      rect:
+        serializedVersion: 2
+        x: 408
+        y: 331
+        width: 88
+        height: 88
+      alignment: 0
+      pivot: {x: .5, y: .5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: tabbar_icon2
+      rect:
+        serializedVersion: 2
+        x: 408
+        y: 240
+        width: 88
+        height: 88
+      alignment: 0
+      pivot: {x: .5, y: .5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: tabbar_icon2_on
+      rect:
+        serializedVersion: 2
+        x: 44
+        y: 26
+        width: 88
+        height: 88
+      alignment: 0
+      pivot: {x: .5, y: .5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: tabbar_icon3
+      rect:
+        serializedVersion: 2
+        x: 125
+        y: 149
+        width: 88
+        height: 88
+      alignment: 0
+      pivot: {x: .5, y: .5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: tabbar_icon3_on
+      rect:
+        serializedVersion: 2
+        x: 135
+        y: 27
+        width: 88
+        height: 88
+      alignment: 0
+      pivot: {x: .5, y: .5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: tabbar_icon4
+      rect:
+        serializedVersion: 2
+        x: 216
+        y: 149
+        width: 88
+        height: 88
+      alignment: 0
+      pivot: {x: .5, y: .5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: tabbar_icon4_on
+      rect:
+        serializedVersion: 2
+        x: 307
+        y: 216
+        width: 88
+        height: 88
+      alignment: 0
+      pivot: {x: .5, y: .5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: tabbar_icon5
+      rect:
+        serializedVersion: 2
+        x: 398
+        y: 149
+        width: 88
+        height: 88
+      alignment: 0
+      pivot: {x: .5, y: .5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: tabbar_icon5_on
+      rect:
+        serializedVersion: 2
+        x: 307
+        y: 125
+        width: 88
+        height: 88
+      alignment: 0
+      pivot: {x: .5, y: .5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: window_bg
+      rect:
+        serializedVersion: 2
+        x: 2
+        y: 117
+        width: 120
+        height: 120
+      alignment: 0
+      pivot: {x: .5, y: .5}
+      border: {x: 50, y: 50, z: 50, w: 50}
+  spritePackingTag: 
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

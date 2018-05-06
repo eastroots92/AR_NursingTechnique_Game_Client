@@ -106,7 +106,7 @@ public class PagingScrollViewController : ViewController, IBeginDragHandler, IEn
 
     private void Start()
     {
-        UpdateView();
+        //UpdateView();
 
         pageControl.SetNumberOfPages(PageCount);
         pageControl.SetCurrentPage(0);
