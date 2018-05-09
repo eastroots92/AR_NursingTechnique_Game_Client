@@ -27,7 +27,7 @@ public class GameManager : MonoBehaviour
     [SerializeField] private GameObject pauseUI;
     [SerializeField] private List<Transform> originItemTransform;
     [SerializeField] private GameObject gameClear;
-
+    [SerializeField] private AudioClip[] audioClip;
     private int life = 5;
     private bool isStart = false;
     private Draggable draggable;
@@ -36,6 +36,7 @@ public class GameManager : MonoBehaviour
     private Image[] checkImg;
     private float fillAmount = 1;
     private Text draggingText;
+    private AudioSource audioSource;
 
     private List<string> successList = new List<string>();
 
@@ -122,7 +123,7 @@ public class GameManager : MonoBehaviour
         fillAmount = 1;
         fill.fillAmount = 1;
         IsClear = false;
-
+        
         inventoryBtn.SetActive(false);
         gameInfoUI.SetActive(true);
         orderDroppable.SetActive(false);
@@ -132,6 +133,8 @@ public class GameManager : MonoBehaviour
         pauseUI.SetActive(false);
         gameClear.SetActive(false);
 
+        audioSource = GetComponent<AudioSource>();
+        audioSource.Stop();
         ClinicalTitle = DataManager.instance.ClinicalTitle;
         game_num =  DataManager.instance.GameNumber;
 
@@ -199,6 +202,7 @@ public class GameManager : MonoBehaviour
                 IsClear = true;
                 game_type = "아이템";
                 isFinishGame(game_num,Life,game_type);
+                audioSource.PlayOneShot(audioClip[2]);
             }
         }
         else
@@ -212,8 +216,10 @@ public class GameManager : MonoBehaviour
                 // TODO Life 매개변수
                 game_type ="순서";
                 // isFinishGame(1,life,game_type);
+                audioSource.PlayOneShot(audioClip[2]);
             }
         }
+        audioSource.PlayOneShot(audioClip[0]);
         draggable.Success();
     }
 
@@ -223,6 +229,7 @@ public class GameManager : MonoBehaviour
         Life--;
         draggable.Faile();
         SetLife();
+        audioSource.PlayOneShot(audioClip[1]);
     }
 
     public void onNothing(GameObject obj)
@@ -259,6 +266,7 @@ public class GameManager : MonoBehaviour
         {
             IsClear = false;
             lifeImg[4].sprite = lifeImgSource[1];
+            audioSource.PlayOneShot(audioClip[3]);
             isFinishGame(game_num, Life, game_type);
         }
 
@@ -356,7 +364,6 @@ public class GameManager : MonoBehaviour
             necessaryItemImage.Add(img);
             necessaryItemImage[o].preserveAspect = true;
             necessaryItemImage[o].sprite = Resources.Load<Sprite>(DataManager.instance.NecessaryRating[o]);
-            //originItemTransform[o].gameObject.AddComponent<FollowCamera>();
         }
         for (int p = 0; p < DataManager.instance.ConfusionRating.Count; p++)
         {
@@ -365,7 +372,6 @@ public class GameManager : MonoBehaviour
             confusionItemImage.Add(img);
             confusionItemImage[p].preserveAspect = true;
             confusionItemImage[p].sprite = Resources.Load<Sprite>(DataManager.instance.ConfusionRating[p]);
-            //originItemTransform[p + necessCount].gameObject.AddComponent<FollowCamera>();
         }
     }
 
