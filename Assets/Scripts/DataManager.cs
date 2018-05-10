@@ -312,8 +312,8 @@ public class DataManager : MonoBehaviour
         RequestState = RequestState.None;
     }
 
-    public void SendGameRecord(string clinical_id, string life, string game_type){
-        string url = gameRecordUrl + token + "&clinical_id=" + clinical_id + "&life=" + life + "&game_type=" + game_type ;
+    public void SendGameRecord(string clinical_id, string life, string game_type, string game_time){
+        string url = gameRecordUrl + token + "&clinical_id=" + clinical_id + "&life=" + life + "&game_type=" + game_type + "&time=" + game_time;
         WWW www = new WWW(url);
 
         StartCoroutine(WaitForRequest(www));
@@ -321,7 +321,7 @@ public class DataManager : MonoBehaviour
     
     public void SendSignUp(string id, string pw, string name, string job)
     {
-        string url = signUpUrl + "uid=" + id + "&password=" + pw + "&name=" + name + "&job=" + job;
+        string url = signUpUrl + "uid=" + id + "&password=" + pw + "&name=" + name + "&job=" + job ;
         WWW www = new WWW(url);
 
         StartCoroutine(WaitForRequest(www));

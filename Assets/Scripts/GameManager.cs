@@ -46,6 +46,9 @@ public class GameManager : MonoBehaviour
     private int game_num =  0;
     private bool isClear;
     private float time = 0;
+
+    private float game_time_counter = 0;
+    private int game_time = 0;
     //준비물 게임 
     private List<Image> baseItemImage = new List<Image>();
     private List<Image> necessaryItemImage = new List<Image>();
@@ -148,6 +151,8 @@ public class GameManager : MonoBehaviour
 
     void Update()
     {
+        game_time_counter += Time.deltaTime;
+        game_time = (int)game_time_counter;
         if (!IsStart)
             return;
 
@@ -201,7 +206,7 @@ public class GameManager : MonoBehaviour
                 // TODO Life 매개변수
                 IsClear = true;
                 game_type = "아이템";
-                isFinishGame(game_num,Life,game_type);
+                isFinishGame(game_num,Life,game_type,game_time);
                 audioSource.PlayOneShot(audioClip[2]);
             }
         }
@@ -267,7 +272,7 @@ public class GameManager : MonoBehaviour
             IsClear = false;
             lifeImg[4].sprite = lifeImgSource[1];
             audioSource.PlayOneShot(audioClip[3]);
-            isFinishGame(game_num, Life, game_type);
+            isFinishGame(game_num, Life, game_type, game_time);
         }
 
         StartCoroutine(DelLifeUI(imgIndex));
@@ -395,6 +400,7 @@ public class GameManager : MonoBehaviour
     public void setGameRecord_timeOver(){
         isTimeOver= true;
         int life = 0;
+        game_time = 0;
         // TODO Timeover
 
         if(currentGame == GameState.OrderGame){
@@ -403,10 +409,10 @@ public class GameManager : MonoBehaviour
             game_type= "순서";
         }
 
-        isFinishGame(game_num,life, game_type);
+        isFinishGame(game_num,life, game_type, 0);
     }
 
-    public void isFinishGame(int clinical_id, int life, string game_type){
+    public void isFinishGame(int clinical_id, int life, string game_type, int game_time){
         Debug.Log("시작");
         bool isCurrent = true;
         if(clinical_id <= 0 || clinical_id >18){
@@ -426,7 +432,7 @@ public class GameManager : MonoBehaviour
 
         if (isCurrent){
             Debug.Log("d이건 도는건가?");
-            DataManager.instance.SendGameRecord(clinical_id.ToString(),life.ToString(),game_type);
+            DataManager.instance.SendGameRecord(clinical_id.ToString(),life.ToString(),game_type, game_time.ToString());
         }
         gameClear.SetActive(true);
     }
