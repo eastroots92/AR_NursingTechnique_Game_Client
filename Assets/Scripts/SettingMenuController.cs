@@ -32,9 +32,9 @@ public class SettingMenuController : ViewController
     [SerializeField] private Dropdown qualityDropdown;      //QualitySettings을 조절하는 Dropdown UI
     [SerializeField] private Slider volumeSlider;           //AudioMixer 값을 조절하는 Slider
 
-    private SettingsOption loadSettingsOption = null;
-    private SettingsOption settingsOption = null;
-    private SettingsOption curSettingsOption = null;
+    private SettingsOption loadSettingsOption;
+    private SettingsOption settingsOption;
+    private SettingsOption curSettingsOption;
     private GameManager gm;
     private bool isOnSound = true;
     private bool isApplyButton = false;
@@ -124,12 +124,15 @@ public class SettingMenuController : ViewController
 
         QualitySettings.SetQualityLevel(2);
         audioMixer.SetFloat("volume", 20);
+
+        gameObject.SetActive(false);
     }
 
     public void OnPressApplyButton()
     {
         isApplyButton = true;
         SaveSettings();
+        gameObject.SetActive(false);
     }
 
     public void OnPressXButton()
@@ -149,6 +152,27 @@ public class SettingMenuController : ViewController
 
         gm.IsStart = true;
         settingMenu.SetActive(false);
+    }
+
+    public void OnPressLogOutButton()
+    {
+        string loadData = PlayerPrefs.GetString("SavedLoginInSettings");
+        LogInSettingsOption logInSettingsOption = JsonUtility.FromJson<LogInSettingsOption>(loadData);
+
+        if (logInSettingsOption.isAutoLogIn)
+        {
+            PlayerPrefs.DeleteKey("SavedLoginInSettings");
+
+            logInSettingsOption.isAutoLogIn = false;
+            string jsonData = JsonUtility.ToJson(logInSettingsOption, true);
+            PlayerPrefs.SetString("SavedLoginInSettings", jsonData);
+
+            StartCoroutine(GameSceneManager.instance.ChangeScene(1));
+        }
+        else
+        {
+            StartCoroutine(GameSceneManager.instance.ChangeScene(1));
+        }
     }
 
     //settingsOoption 저장
