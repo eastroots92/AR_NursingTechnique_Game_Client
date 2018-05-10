@@ -115,19 +115,36 @@ public class GameSceneManager : MonoBehaviour
     {
         StopCoroutine(FirstSceneCheck());
 // TODO : 여기 아래에 ! 붙여야함
-        if (!PlayerPrefs.HasKey("SavedTokenData"))
+        if (!PlayerPrefs.HasKey("SavedLoginInSettings"))
             StartCoroutine(ChangeScene(1));
         else
         {
-            string loadData = PlayerPrefs.GetString("SavedTokenData");
-            TokenData tokenData = JsonUtility.FromJson<TokenData>(loadData);
-            if (tokenData.Token != "")
+            DataManager.instance.OnLoadingImage += onLoadingImage;
+
+            string loadData = PlayerPrefs.GetString("SavedLoginInSettings");
+            LogInSettingsOption logInSettingsOption = JsonUtility.FromJson<LogInSettingsOption>(loadData);
+            if (logInSettingsOption.isAutoLogIn)
             {
-                DataManager.instance.Token = tokenData.Token;
-                StartCoroutine(ChangeScene(2));
+                string loadLoginData = PlayerPrefs.GetString("SavedLoginInform");
+                LogInInform logInInform = JsonUtility.FromJson<LogInInform>(loadLoginData);
+
+                DataManager.instance.SendSignIn(logInInform.Id, logInInform.Pw);
             }
             else
                 StartCoroutine(ChangeScene(1));
         }
+    }
+
+    private void onLoadingImage(string success, Result result = null)
+    {
+        DataManager.instance.OnLoadingImage -= onLoadingImage;
+
+        if (success.Equals("true"))
+        {
+            DataManager.instance.Token = result.Token;
+            StartCoroutine(ChangeScene(2));
+        }
+        else if (success.Equals("false"))
+            StartCoroutine(ChangeScene(1));
     }
 }
