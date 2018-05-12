@@ -42,6 +42,7 @@ public class SettingMenuController : ViewController
     private void Awake()
     {
         gm = FindObjectOfType<GameManager>();
+        isApplyButton = false;
         //저장된 SettingsOption이 있을 때 Game Setting
         if (LoadSettings())
         {
@@ -59,7 +60,7 @@ public class SettingMenuController : ViewController
         {
             isOnSound = true;
             QualitySettings.SetQualityLevel(2);
-            audioMixer.SetFloat("volume", 20);
+            audioMixer.SetFloat("volume", -20);
         }
 
         float value;
@@ -71,6 +72,7 @@ public class SettingMenuController : ViewController
     //UI 출력시 UI 내용 변경
     private void OnEnable()
     {
+        isApplyButton = false;
         float value;
         audioMixer.GetFloat("volume", out value);
         //변경 사항을 담을 객체 생성
@@ -82,9 +84,9 @@ public class SettingMenuController : ViewController
     //Settings View 내용을 갱신
     public void UpdateContent(SettingsOption option)
     {
-        soundToggle.isOn = curSettingsOption.soundToggleValue;
-        qualityDropdown.value = curSettingsOption.qualityValue;
-        volumeSlider.value = curSettingsOption.volumeValue;
+        soundToggle.isOn = settingsOption.soundToggleValue;
+        qualityDropdown.value = settingsOption.qualityValue;
+        volumeSlider.value = settingsOption.volumeValue;
     }
 
     public void SetVolume(float volume)
@@ -124,15 +126,12 @@ public class SettingMenuController : ViewController
 
         QualitySettings.SetQualityLevel(2);
         audioMixer.SetFloat("volume", 20);
-
-        gameObject.SetActive(false);
     }
 
     public void OnPressApplyButton()
     {
         isApplyButton = true;
         SaveSettings();
-        gameObject.SetActive(false);
     }
 
     public void OnPressXButton()
@@ -150,8 +149,10 @@ public class SettingMenuController : ViewController
             curSettingsOption.volumeValue = settingsOption.volumeValue;
         }
 
-        gm.IsStart = true;
-        settingMenu.SetActive(false);
+        if(gm != null)
+            gm.IsStart = true;
+
+        gameObject.SetActive(false);
     }
 
     public void OnPressLogOutButton()
@@ -178,6 +179,7 @@ public class SettingMenuController : ViewController
     //settingsOoption 저장
     private void SaveSettings()
     {
+        PlayerPrefs.DeleteKey("SavedSettings");
         string jsonData = JsonUtility.ToJson(settingsOption, true);
         PlayerPrefs.SetString("SavedSettings", jsonData);
     }

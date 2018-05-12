@@ -1,8 +1,8 @@
 ﻿using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Playables;
 using UnityEngine.SceneManagement;
+using UnityEngine.Audio;
 
 public enum SceneState
 {
@@ -18,6 +18,7 @@ public class GameSceneManager : MonoBehaviour
 
     [SerializeField] private Texture2D fadeOutTexture;
     [SerializeField] private float fadeSpeed = 0.8f;
+    [SerializeField] private AudioMixer audioMixer;
 
     private PlayableDirector pd;
     private int drawDepth = -1000;
@@ -35,6 +36,7 @@ public class GameSceneManager : MonoBehaviour
 
     void Start ()
     {
+        LoadAudioSettings();
         DontDestroyOnLoad(gameObject);
         sceneState = SceneState.Title;
         pd = FindObjectOfType<PlayableDirector>();
@@ -146,5 +148,21 @@ public class GameSceneManager : MonoBehaviour
         }
         else if (success.Equals("false"))
             StartCoroutine(ChangeScene(1));
+    }
+
+    private void LoadAudioSettings()
+    {
+        if (!PlayerPrefs.HasKey("SavedSettings"))
+        {
+            QualitySettings.SetQualityLevel(2);
+            audioMixer.SetFloat("volume", -20);
+        }
+        else
+        {
+            string loadData = PlayerPrefs.GetString("SavedSettings");
+            SettingsOption loadSettingsOption = JsonUtility.FromJson<SettingsOption>(loadData);
+            QualitySettings.SetQualityLevel(loadSettingsOption.qualityValue);
+            audioMixer.SetFloat("volume", loadSettingsOption.volumeValue);
+        }
     }
 }
