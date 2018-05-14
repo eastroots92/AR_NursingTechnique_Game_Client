@@ -1,8 +1,8 @@
 ﻿using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Playables;
 using UnityEngine.SceneManagement;
+using UnityEngine.Audio;
 
 public enum SceneState
 {
@@ -18,6 +18,7 @@ public class GameSceneManager : MonoBehaviour
 
     [SerializeField] private Texture2D fadeOutTexture;
     [SerializeField] private float fadeSpeed = 0.8f;
+    [SerializeField] private AudioMixer audioMixer;
 
     private PlayableDirector pd;
     private int drawDepth = -1000;
@@ -35,6 +36,7 @@ public class GameSceneManager : MonoBehaviour
 
     void Start ()
     {
+        LoadAudioSettings();
         DontDestroyOnLoad(gameObject);
         sceneState = SceneState.Title;
         pd = FindObjectOfType<PlayableDirector>();
@@ -115,19 +117,52 @@ public class GameSceneManager : MonoBehaviour
     {
         StopCoroutine(FirstSceneCheck());
 // TODO : 여기 아래에 ! 붙여야함
-        if (!PlayerPrefs.HasKey("SavedTokenData"))
+        if (!PlayerPrefs.HasKey("SavedLoginInSettings"))
             StartCoroutine(ChangeScene(1));
         else
         {
-            string loadData = PlayerPrefs.GetString("SavedTokenData");
-            TokenData tokenData = JsonUtility.FromJson<TokenData>(loadData);
-            if (tokenData.Token != "")
+            DataManager.instance.OnLoadingImage += onLoadingImage;
+
+            string loadData = PlayerPrefs.GetString("SavedLoginInSettings");
+            LogInSettingsOption logInSettingsOption = JsonUtility.FromJson<LogInSettingsOption>(loadData);
+            if (logInSettingsOption.isAutoLogIn)
             {
-                DataManager.instance.Token = tokenData.Token;
-                StartCoroutine(ChangeScene(2));
+                string loadLoginData = PlayerPrefs.GetString("SavedLoginInform");
+                LogInInform logInInform = JsonUtility.FromJson<LogInInform>(loadLoginData);
+
+                DataManager.instance.SendSignIn(logInInform.Id, logInInform.Pw);
             }
             else
                 StartCoroutine(ChangeScene(1));
+        }
+    }
+
+    private void onLoadingImage(string success, Result result = null)
+    {
+        DataManager.instance.OnLoadingImage -= onLoadingImage;
+
+        if (success.Equals("true"))
+        {
+            DataManager.instance.Token = result.Token;
+            StartCoroutine(ChangeScene(2));
+        }
+        else if (success.Equals("false"))
+            StartCoroutine(ChangeScene(1));
+    }
+
+    private void LoadAudioSettings()
+    {
+        if (!PlayerPrefs.HasKey("SavedSettings"))
+        {
+            QualitySettings.SetQualityLevel(2);
+            audioMixer.SetFloat("volume", -20);
+        }
+        else
+        {
+            string loadData = PlayerPrefs.GetString("SavedSettings");
+            SettingsOption loadSettingsOption = JsonUtility.FromJson<SettingsOption>(loadData);
+            QualitySettings.SetQualityLevel(loadSettingsOption.qualityValue);
+            audioMixer.SetFloat("volume", loadSettingsOption.volumeValue);
         }
     }
 }

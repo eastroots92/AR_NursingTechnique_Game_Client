@@ -173,5 +173,9 @@ public class NavigationViewController : ViewController {
         }
     }
 
+    public void OnClickQuitButton()
+    {
+        Application.Quit();
+    }
 }
 

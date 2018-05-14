@@ -1216,26 +1216,3 @@ public struct LogInSettingsOption
     public bool isSetID;
 }
 
-[Serializable]
-public struct TokenData
-{
-    [SerializeField] private string token;
-
-    public string Token
-    {
-        get
-        {
-            return token;
-        }
-
-        set
-        {
-            token = value;
-        }
-    }
-
-    public TokenData(string token)
-    {
-        this.token = token;
-    }
-}

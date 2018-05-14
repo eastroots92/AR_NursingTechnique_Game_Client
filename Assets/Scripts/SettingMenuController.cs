@@ -32,9 +32,9 @@ public class SettingMenuController : ViewController
     [SerializeField] private Dropdown qualityDropdown;      //QualitySettings을 조절하는 Dropdown UI
     [SerializeField] private Slider volumeSlider;           //AudioMixer 값을 조절하는 Slider
 
-    private SettingsOption loadSettingsOption = null;
-    private SettingsOption settingsOption = null;
-    private SettingsOption curSettingsOption = null;
+    private SettingsOption loadSettingsOption;
+    private SettingsOption settingsOption;
+    private SettingsOption curSettingsOption;
     private GameManager gm;
     private bool isOnSound = true;
     private bool isApplyButton = false;
@@ -42,6 +42,7 @@ public class SettingMenuController : ViewController
     private void Awake()
     {
         gm = FindObjectOfType<GameManager>();
+        isApplyButton = false;
         //저장된 SettingsOption이 있을 때 Game Setting
         if (LoadSettings())
         {
@@ -59,7 +60,7 @@ public class SettingMenuController : ViewController
         {
             isOnSound = true;
             QualitySettings.SetQualityLevel(2);
-            audioMixer.SetFloat("volume", 20);
+            audioMixer.SetFloat("volume", -20);
         }
 
         float value;
@@ -71,6 +72,7 @@ public class SettingMenuController : ViewController
     //UI 출력시 UI 내용 변경
     private void OnEnable()
     {
+        isApplyButton = false;
         float value;
         audioMixer.GetFloat("volume", out value);
         //변경 사항을 담을 객체 생성
@@ -82,9 +84,9 @@ public class SettingMenuController : ViewController
     //Settings View 내용을 갱신
     public void UpdateContent(SettingsOption option)
     {
-        soundToggle.isOn = curSettingsOption.soundToggleValue;
-        qualityDropdown.value = curSettingsOption.qualityValue;
-        volumeSlider.value = curSettingsOption.volumeValue;
+        soundToggle.isOn = settingsOption.soundToggleValue;
+        qualityDropdown.value = settingsOption.qualityValue;
+        volumeSlider.value = settingsOption.volumeValue;
     }
 
     public void SetVolume(float volume)
@@ -147,13 +149,37 @@ public class SettingMenuController : ViewController
             curSettingsOption.volumeValue = settingsOption.volumeValue;
         }
 
-        gm.IsStart = true;
-        settingMenu.SetActive(false);
+        if(gm != null)
+            gm.IsStart = true;
+
+        gameObject.SetActive(false);
+    }
+
+    public void OnPressLogOutButton()
+    {
+        string loadData = PlayerPrefs.GetString("SavedLoginInSettings");
+        LogInSettingsOption logInSettingsOption = JsonUtility.FromJson<LogInSettingsOption>(loadData);
+
+        if (logInSettingsOption.isAutoLogIn)
+        {
+            PlayerPrefs.DeleteKey("SavedLoginInSettings");
+
+            logInSettingsOption.isAutoLogIn = false;
+            string jsonData = JsonUtility.ToJson(logInSettingsOption, true);
+            PlayerPrefs.SetString("SavedLoginInSettings", jsonData);
+
+            StartCoroutine(GameSceneManager.instance.ChangeScene(1));
+        }
+        else
+        {
+            StartCoroutine(GameSceneManager.instance.ChangeScene(1));
+        }
     }
 
     //settingsOoption 저장
     private void SaveSettings()
     {
+        PlayerPrefs.DeleteKey("SavedSettings");
         string jsonData = JsonUtility.ToJson(settingsOption, true);
         PlayerPrefs.SetString("SavedSettings", jsonData);
     }

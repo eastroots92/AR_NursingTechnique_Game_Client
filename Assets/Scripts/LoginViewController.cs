@@ -90,13 +90,6 @@ public class LoginViewController : ViewController
             SaveLoginSettings();
             OnAutoSetID();
 
-            if (autoLogin.isOn)
-            {
-                TokenData tokenData = new TokenData(result.Token);
-                string data = JsonUtility.ToJson(tokenData, true);
-                PlayerPrefs.SetString("SavedTokenData", data);
-            }
-
             DataManager.instance.Token = result.Token;
             StartCoroutine(GameSceneManager.instance.ChangeScene(2));
         }
