@@ -60,7 +60,7 @@ public class SettingMenuController : ViewController
         {
             isOnSound = true;
             QualitySettings.SetQualityLevel(2);
-            audioMixer.SetFloat("volume", -20);
+            audioMixer.SetFloat("volume", 20);
         }
 
         float value;

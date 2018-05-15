@@ -155,7 +155,7 @@ public class GameSceneManager : MonoBehaviour
         if (!PlayerPrefs.HasKey("SavedSettings"))
         {
             QualitySettings.SetQualityLevel(2);
-            audioMixer.SetFloat("volume", -20);
+            audioMixer.SetFloat("volume", 20);
         }
         else
         {
