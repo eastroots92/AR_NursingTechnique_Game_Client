@@ -106,7 +106,7 @@ public class PagingScrollViewController : ViewController, IBeginDragHandler, IEn
 
     private void Start()
     {
-        //UpdateView();
+        UpdateView();
 
         pageControl.SetNumberOfPages(PageCount);
         pageControl.SetCurrentPage(0);
@@ -118,6 +118,6 @@ public class PagingScrollViewController : ViewController, IBeginDragHandler, IEn
         currentViewRect = CachedRectTransform.rect;
 
         GridLayoutGroup grid = CachedScrollRect.content.GetComponent<GridLayoutGroup>();
-        grid.cellSize = new Vector2(Screen.width, CachedRectTransform.rect.height);
+        grid.cellSize = new Vector2(CachedRectTransform.rect.width, CachedRectTransform.rect.height);
     }
 }
